@@ -996,7 +996,7 @@ static ssize_t alc1312_index_show(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct alc1312_priv *alc1312 = i2c_get_clientdata(client);
-	struct snd_soc_codec *codec = alc1312->codec;
+	struct snd_soc_codec *component = alc1312->component;
 	unsigned int val;
 	int cnt = 0, i;
 	codec->cache_only = false;
@@ -1004,8 +1004,8 @@ static ssize_t alc1312_index_show(struct device *dev,
 	for (i = 0; i < 0x741; i++) {
 		if (cnt + ALC1312_REG_DISP_LEN >= PAGE_SIZE)
 			break;
-		if (alc1312_index_readable_register(codec, i)) {
-			val = alc1312_index_read(codec, i);
+		if (alc1312_index_readable_register(component, i)) {
+			val = alc1312_index_read(component, i);
 			if (!val)
 				continue;
 			cnt += snprintf(buf + cnt, ALC1312_REG_DISP_LEN,
@@ -1021,21 +1021,21 @@ static ssize_t alc1312_index_show(struct device *dev,
 }
 static DEVICE_ATTR(index_reg, 0444, alc1312_index_show, NULL);
 
-static ssize_t alc1312_codec_show(struct device *dev,
+static ssize_t alc1312_component_show(struct device *dev,
 				 struct device_attribute *attr, char *buf)
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct alc1312_priv *alc1312 = i2c_get_clientdata(client);
-	struct snd_soc_codec *codec = alc1312->codec;
+	struct snd_soc_component *component = alc1312->component;
 	unsigned int val;
 	int cnt = 0, i;
-	codec->cache_only = false;
+	component->cache_only = false;
 	cnt += sprintf(buf, "ALC1312 codec register\n");
 	for (i = 0; i <= 0x8ff; i++) {
 		if (cnt + 22 >= PAGE_SIZE)
 			break;
-		if (alc1312_readable_register(codec, i)) {
-			val = snd_soc_read(codec, i);
+		if (alc1312_readable_register(component, i)) {
+			val = snd_soc_read(component, i);
 
 			cnt += snprintf(buf + cnt, 22,
 					"%04x: %04x\n", i, val);
@@ -1055,7 +1055,7 @@ static ssize_t alc1312_codec_store(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct alc1312_priv *alc1312 = i2c_get_clientdata(client);
-	struct snd_soc_codec *codec = alc1312->codec;
+	struct snd_soc_component *component = alc1312->component;
 	unsigned int val = 0, addr = 0;
 	int i;
 //	pr_debug("register \"%s\" count=%d\n", buf, count);
@@ -1084,9 +1084,9 @@ static ssize_t alc1312_codec_store(struct device *dev,
 
 	if (i == count) {
 		pr_debug("0x%02x = 0x%04x\n", addr,
-		snd_soc_read(codec, addr));
+		snd_soc_read(component, addr));
 	} else {
-		snd_soc_write(codec, addr, val);
+		snd_soc_write(component, addr, val);
 	}
 
 	return count;
