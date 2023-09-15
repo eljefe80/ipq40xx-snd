@@ -430,12 +430,12 @@ static struct alc1312_init_reg init_list[] = {
 #define ALC1312_INIT_REG_LEN ARRAY_SIZE(init_list)
 #define ALC1312_EQ_REG_LEN ARRAY_SIZE(eq_list)
 
-static int alc1312_reg_init(struct snd_soc_codec *codec)
+static int alc1312_reg_init(struct snd_soc_component *component)
 {
 	int i;
 	codec->cache_only = false;
 	for (i = 0; i < ALC1312_INIT_REG_LEN; i++) {
-		snd_soc_write(codec, init_list[i].reg, init_list[i].val);
+		snd_soc_component_write(component, init_list[i].reg, init_list[i].val);
 		mdelay(init_list[i].delay);
 	}
 	//codec->cache_only = true;
@@ -631,7 +631,7 @@ static void alc1312_index_sync(struct snd_soc_component *component)
 	for (i = 1; i < component->reg_size; i++) {
 		if (reg_cache[i] == alc1312_reg[i].reg)
 			continue;
-		snd_soc_write(component, i, reg_cache[i]);
+		snd_soc_component_write(component, i, reg_cache[i]);
 	}
 }
 
@@ -652,12 +652,12 @@ static int alc1312_index_write(struct snd_soc_codec *codec,
 {
 	int ret;
 	//printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
-	ret = snd_soc_write(codec, ALC1312_PRIV_INDEX, reg);
+	ret = snd_soc_component_write(codec, ALC1312_PRIV_INDEX, reg);
 	if (ret < 0) {
 		dev_err(codec->dev, "Failed to set private addr: %d\n", ret);
 		goto err;
 	}
-	ret = snd_soc_write(codec, ALC1312_PRIV_DATA, value);
+	ret = snd_soc_component_write(codec, ALC1312_PRIV_DATA, value);
 	if (ret < 0) {
 		dev_err(codec->dev, "Failed to set private value: %d\n", ret);
 		goto err;
@@ -682,12 +682,12 @@ static unsigned int alc1312_index_read(
 	struct snd_soc_codec *codec, unsigned int reg)
 {
 	int ret;
-	ret = snd_soc_write(codec, ALC1312_PRIV_INDEX, reg);
+	ret = snd_soc_component_write(codec, ALC1312_PRIV_INDEX, reg);
 	if (ret < 0) {
 		dev_err(codec->dev, "Failed to set private addr: %d\n", ret);
 		return ret;
 	}
-	return snd_soc_read(codec, ALC1312_PRIV_DATA);
+	return snd_soc_component_read(codec, ALC1312_PRIV_DATA);
 }
 
 /**
@@ -1035,7 +1035,7 @@ static ssize_t alc1312_component_show(struct device *dev,
 		if (cnt + 22 >= PAGE_SIZE)
 			break;
 		if (alc1312_readable_register(component, i)) {
-			val = snd_soc_read(component, i);
+			val = snd_soc_component_read(component, i);
 
 			cnt += snprintf(buf + cnt, 22,
 					"%04x: %04x\n", i, val);
@@ -1084,9 +1084,9 @@ static ssize_t alc1312_codec_store(struct device *dev,
 
 	if (i == count) {
 		pr_debug("0x%02x = 0x%04x\n", addr,
-		snd_soc_read(component, addr));
+		snd_soc_component_read(component, addr));
 	} else {
-		snd_soc_write(component, addr, val);
+		snd_soc_component_write(component, addr, val);
 	}
 
 	return count;
@@ -1122,7 +1122,7 @@ static void alc1312_sync_cache(struct snd_soc_component *component)
 	for (i = 1; i < component->reg_size; i++) {
 		if (reg_cache[i] == alc1312_reg[i].reg)
 			continue;
-		snd_soc_write(codec, i, reg_cache[i]);
+		snd_soc_component_write(codec, i, reg_cache[i]);
 	}
 }
 
