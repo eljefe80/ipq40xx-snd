@@ -513,7 +513,7 @@ static struct snd_pcm_ops ipq40xx_asoc_pcm_i2s_ops = {
 	.prepare	= ipq40xx_pcm_i2s_prepare,
 	.mmap		= ipq40xx_pcm_i2s_mmap,
 	.pointer	= ipq40xx_pcm_i2s_pointer,
-	.copy		= ipq40xx_pcm_i2s_copy,
+	.copy_kernel	= ipq40xx_pcm_i2s_copy,
 };
 
 static void ipq40xx_asoc_pcm_i2s_free(struct snd_pcm *pcm)
