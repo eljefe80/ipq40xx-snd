@@ -391,7 +391,7 @@ unsigned int ipq40xx_codec_i2c_read(struct snd_soc_component *component,
 {
 	int ret;
 
-	ret = i2c_smbus_read_byte_data(component->control_data, (u8)(reg & 0xFF));
+	ret = i2c_smbus_read_byte_data(component->regmap, (u8)(reg & 0xFF));
 	if (ret < 0)
 		pr_err("\ti2c read error %s(%d)\n", __func__, ret);
 
@@ -401,12 +401,12 @@ unsigned int ipq40xx_codec_i2c_read(struct snd_soc_component *component,
 
 static int ipq40xx_codec_probe(struct snd_soc_component *codec)
 {
-	int ret;
-
+	int ret = 0;
+/*
 	ret = snd_soc_component_set_cache_io(codec, 8, 8, SND_SOC_I2C);
 	if (ret != 0)
 		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
-
+*/
 	return ret;
 }
 
