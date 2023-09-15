@@ -398,7 +398,7 @@ unsigned int ipq40xx_codec_i2c_read(struct snd_soc_component *component,
 	return ret;
 }
 
-/*
+
 static int ipq40xx_codec_probe(struct snd_soc_component *codec)
 {
 	int ret;
@@ -417,7 +417,7 @@ static const struct snd_soc_component_driver ipq40xx_codec = {
 	.reg_word_size = sizeof(u8),
 	.reg_cache_default = akd4613_reg,
 };
-*/
+
 static const struct of_device_id ipq40xx_codec_id_table[] = {
 	{ .compatible = "qca,ipq40xx-codec" },
 	{ /* Sentinel */ }
