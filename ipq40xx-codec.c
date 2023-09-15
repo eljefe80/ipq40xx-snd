@@ -413,9 +413,10 @@ static int ipq40xx_codec_probe(struct snd_soc_component *codec)
 static const struct snd_soc_component_driver ipq40xx_codec = {
 	.probe = ipq40xx_codec_probe,
 	.num_controls = 0,
-	.reg_cache_size = ARRAY_SIZE(akd4613_reg),
+/*	.reg_cache_size = ARRAY_SIZE(akd4613_reg),
 	.reg_word_size = sizeof(u8),
 	.reg_cache_default = akd4613_reg,
+*/
 };
 
 static const struct of_device_id ipq40xx_codec_id_table[] = {
@@ -423,13 +424,13 @@ static const struct of_device_id ipq40xx_codec_id_table[] = {
 	{ /* Sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_codec_id_table);
-/*
+
 static int ipq40xx_codec_i2c_probe(struct i2c_client *i2c,
 					const struct i2c_device_id *id)
 {
 	int ret;
 
-	ret = snd_soc_register_codec(&i2c->dev,
+	ret = snd_soc_register_component(&i2c->dev,
 			&ipq40xx_codec, ipq40xx_codec_dais,
 			ARRAY_SIZE(ipq40xx_codec_dais));
 	if (ret < 0) {
@@ -441,10 +442,10 @@ static int ipq40xx_codec_i2c_probe(struct i2c_client *i2c,
 
 static int ipq40xx_codec_i2c_remove(struct i2c_client *client)
 {
-	snd_soc_unregister_codec(&client->dev);
+	snd_soc_unregister_component(&client->dev);
 	return 0;
 }
-*/
+
 static const struct of_device_id ipq40xx_codec_of_match[] = {
 	{ .compatible = "qca,ipq40xx-codec" },
 	{},
