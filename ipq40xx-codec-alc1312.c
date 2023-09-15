@@ -762,7 +762,7 @@ static int alc1312_readable_register(
 }
 
 static int alc1312_index_readable_register(
-	struct snd_soc_codec *codec, unsigned int reg)
+	struct snd_soc_component *component, unsigned int reg)
 {
 	switch (reg) {
 	case 0x0002 ... 0x0022:
@@ -791,10 +791,10 @@ static int alc1312_index_readable_register(
 /*
  * read alc1312 register cache
  */
-static inline unsigned int alc1312_read_reg_cache(struct snd_soc_codec *codec,
+static inline unsigned int alc1312_read_reg_cache(struct snd_soc_component *component,
 	unsigned int reg)
 {
-	u16 *cache = codec->reg_cache;
+	u16 *cache = component->reg_cache;
 	if (reg < 1 || reg > (ARRAY_SIZE(alc1312_reg) + 1))
 		return -1;
 	return cache[reg];
@@ -804,36 +804,36 @@ static inline unsigned int alc1312_read_reg_cache(struct snd_soc_codec *codec,
  * write alc1312 register cache
  */
 
-static inline void alc1312_write_reg_cache(struct snd_soc_codec *codec,
+static inline void alc1312_write_reg_cache(struct snd_soc_component *component,
 	unsigned int reg, unsigned int value)
 {
-	u16 *cache = codec->reg_cache;
+	u16 *cache = component->reg_cache;
 	if (reg < 0 || reg > 0xfc)
 		return;
 	cache[reg] = value;
 }
 
-static int alc1312_write(struct snd_soc_codec *codec, unsigned int reg, unsigned int val)
+static int alc1312_write(struct snd_soc_component *component, unsigned int reg, unsigned int val)
 {
 	//panic_printk("write 0x%02x 0x%04x\n",reg,val);
 
-	alc1312_write_reg_cache(codec, reg, val);
+	alc1312_write_reg_cache(component, reg, val);
 
 	serial_out_i2c(ALC1312_I2C_ADDR, reg, val);
 
 	return 0;
 }
 
-static unsigned int alc1312_read(struct snd_soc_codec *codec, unsigned int reg)
+static unsigned int alc1312_read(struct snd_soc_component *component, unsigned int reg)
 {
 	int ret=0;
-	if(alc1312_volatile_register(codec, reg))
+	if(alc1312_volatile_register(component, reg))
 	{
 		ret=serial_in_i2c(ALC1312_I2C_ADDR, reg);
 		//panic_printk("from i2c read 0x%02x 0x%04x\n",reg,ret);
 		return ret;
 	}
-	ret = alc1312_read_reg_cache(codec, reg);
+	ret = alc1312_read_reg_cache(component, reg);
 	//panic_printk("from cache read 0x%02x 0x%04x\n",reg,ret);
 	return ret;
 }
@@ -1095,38 +1095,38 @@ static ssize_t alc1312_codec_store(struct device *dev,
 static DEVICE_ATTR(codec_reg, 0644, alc1312_codec_show, alc1312_codec_store);
 
 
-static int alc1312_write_eq_param(struct snd_soc_codec *codec)
+static int alc1312_write_eq_param(struct snd_soc_codec *component)
 {
 	int i;
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
 	for (i = 0; i < ARRAY_SIZE(eq_list); i++) {
 		if (eq_list[i].level == 1) //MX-
-			snd_soc_write(codec, eq_list[i].reg, eq_list[i].val);
+			snd_soc_component_write(component, eq_list[i].reg, eq_list[i].val);
 		else if (eq_list[i].level == 2)//PR-
-			alc1312_index_write(codec, eq_list[i].reg, eq_list[i].val);
+			alc1312_index_write(component, eq_list[i].reg, eq_list[i].val);
 	}
 
 	return 0;
 }
 
 
-static void alc1312_sync_cache(struct snd_soc_codec *codec)
+static void alc1312_sync_cache(struct snd_soc_component *component)
 {
-	const u16 *reg_cache = codec->reg_cache;
+	const u16 *reg_cache = component->reg_cache;
 	int i;
 
-	printk("<3> Keen %s %d %d\r\n",__FUNCTION__,__LINE__,codec->reg_size);
+	printk("<3> Keen %s %d %d\r\n",__FUNCTION__,__LINE__,component->reg_size);
 	/* Sync back cached values if they're different from the
 	 * hardware default.
 	 */
-	for (i = 1; i < codec->reg_size; i++) {
+	for (i = 1; i < component->reg_size; i++) {
 		if (reg_cache[i] == alc1312_reg[i].reg)
 			continue;
 		snd_soc_write(codec, i, reg_cache[i]);
 	}
 }
 
-static int alc1312_set_bias_level(struct snd_soc_codec *codec,
+static int alc1312_set_bias_level(struct snd_soc_component *component,
 			enum snd_soc_bias_level level)
 {
 	static int init_once = 0;
@@ -1159,7 +1159,7 @@ static int alc1312_set_bias_level(struct snd_soc_codec *codec,
 	case SND_SOC_BIAS_STANDBY:
 		printk("enter %s, SND_SOC_BIAS_STANDBY \n",__func__);
 //		rt5616_set_data_bypass(0);
-		if (SND_SOC_BIAS_OFF == codec->dapm.bias_level) {
+		if (SND_SOC_BIAS_OFF == component->dapm.bias_level) {
 
 		}
 		break;
@@ -1172,7 +1172,7 @@ static int alc1312_set_bias_level(struct snd_soc_codec *codec,
 	default:
 		break;
 	}
-	codec->dapm.bias_level = level;
+	component->dapm.bias_level = level;
 
 	return 0;
 }
@@ -1186,12 +1186,12 @@ void alc1312_pdb_ctrl(unsigned char onoff)
 }
 EXPORT_SYMBOL(alc1312_pdb_ctrl);
 
-static int alc1312_init(struct snd_soc_codec *codec)
+static int alc1312_init(struct snd_soc_component *component)
 {
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	int ret;
 	unsigned val;
-	val = snd_soc_read(codec, 0x007C);
+	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
         
         if(val != 0x10EC)
@@ -1199,10 +1199,10 @@ static int alc1312_init(struct snd_soc_codec *codec)
 
 	printk("enter %s\n",__func__);
 
-	alc1312_reg_init(codec);
+	alc1312_reg_init(component);
 
 	printk("<3> Keen EQ init %s %d\r\n",__FUNCTION__,__LINE__);
-	alc1312_write_eq_param(codec);
+	alc1312_write_eq_param(component);
 
 	//alc1312_set_bias_level(codec, SND_SOC_BIAS_STANDBY);
 	//rt5616_set_data_bypass(1);
@@ -1210,15 +1210,15 @@ static int alc1312_init(struct snd_soc_codec *codec)
 }
 
 
-static int alc1312_probe(struct snd_soc_codec *codec)
+static int alc1312_probe(struct snd_soc_component *component)
 {
-	struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
+	struct alc1312_priv *alc1312 = snd_soc_component_get_drvdata(component);
 	int ret = 0;
 
 	printk("enter %s\n",__func__);
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
-	codec->dapm.idle_bias_off = 1;
-
+	component->dapm.idle_bias_off = 1;
+/*
 	ret = snd_soc_codec_set_cache_io(codec, 16, 16, SND_SOC_I2C);
 	if (ret != 0) {
 		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
@@ -1226,17 +1226,18 @@ static int alc1312_probe(struct snd_soc_codec *codec)
 	}
 
 	codec->cache_only = false;		// no cache
-	alc1312->codec = codec;
+*/
+	alc1312->component = component;
 
-	alc1312_init(codec);
+	alc1312_init(component);
 
-	ret = device_create_file(codec->dev, &dev_attr_index_reg);
+	ret = device_create_file(component->dev, &dev_attr_index_reg);
 	if (ret != 0) {
-		dev_err(codec->dev,
+		dev_err(component->dev,
 			"Failed to create index_reg sysfs files: %d\n", ret);
 		return ret;
 	}
-	ret = device_create_file(codec->dev, &dev_attr_codec_reg);
+	ret = device_create_file(component->dev, &dev_attr_codec_reg);
 	if (ret != 0) {
 		dev_err(codec->dev,
 			"Failed to create codex_reg sysfs files: %d\n", ret);
@@ -1246,11 +1247,11 @@ static int alc1312_probe(struct snd_soc_codec *codec)
 
 }
 
-static int alc1312_remove(struct snd_soc_codec *codec)
+static int alc1312_remove(struct snd_soc_component *component)
 {
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
-	if (codec->control_data)
-		alc1312_set_bias_level(codec, SND_SOC_BIAS_OFF);
+	//if (codec->control_data)
+	alc1312_set_bias_level(component, SND_SOC_BIAS_OFF);
 	return 0;
 }
 
