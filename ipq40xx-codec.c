@@ -188,7 +188,7 @@ static int ipq40xx_codec_audio_startup(struct snd_pcm_substream *substream,
 	/* I2S and TDM cannot co-exist. CPU DAI startup would
 	 * have already checked this case, by this time.
 	 */
-	if !snd_soc_dai_active(dai)
+	if (!snd_soc_dai_active(dai))
 		ipq40xx_codec_i2c_write_defaults(component);
 
 	return 0;
