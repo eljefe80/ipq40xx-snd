@@ -181,15 +181,15 @@ static void ipq40xx_codec_i2c_write_defaults(struct snd_soc_component *codec)
 static int ipq40xx_codec_audio_startup(struct snd_pcm_substream *substream,
 					struct snd_soc_dai *dai)
 {
-	struct snd_soc_component *codec;
+	struct snd_soc_component *component;
 
-	codec = dai->codec;
+	component = dai->component;
 
 	/* I2S and TDM cannot co-exist. CPU DAI startup would
 	 * have already checked this case, by this time.
 	 */
 	if (!dai->active)
-		ipq40xx_codec_i2c_write_defaults(codec);
+		ipq40xx_codec_i2c_write_defaults(component);
 
 	return 0;
 }
@@ -198,7 +198,7 @@ static int ipq40xx_codec_audio_hw_params(struct snd_pcm_substream *substream,
 					struct snd_pcm_hw_params *params,
 					struct snd_soc_dai *dai)
 {
-	struct snd_soc_component *codec;
+	struct snd_soc_component *component;
 	int samp_rate = params_rate(params);
 	int bit_width = params_format(params);
 	int channels = params_channels(params);
@@ -215,7 +215,7 @@ static int ipq40xx_codec_audio_hw_params(struct snd_pcm_substream *substream,
 	curr_params.channels = channels;
 	curr_params.bit_width = bit_act;
 
-	codec = dai->codec;
+	component = dai->component;
 
 	/*
 	 * Since CLKS in the codec are shared by I2S TX and RX channels,
@@ -257,10 +257,10 @@ static int ipq40xx_codec_audio_hw_params(struct snd_pcm_substream *substream,
 		return -EINVAL;
 	}
 
-	ipq40xx_codec_i2c_set_dfs(codec, dfs);
-	ipq40xx_codec_i2c_set_cks(codec, cks, dfs);
-	ipq40xx_codec_i2c_set_tdm_mode(codec, tdm_mode);
-	ipq40xx_codec_i2c_set_dif(codec, dif);
+	ipq40xx_codec_i2c_set_dfs(component, dfs);
+	ipq40xx_codec_i2c_set_cks(component, cks, dfs);
+	ipq40xx_codec_i2c_set_tdm_mode(component, tdm_mode);
+	ipq40xx_codec_i2c_set_dif(component, dif);
 	udelay(10);
 
 	return 0;
