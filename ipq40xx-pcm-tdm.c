@@ -328,7 +328,7 @@ static int ipq40xx_pcm_tdm_trigger(struct snd_pcm_substream *substream, int cmd)
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
 				substream->runtime->private_data;
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-	struct snd_soc_dai *dai = rtd->cpu_dai;
+	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	uint32_t intf = dai->driver->id;
 
 	switch (cmd) {
@@ -482,14 +482,16 @@ static struct snd_pcm_ops ipq40xx_asoc_pcm_tdm_ops = {
 	.prepare	= ipq40xx_pcm_tdm_prepare,
 	.mmap		= ipq40xx_pcm_tdm_mmap,
 	.pointer	= ipq40xx_pcm_tdm_pointer,
-	.copy		= ipq40xx_pcm_tdm_copy,
+	.copy_user	= ipq40xx_pcm_tdm_copy,
 };
 
+/*
 static void ipq40xx_asoc_pcm_tdm_free(struct snd_pcm *pcm)
 {
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_PLAYBACK);
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_CAPTURE);
 }
+*/
 
 static int ipq40xx_asoc_pcm_tdm_new(struct snd_soc_pcm_runtime *prtd)
 {
@@ -529,13 +531,13 @@ static int ipq40xx_asoc_pcm_tdm_new(struct snd_soc_pcm_runtime *prtd)
 
 	return ret;
 }
-
+/*
 static struct snd_soc_platform_driver ipq40xx_asoc_pcm_tdm_platform = {
 	.ops		= &ipq40xx_asoc_pcm_tdm_ops,
 	.pcm_new	= ipq40xx_asoc_pcm_tdm_new,
 	.pcm_free	= ipq40xx_asoc_pcm_tdm_free,
 };
-
+*/
 static const struct of_device_id ipq40xx_pcm_tdm_id_table[] = {
         { .compatible = "qca,ipq40xx-pcm-tdm" },
         { /* Sentinel */ },
