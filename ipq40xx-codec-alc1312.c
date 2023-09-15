@@ -1257,10 +1257,10 @@ static int alc1312_remove(struct snd_soc_component *component)
 
 
 #ifdef CONFIG_PM
-static int alc1312_suspend(struct snd_soc_codec *codec)
+static int alc1312_suspend(struct snd_soc_component *component)
 {
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
-	alc1312_set_bias_level(codec, SND_SOC_BIAS_OFF);
+	alc1312_set_bias_level(component, SND_SOC_BIAS_OFF);
 	return 0;
 }
 
