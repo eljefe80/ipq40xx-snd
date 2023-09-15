@@ -732,8 +732,8 @@ err:
 extern unsigned int serial_in_i2c(unsigned int addr, int offset);
 extern unsigned int serial_out_i2c(unsigned int addr, int offset, int value);
 
-static int alc1312_volatile_register(
-	struct snd_soc_codec *codec, unsigned int reg)
+static bool alc1312_volatile_register(
+	struct device *codec, unsigned int reg)
 {
 
 	return 1;
@@ -741,7 +741,7 @@ static int alc1312_volatile_register(
 }
 
 static int alc1312_readable_register(
-	struct snd_soc_codec *codec, unsigned int reg)
+	struct device *dev, unsigned int reg)
 {
 	switch (reg) {
 	case 0x0000 ... 0x000D:
@@ -1304,7 +1304,7 @@ struct snd_soc_dai_driver alc1312_dai[] = {
 	},
 };
 
-static struct snd_soc_codec_driver soc_codec_dev_alc1312 = {
+static struct snd_soc_component_driver soc_codec_dev_alc1312 = {
 	.probe = alc1312_probe,
 	.remove = alc1312_remove,
 	.suspend = alc1312_suspend,
@@ -1358,7 +1358,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 	//if (IS_ERR(alc1312->regmap))
 	//	return PTR_ERR(alc1312->regmap);
 
-	ret = snd_soc_register_codec(&i2c->dev, &soc_codec_dev_alc1312,
+	ret = snd_soc_register_component(&i2c->dev, &soc_codec_dev_alc1312,
 			alc1312_dai, ARRAY_SIZE(alc1312_dai));
 	if (ret < 0)
 		kfree(alc1312);
@@ -1370,7 +1370,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 static int alc1312_i2c_remove(struct i2c_client *i2c)
 {
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
-	snd_soc_unregister_codec(&i2c->dev);
+	snd_soc_unregister_component(&i2c->dev);
 	kfree(i2c_get_clientdata(i2c));
 	return 0;
 }
