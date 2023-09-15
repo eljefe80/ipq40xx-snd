@@ -21,7 +21,7 @@
 
 
 struct alc1312_priv {
-	struct snd_soc_codec *codec;
+	struct snd_soc_component *component;
 	struct regmap *regmap;
 
 	int sysclk;

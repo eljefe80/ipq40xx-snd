@@ -1379,11 +1379,11 @@ static int alc1312_i2c_remove(struct i2c_client *i2c)
 void alc1312_i2c_shutdown(struct i2c_client *client)
 {
 	struct alc1312_priv *alc1312 = i2c_get_clientdata(client);
-	struct snd_soc_codec *codec = alc1312->codec;
+	struct snd_soc_component *component = alc1312->component;
 
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
 	if (codec != NULL)
-		alc1312_set_bias_level(codec, SND_SOC_BIAS_OFF);
+		alc1312_set_bias_level(component, SND_SOC_BIAS_OFF);
 }
 
 struct i2c_driver alc1312_i2c_driver = {
