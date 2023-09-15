@@ -70,12 +70,12 @@ static int ipq40xx_codec_i2c_set_dfs(struct snd_soc_component *codec, int mode)
 		return -EINVAL;
 	}
 
-	reg = snd_soc_component_read32(codec, AKD4613_04_CTRL2);
+	reg = snd_soc_component_read(codec, AKD4613_04_CTRL2);
 
 	reg &= ~(AKD4613_DFS_MASK);
 	reg |= AKD4613_DFS(mode);
 
-	snd_soc_write(codec, AKD4613_04_CTRL2, reg);
+	snd_soc_component_write(codec, AKD4613_04_CTRL2, reg);
 
 	return 0;
 }
@@ -124,12 +124,12 @@ static int ipq40xx_codec_i2c_set_cks(struct snd_soc_component *codec,
 		return cks_val;
 	}
 
-	reg = snd_soc_component_read32(codec, AKD4613_04_CTRL2);
+	reg = snd_soc_component_read(codec, AKD4613_04_CTRL2);
 
 	reg &= ~(AKD4613_CKS_MASK);
 	reg |= AKD4613_CKS(cks_val);
 
-	snd_soc_write(codec, AKD4613_04_CTRL2, reg);
+	snd_soc_component_write(codec, AKD4613_04_CTRL2, reg);
 
 	return 0;
 }
@@ -144,12 +144,12 @@ static int ipq40xx_codec_i2c_set_tdm_mode(struct snd_soc_component *codec,
 		return -EINVAL;
 	}
 
-	reg = snd_soc_component_read32(codec, AKD4613_03_CTRL1);
+	reg = snd_soc_component_read(codec, AKD4613_03_CTRL1);
 
 	reg &= ~(AKD4613_TDM_MODE_MASK);
 	reg |= AKD4613_TDM_MODE(tdm_mode);
 
-	snd_soc_write(codec, AKD4613_03_CTRL1, reg);
+	snd_soc_component_write(codec, AKD4613_03_CTRL1, reg);
 
 	return 0;
 }
@@ -159,12 +159,12 @@ static int ipq40xx_codec_i2c_set_dif(struct snd_soc_component *codec,
 {
 	uint32_t reg;
 
-	reg = snd_soc_component_read32(codec, AKD4613_03_CTRL1);
+	reg = snd_soc_component_read(codec, AKD4613_03_CTRL1);
 
 	reg &= ~(AKD4613_DIF_MASK);
 	reg |= AKD4613_DIF(dif_val);
 
-	snd_soc_write(codec, AKD4613_03_CTRL1, reg);
+	snd_soc_component_write(codec, AKD4613_03_CTRL1, reg);
 
 	return 0;
 }
@@ -174,7 +174,7 @@ static void ipq40xx_codec_i2c_write_defaults(struct snd_soc_component *codec)
 	int i;
 
 	for (i = 0; i < AK4613_MAX_REG; i++)
-		snd_soc_write(codec, i, akd4613_reg[i]);
+		snd_soc_component_write(codec, i, akd4613_reg[i]);
 	udelay(10);
 }
 
