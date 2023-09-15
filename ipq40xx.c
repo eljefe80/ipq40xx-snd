@@ -206,7 +206,7 @@ static int __init ipq40xx_init(void)
 
 static void __exit evm_exit(void)
 {
-        platform_driver_unregister(&ipq400xx_audio_driver);
+        platform_driver_unregister(&ipq40xx_audio_driver);
         return;
 }
 
