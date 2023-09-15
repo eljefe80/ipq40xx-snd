@@ -63,7 +63,7 @@ static struct snd_pcm_hardware ipq40xx_pcm_hardware_capture = {
 					SNDRV_PCM_INFO_MMAP_VALID |
 					SNDRV_PCM_INFO_INTERLEAVED,
 	.formats		=	SNDRV_PCM_FMTBIT_S16 |
-					SNDRV_PCM_FMTBIT_S24_3,
+					SNDRV_PCM_FMTBIT_S24_3LE,
 	.rates			=	RATE_16000_96000,
 	.rate_min		=	FREQ_16000,
 	.rate_max		=	FREQ_96000,
@@ -520,7 +520,7 @@ static struct snd_pcm_ops ipq40xx_asoc_pcm_spdif_ops = {
 	.prepare	= ipq40xx_pcm_spdif_prepare,
 	.mmap		= ipq40xx_pcm_spdif_mmap,
 	.pointer	= ipq40xx_pcm_spdif_pointer,
-	.copy		= ipq40xx_pcm_spdif_copy,
+	.copy_user	= ipq40xx_pcm_spdif_copy,
 };
 
 static void ipq40xx_asoc_pcm_spdif_free(struct snd_pcm *pcm)
@@ -567,13 +567,13 @@ static int ipq40xx_asoc_pcm_spdif_new(struct snd_soc_pcm_runtime *prtd)
 
 	return ret;
 }
-
+/*
 static struct snd_soc_component_driver ipq40xx_asoc_pcm_spdif_component = {
 	.ops		= &ipq40xx_asoc_pcm_spdif_ops,
 	.pcm_new	= ipq40xx_asoc_pcm_spdif_new,
 	.pcm_free	= ipq40xx_asoc_pcm_spdif_free,
 };
-
+*/
 static const struct of_device_id ipq40xx_pcm_spdif_id_table[] = {
 	{ .compatible = "qca,ipq40xx-pcm-spdif" },
 	{ /* Sentinel */ },
