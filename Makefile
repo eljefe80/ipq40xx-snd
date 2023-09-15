@@ -21,3 +21,7 @@ obj-$(CONFIG_SND_IPQ40XX_SOC_MBOX) += ipq40xx-mbox.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_ADSS) += ipq40xx-adss.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_STEREO) += ipq40xx-stereo.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_RAW) += snd-soc-ipq40xx-pcm-raw.o
+
+modules:
+	@echo Got here
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd)  modules
