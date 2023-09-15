@@ -22,12 +22,9 @@ obj-$(CONFIG_SND_IPQ40XX_SOC_ADSS) += ipq40xx-adss.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_STEREO) += ipq40xx-stereo.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_RAW) += snd-soc-ipq40xx-pcm-raw.o
 
-obj-m
-$(CONFIG_SND_QCA_SOC_IPQ40XX) += snd-soc-ipq40xx.o
-obj-m
-$(CONFIG_SND_IPQ40XX_SOC_PCM_I2S) += snd-soc-ipq40xx-pcm-i2s.o
-obj-m
-$(CONFIG_SND_IPQ40XX_SOC_PCM_TDM) += snd-soc-ipq40xx-pcm-tdm.o
+obj-m += snd-soc-ipq40xx.o
+obj-m += snd-soc-ipq40xx-pcm-i2s.o
+obj-m += snd-soc-ipq40xx-pcm-tdm.o
 obj-m += snd-soc-ipq40xx-pcm-spdif.o
 obj-m += snd-soc-ipq40xx-codec.o
 obj-m += snd-soc-ipq40xx-codec-alc1312.o
