@@ -620,18 +620,18 @@ static const struct reg_default alc1312_reg[] = {
 };
 
 
-static void alc1312_index_sync(struct snd_soc_codec *codec)
+static void alc1312_index_sync(struct snd_soc_component *component)
 {
-	const u16 *reg_cache = codec->reg_cache;
+	const u16 *reg_cache = component->reg_cache;
 	int i;
 
 	/* Sync back cached values if they're different from the
 	 * hardware default.
 	 */
-	for (i = 1; i < codec->reg_size; i++) {
+	for (i = 1; i < component->reg_size; i++) {
 		if (reg_cache[i] == alc1312_reg[i].reg)
 			continue;
-		snd_soc_write(codec, i, reg_cache[i]);
+		snd_soc_write(component, i, reg_cache[i]);
 	}
 }
 
