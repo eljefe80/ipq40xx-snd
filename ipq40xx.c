@@ -32,6 +32,36 @@
 
 #include "ipq40xx-adss.h"
 
+
+static int ipq40xx_startup(struct snd_pcm_substream *substream)
+{
+        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
+        struct snd_soc_card *soc_card = rtd->card;
+        struct snd_soc_card_drvdata_davinci *drvdata =
+                snd_soc_card_get_drvdata(soc_card);
+
+        if (drvdata->mclk)
+                return clk_prepare_enable(drvdata->mclk);
+
+        return 0;
+}
+
+static void ipq40xx_shutdown(struct snd_pcm_substream *substream)
+{
+        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
+        struct snd_soc_card *soc_card = rtd->card;
+        struct snd_soc_card_drvdata_davinci *drvdata =
+                snd_soc_card_get_drvdata(soc_card);
+
+        clk_disable_unprepare(drvdata->mclk);
+}
+
+static struct snd_soc_ops ipq40xx_ops = {
+        .startup = ipq40xx_startup,
+        .shutdown = ipq40xx_shutdown,
+        .hw_params = ipq40xx_hw_params,
+};
+
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	/* Front end DAI Links */
 	{
@@ -156,35 +186,6 @@ static int ipq40xx_hw_params(struct snd_pcm_substream *substream,
                          struct snd_pcm_hw_params *params)
 {
 }
-
-static int ipq40xx_startup(struct snd_pcm_substream *substream)
-{
-        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-        struct snd_soc_card *soc_card = rtd->card;
-        struct snd_soc_card_drvdata_davinci *drvdata =
-                snd_soc_card_get_drvdata(soc_card);
-
-        if (drvdata->mclk)
-                return clk_prepare_enable(drvdata->mclk);
-
-        return 0;
-}
-
-static void ipq40xx_shutdown(struct snd_pcm_substream *substream)
-{
-        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-        struct snd_soc_card *soc_card = rtd->card;
-        struct snd_soc_card_drvdata_davinci *drvdata =
-                snd_soc_card_get_drvdata(soc_card);
-
-        clk_disable_unprepare(drvdata->mclk);
-}
-
-static struct snd_soc_ops ipq40xx_ops = {
-        .startup = ipq40xx_startup,
-        .shutdown = ipq40xx_shutdown,
-        .hw_params = ipq40xx_hw_params,
-};
 
 static struct platform_driver ipq40xx_audio_driver = {
 	.driver = {
