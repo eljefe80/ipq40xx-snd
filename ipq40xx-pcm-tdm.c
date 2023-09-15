@@ -578,9 +578,8 @@ static struct platform_driver ipq40xx_pcm_tdm_driver = {
 		.of_match_table = ipq40xx_pcm_tdm_id_table,
 	},
 };
-*/
 module_platform_driver(ipq40xx_pcm_tdm_driver);
-
+*/
 MODULE_ALIAS("platform:qca-pcm-tdm");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx PCM TDM Platform Driver");
