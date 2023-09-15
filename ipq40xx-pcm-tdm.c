@@ -498,8 +498,12 @@ static int ipq40xx_asoc_pcm_tdm_new(struct snd_soc_pcm_runtime *prtd)
 	struct snd_card *card = prtd->card->snd_card;
 	struct snd_pcm *pcm = prtd->pcm;
 
-	int ret = 0;
+/*	int ret = 0, err;
 
+        err = snd_pcm_new(chip->card, name, idx, numchannels, 0, &pcm);
+        if (err)
+                return err;
+*/
 	if (!card->dev->coherent_dma_mask)
 		card->dev->coherent_dma_mask = DMA_BIT_MASK(32);
 
