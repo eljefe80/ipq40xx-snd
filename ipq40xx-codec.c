@@ -386,18 +386,19 @@ static const struct snd_kcontrol_new vol_ctrl  = {
 	.info = ipq40xx_info,
 };
 
-unsigned int ipq40xx_codec_i2c_read(struct snd_soc_component *codec,
+unsigned int ipq40xx_codec_i2c_read(struct snd_soc_component *component,
 					unsigned int reg)
 {
 	int ret;
 
-	ret = i2c_smbus_read_byte_data(codec->control_data, (u8)(reg & 0xFF));
+	ret = i2c_smbus_read_byte_data(component->control_data, (u8)(reg & 0xFF));
 	if (ret < 0)
 		pr_err("\ti2c read error %s(%d)\n", __func__, ret);
 
 	return ret;
 }
 
+/*
 static int ipq40xx_codec_probe(struct snd_soc_component *codec)
 {
 	int ret;
@@ -408,7 +409,7 @@ static int ipq40xx_codec_probe(struct snd_soc_component *codec)
 
 	return ret;
 }
-/*
+
 static const struct snd_soc_component_driver ipq40xx_codec = {
 	.probe = ipq40xx_codec_probe,
 	.num_controls = 0,
