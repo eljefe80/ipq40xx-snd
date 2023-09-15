@@ -628,7 +628,7 @@ static void alc1312_index_sync(struct snd_soc_component *component)
 	/* Sync back cached values if they're different from the
 	 * hardware default.
 	 */
-	for (i = 1; i < component->reg_size; i++) {
+	for (i = 1; i < component->val_bytes; i++) {
 		if (reg_cache[i] == alc1312_reg[i].reg)
 			continue;
 		snd_soc_component_write(component, i, reg_cache[i]);
@@ -733,7 +733,7 @@ extern unsigned int serial_in_i2c(unsigned int addr, int offset);
 extern unsigned int serial_out_i2c(unsigned int addr, int offset, int value);
 
 static bool alc1312_volatile_register(
-	struct snd_soc_component *codec, unsigned int reg)
+	struct device *codec, unsigned int reg)
 {
 
 	return 1;
@@ -827,7 +827,7 @@ static int alc1312_write(struct snd_soc_component *component, unsigned int reg, 
 static unsigned int alc1312_read(struct snd_soc_component *component, unsigned int reg)
 {
 	int ret=0;
-	if(alc1312_volatile_register(component, reg))
+	if(alc1312_volatile_register(snd_soc_component_get_drvdata(component), reg))
 	{
 		ret=serial_in_i2c(ALC1312_I2C_ADDR, reg);
 		//panic_printk("from i2c read 0x%02x 0x%04x\n",reg,ret);
@@ -1112,14 +1112,14 @@ static int alc1312_write_eq_param(struct snd_soc_component *component)
 
 static void alc1312_sync_cache(struct snd_soc_component *component)
 {
-	const u16 *reg_cache = component->reg_cache;
+	const u16 *reg_cache = component->regmap;
 	int i;
 
-	printk("<3> Keen %s %d %d\r\n",__FUNCTION__,__LINE__,component->reg_size);
+	printk("<3> Keen %s %d %d\r\n",__FUNCTION__,__LINE__,component->val_bytes);
 	/* Sync back cached values if they're different from the
 	 * hardware default.
 	 */
-	for (i = 1; i < component->reg_size; i++) {
+	for (i = 1; i < component->val_bytes; i++) {
 		if (reg_cache[i] == alc1312_reg[i].reg)
 			continue;
 		snd_soc_component_write(component, i, reg_cache[i]);
