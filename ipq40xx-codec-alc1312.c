@@ -1095,7 +1095,7 @@ static ssize_t alc1312_codec_store(struct device *dev,
 static DEVICE_ATTR(codec_reg, 0644, alc1312_codec_show, alc1312_codec_store);
 
 
-static int alc1312_write_eq_param(struct snd_soc_codec *component)
+static int alc1312_write_eq_param(struct snd_soc_component *component)
 {
 	int i;
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
@@ -1252,9 +1252,7 @@ static void alc1312_remove(struct snd_soc_component *component)
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
 	//if (codec->control_data)
 	alc1312_set_bias_level(component, SND_SOC_BIAS_OFF);
-	return 0;
 }
-
 
 #ifdef CONFIG_PM
 static int alc1312_suspend(struct snd_soc_component *component)
