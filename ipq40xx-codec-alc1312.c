@@ -1382,7 +1382,7 @@ void alc1312_i2c_shutdown(struct i2c_client *client)
 	struct snd_soc_component *component = alc1312->component;
 
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
-	if (codec != NULL)
+	if (component != NULL)
 		alc1312_set_bias_level(component, SND_SOC_BIAS_OFF);
 }
 
