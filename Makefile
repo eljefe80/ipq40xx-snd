@@ -35,6 +35,8 @@ obj-m += ipq40xx-adss.o
 obj-m += ipq40xx-stereo.o
 obj-m += snd-soc-ipq40xx-pcm-raw.o
 
+EXTRA_CFLAGS+=-Iinclude/
+
 modules:
 	@echo Got here
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd)  modules
+	$(MAKE)ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd)  modules
