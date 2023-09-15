@@ -498,8 +498,8 @@ static int ipq40xx_asoc_pcm_tdm_new(struct snd_soc_pcm_runtime *prtd)
 	struct snd_card *card = prtd->card->snd_card;
 	struct snd_pcm *pcm = prtd->pcm;
 
-/*	int ret = 0, err;
-
+	int ret = 0;
+/*	int err;
         err = snd_pcm_new(chip->card, name, idx, numchannels, 0, &pcm);
         if (err)
                 return err;
@@ -547,11 +547,12 @@ static const struct of_device_id ipq40xx_pcm_tdm_id_table[] = {
         { /* Sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_pcm_tdm_id_table);
-
+/*
 static int ipq40xx_pcm_tdm_driver_probe(struct platform_device *pdev)
 {
-	int ret;
+	int ret = 0;
 	pr_debug("%s %d\n", __func__, __LINE__);
+
 	ret = snd_soc_register_platform(&pdev->dev,
 			&ipq40xx_asoc_pcm_tdm_platform);
 	if (ret)
@@ -577,7 +578,7 @@ static struct platform_driver ipq40xx_pcm_tdm_driver = {
 		.of_match_table = ipq40xx_pcm_tdm_id_table,
 	},
 };
-
+*/
 module_platform_driver(ipq40xx_pcm_tdm_driver);
 
 MODULE_ALIAS("platform:qca-pcm-tdm");
