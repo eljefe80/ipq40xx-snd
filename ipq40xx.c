@@ -60,6 +60,7 @@ static void ipq40xx_shutdown(struct snd_pcm_substream *substream)
 static int ipq40xx_hw_params(struct snd_pcm_substream *substream,
                          struct snd_pcm_hw_params *params)
 {
+       return 0;
 }
 
 static struct snd_soc_ops ipq40xx_ops = {
