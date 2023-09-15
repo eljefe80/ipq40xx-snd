@@ -38,15 +38,17 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 		.name		= "IPQ40xx Media1",
 		.stream_name	= "I2S",
 		/* Front End DAI Name */
-		.cpu_dai_name	= "qca-i2s-dai",
+		//.cpu_dai_name	= "qca-i2s-dai",
 		/* Platform Driver Name */
-		.platform_name	= "7709000.qca-pcm-i2s",
+		//.platform_name	= "7709000.qca-pcm-i2s",
 		/* Codec DAI Name */
-		//.codec_dai_name	= "qca-i2s-codec-dai",
-		.codec_dai_name	= "alc1312-aif1",
+		//.codec_dai_name	= "alc1312-aif1",
 		/*Codec Driver Name */
 		//.codec_name	= "qca_codec.0-0012",
-		.codec_name	= "alc1312_codec.1-001a",
+		//.codec_name	= "alc1312_codec.1-001a",
+                .init = ipq40xx_snd_init,
+                .ops = &ipq40xx_ops,
+                .dai_fmt = 0;
 	},
 #if 0
 	{
@@ -145,6 +147,18 @@ static int ipq40xx_audio_remove(struct platform_device *pdev)
 	return 0;
 }
 
+static int ipq40xx_hw_params(struct snd_pcm_substream *substream,
+                         struct snd_pcm_hw_params *params)
+{
+}
+
+
+static struct snd_soc_ops ipq40xx_ops = {
+        .startup = ipq40xx_startup,
+        .shutdown = ipq40xx_shutdown,
+        .hw_params = ipq40xx_hw_params,
+};
+
 static struct platform_driver ipq40xx_audio_driver = {
 	.driver = {
 		.name = "ipq40xx_audio",
@@ -155,7 +169,19 @@ static struct platform_driver ipq40xx_audio_driver = {
 	.remove = ipq40xx_audio_remove,
 };
 
-module_platform_driver(ipq40xx_audio_driver);
+static int __init ipq40xx_init(void)
+{
+	return platform_driver_register(&ipq40xx_audio_driver);
+}
+
+static void __exit evm_exit(void)
+{
+        platform_driver_unregister(&ipq400xx_audio_driver);
+        return;
+}
+
+module_init(evm_init);
+module_exit(evm_exit);
 
 MODULE_ALIAS("platform:ipq40xx_audio");
 MODULE_LICENSE("Dual BSD/GPL");
