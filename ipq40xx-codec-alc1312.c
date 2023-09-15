@@ -647,19 +647,19 @@ static void alc1312_index_sync(struct snd_soc_component *component)
  *
  * Returns 0 for success or negative error code.
  */
-static int alc1312_index_write(struct snd_soc_codec *codec,
+static int alc1312_index_write(struct snd_soc_component *component,
 		unsigned int reg, unsigned int value)
 {
 	int ret;
 	//printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
-	ret = snd_soc_component_write(codec, ALC1312_PRIV_INDEX, reg);
+	ret = snd_soc_component_write(component, ALC1312_PRIV_INDEX, reg);
 	if (ret < 0) {
-		dev_err(codec->dev, "Failed to set private addr: %d\n", ret);
+		dev_err(component->dev, "Failed to set private addr: %d\n", ret);
 		goto err;
 	}
-	ret = snd_soc_component_write(codec, ALC1312_PRIV_DATA, value);
+	ret = snd_soc_component_write(component, ALC1312_PRIV_DATA, value);
 	if (ret < 0) {
-		dev_err(codec->dev, "Failed to set private value: %d\n", ret);
+		dev_err(component->dev, "Failed to set private value: %d\n", ret);
 		goto err;
 	}
 	return 0;
@@ -1049,7 +1049,7 @@ static ssize_t alc1312_component_show(struct device *dev,
 	return cnt;
 }
 
-static ssize_t alc1312_codec_store(struct device *dev,
+static ssize_t alc1312_component_store(struct device *dev,
 				  struct device_attribute *attr,
 				  const char *buf, size_t count)
 {
@@ -1092,7 +1092,7 @@ static ssize_t alc1312_codec_store(struct device *dev,
 	return count;
 }
 
-static DEVICE_ATTR(codec_reg, 0644, alc1312_codec_show, alc1312_codec_store);
+static DEVICE_ATTR(codec_reg, 0644, alc1312_component_show, alc1312_component_store);
 
 
 static int alc1312_write_eq_param(struct snd_soc_component *component)
@@ -1122,15 +1122,15 @@ static void alc1312_sync_cache(struct snd_soc_component *component)
 	for (i = 1; i < component->reg_size; i++) {
 		if (reg_cache[i] == alc1312_reg[i].reg)
 			continue;
-		snd_soc_component_write(codec, i, reg_cache[i]);
+		snd_soc_component_write(component, i, reg_cache[i]);
 	}
 }
 
 static int alc1312_set_bias_level(struct snd_soc_component *component,
 			enum snd_soc_bias_level level)
 {
-	static int init_once = 0;
 /*
+	static int init_once = 0;
 	/////////////////power on
 	WrL1 0350 0188
 
