@@ -1189,7 +1189,7 @@ EXPORT_SYMBOL(alc1312_pdb_ctrl);
 static int alc1312_init(struct snd_soc_component *component)
 {
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
-	int ret;
+	//int ret;
 	unsigned val;
 	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
@@ -1239,7 +1239,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 	}
 	ret = device_create_file(component->dev, &dev_attr_codec_reg);
 	if (ret != 0) {
-		dev_err(codec->dev,
+		dev_err(component->dev,
 			"Failed to create codex_reg sysfs files: %d\n", ret);
 		return ret;
 	}
@@ -1247,7 +1247,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 
 }
 
-static int alc1312_remove(struct snd_soc_component *component)
+static void alc1312_remove(struct snd_soc_component *component)
 {
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
 	//if (codec->control_data)
