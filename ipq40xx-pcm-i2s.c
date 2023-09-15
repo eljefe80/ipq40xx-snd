@@ -226,6 +226,7 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 }
 
 static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(
+				struct snd_soc_component *component,
 				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -238,7 +239,8 @@ static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_copy(struct snd_pcm_substream *substream, int chan,
+static int ipq40xx_pcm_i2s_copy(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream, int chan,
 				snd_pcm_uframes_t hwoff, void __user *ubuf,
 				snd_pcm_uframes_t frames)
 {
@@ -285,7 +287,8 @@ static int ipq40xx_pcm_i2s_copy(struct snd_pcm_substream *substream, int chan,
 	return 0;
 }
 
-static int ipq40xx_pcm_i2s_mmap(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_i2s_mmap(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream,
 				struct vm_area_struct *vma)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -298,14 +301,16 @@ static int ipq40xx_pcm_i2s_mmap(struct snd_pcm_substream *substream,
 		runtime->dma_area, runtime->dma_addr, runtime->dma_bytes);
 }
 
-static void ipq40xx_pcm_hw_free(struct snd_soc_component *component,
-        struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_hw_free(struct snd_soc_component *component,
+			        struct snd_pcm_substream *substream)
 {
 	snd_pcm_set_runtime_buffer(substream, NULL);
+	return 0;
 }
 
 
-static int ipq40xx_pcm_i2s_prepare(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_prepare(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
@@ -331,7 +336,8 @@ static int ipq40xx_pcm_i2s_prepare(struct snd_pcm_substream *substream)
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_close(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_close(struct snd_soc_component *component,
+					struct snd_pcm_substream *substream)
 {
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 	uint32_t ret;
@@ -349,7 +355,8 @@ static int ipq40xx_pcm_i2s_close(struct snd_pcm_substream *substream)
 	return 0;
 }
 
-static int ipq40xx_pcm_i2s_trigger(struct snd_pcm_substream *substream, int cmd)
+static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream, int cmd)
 {
 	int ret;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
@@ -402,7 +409,8 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_pcm_substream *substream, int cmd)
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_hw_params(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *hw_params)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -441,7 +449,8 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_pcm_substream *substream,
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_open(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	int ret;
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -503,17 +512,23 @@ error:
 	return ret;
 }
 
+static int ipq40xx_pcm_lib_ioctl(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream, unsigned int cmd, void *arg)
+{
+	return snd_pcm_lib_ioctl(substream, cmd, arg);
+}
+
 static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_component_driver = {
 	.open		= ipq40xx_pcm_i2s_open,
 	.hw_params	= ipq40xx_pcm_i2s_hw_params,
 	.hw_free	= ipq40xx_pcm_hw_free,
 	.trigger	= ipq40xx_pcm_i2s_trigger,
-	.ioctl		= snd_pcm_lib_ioctl,
+	.ioctl		= ipq40xx_pcm_lib_ioctl,
 	.close		= ipq40xx_pcm_i2s_close,
 	.prepare	= ipq40xx_pcm_i2s_prepare,
 	.mmap		= ipq40xx_pcm_i2s_mmap,
 	.pointer	= ipq40xx_pcm_i2s_pointer,
-	.copy_kernel	= ipq40xx_pcm_i2s_copy,
+	.copy_user	= ipq40xx_pcm_i2s_copy,
 };
 
 static void ipq40xx_asoc_pcm_i2s_free(struct snd_pcm *pcm)
