@@ -733,7 +733,7 @@ extern unsigned int serial_in_i2c(unsigned int addr, int offset);
 extern unsigned int serial_out_i2c(unsigned int addr, int offset, int value);
 
 static bool alc1312_volatile_register(
-	struct device *codec, unsigned int reg)
+	struct snd_soc_component *codec, unsigned int reg)
 {
 
 	return 1;
@@ -741,7 +741,7 @@ static bool alc1312_volatile_register(
 }
 
 static bool alc1312_readable_register(
-	struct device *dev, unsigned int reg)
+	struct snd_soc_component *component, unsigned int reg)
 {
 	switch (reg) {
 	case 0x0000 ... 0x000D:
