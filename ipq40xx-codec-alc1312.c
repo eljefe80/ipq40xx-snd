@@ -740,7 +740,7 @@ static bool alc1312_volatile_register(
 
 }
 
-static int alc1312_readable_register(
+static bool alc1312_readable_register(
 	struct device *dev, unsigned int reg)
 {
 	switch (reg) {
