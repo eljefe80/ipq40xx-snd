@@ -514,12 +514,9 @@ static struct snd_pcm_ops ipq40xx_asoc_pcm_i2s_driver = {
 	.mmap		= ipq40xx_pcm_i2s_mmap,
 	.pointer	= ipq40xx_pcm_i2s_pointer,
 	.copy_user	= ipq40xx_pcm_i2s_copy,
-        .pcm_construct  = ipq40xx_pcm_i2s_new,
+//        .pcm_construct  = ipq40xx_pcm_i2s_new,
 };
 
-void ipq40xx_asoc_platform_drv()
-{
-}
 /*
 static void ipq40xx_asoc_pcm_i2s_free(struct snd_pcm *pcm)
 {
