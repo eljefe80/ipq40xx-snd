@@ -188,7 +188,7 @@ static int ipq40xx_codec_audio_startup(struct snd_pcm_substream *substream,
 	/* I2S and TDM cannot co-exist. CPU DAI startup would
 	 * have already checked this case, by this time.
 	 */
-	if (!dai->active)
+	if !snd_soc_dai_active(dai)
 		ipq40xx_codec_i2c_write_defaults(component);
 
 	return 0;
@@ -224,7 +224,7 @@ static int ipq40xx_codec_audio_hw_params(struct snd_pcm_substream *substream,
 	 * update the codec settings.
 	 */
 
-	if (dai->active > 1) {
+	if (snd_soc_dai_active(dai) > 1) {
 		if (ipq40xx_compare_hw_params(&curr_params)) {
 			/* Playback and capture settings do not match */
 			pr_err("\nPlayback and capture settings do not match\n");
@@ -455,7 +455,7 @@ static const struct i2c_device_id ipq40xx_codec_i2c_id[] = {
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, ipq40xx_codec_i2c_id);
-/*
+
 static struct i2c_driver ipq40xx_codec_i2c_driver = {
 	.driver = {
 		.name = "qca_codec",
@@ -466,7 +466,7 @@ static struct i2c_driver ipq40xx_codec_i2c_driver = {
 	.remove = ipq40xx_codec_i2c_remove,
 	.id_table = ipq40xx_codec_i2c_id,
 };
-*/
+
 static int ipq40xx_codec_init(void)
 {
 	int ret;
