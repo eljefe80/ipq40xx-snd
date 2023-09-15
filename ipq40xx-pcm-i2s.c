@@ -537,18 +537,19 @@ static void ipq40xx_asoc_pcm_i2s_free(struct snd_pcm *pcm)
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_CAPTURE);
 }
 
-static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *prtd)
+static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *component,
+					struct snd_soc_pcm_runtime *prtd)
 {
-	struct snd_card *card = prtd->card->snd_card;
+//	struct snd_card *card = prtd->card->snd_card;
 	struct snd_pcm *pcm = prtd->pcm;
 
 	int ret = 0;
 
-	if (!card->dev->coherent_dma_mask)
-		card->dev->coherent_dma_mask = DMA_BIT_MASK(32);
+	if (!component->dev->coherent_dma_mask)
+		component->dev->coherent_dma_mask = DMA_BIT_MASK(32);
 
-	if (!card->dev->dma_mask)
-		card->dev->dma_mask = &card->dev->coherent_dma_mask;
+	if (!component->dev->dma_mask)
+		component->dev->dma_mask = &component->dev->coherent_dma_mask;
 
 	if (pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream) {
 		ret = ipq40xx_pcm_preallocate_dma_buffer(pcm,
