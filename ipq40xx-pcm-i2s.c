@@ -355,7 +355,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_pcm_substream *substream, int cmd)
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
 				substream->runtime->private_data;
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-	struct snd_soc_dai *dai = rtd->cpu_dai;
+	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	uint32_t intf = dai->driver->id;
 
 	switch (cmd) {
@@ -448,7 +448,7 @@ static int ipq40xx_pcm_i2s_open(struct snd_pcm_substream *substream)
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-	struct snd_soc_dai *dai = rtd->cpu_dai;
+	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	uint32_t intf = dai->driver->id;
 
 	pr_debug("%s %d\n", __func__, __LINE__);
