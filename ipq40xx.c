@@ -98,6 +98,11 @@ static const struct of_device_id ipq40xx_audio_id_table[] = {
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_audio_id_table);
 
+static int ipq40xx_snd_init(struct snd_soc_pcm_runtime *rtd)
+{
+         return 0;
+}
+
 static int ipq40xx_audio_probe(struct platform_device *pdev)
 {
 	int ret;
@@ -202,7 +207,7 @@ static void __exit evm_exit(void)
         return;
 }
 
-module_init(evm_init);
+module_init(ipq40xx_init);
 module_exit(evm_exit);
 
 MODULE_ALIAS("platform:ipq40xx_audio");
