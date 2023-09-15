@@ -385,10 +385,11 @@ static const struct snd_kcontrol_new vol_ctrl  = {
 		SNDRV_CTL_ELEM_ACCESS_READWRITE),
 	.info = ipq40xx_info,
 };
-
+/*
 unsigned int ipq40xx_codec_i2c_read(struct snd_soc_component *component,
 					unsigned int reg)
 {
+	struct ipq40xx-snd *priv = snd_soc_component_get_drvdata(component);
 	int ret;
 
 	ret = i2c_smbus_read_byte_data(component->regmap, (u8)(reg & 0xFF));
@@ -397,7 +398,7 @@ unsigned int ipq40xx_codec_i2c_read(struct snd_soc_component *component,
 
 	return ret;
 }
-
+*/
 
 static int ipq40xx_codec_probe(struct snd_soc_component *codec)
 {
