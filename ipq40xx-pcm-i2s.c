@@ -226,7 +226,6 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 }
 
 static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(
-				struct snd_soc_component *component,
 				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -239,8 +238,7 @@ static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_copy(struct snd_soc_component *component,
-				struct snd_pcm_substream *substream, int chan,
+static int ipq40xx_pcm_i2s_copy(struct snd_pcm_substream *substream, int chan,
 				snd_pcm_uframes_t hwoff, void __user *ubuf,
 				snd_pcm_uframes_t frames)
 {
@@ -287,8 +285,7 @@ static int ipq40xx_pcm_i2s_copy(struct snd_soc_component *component,
 	return 0;
 }
 
-static int ipq40xx_pcm_i2s_mmap(struct snd_soc_component *component,
-				struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_i2s_mmap(struct snd_pcm_substream *substream,
 				struct vm_area_struct *vma)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -301,16 +298,14 @@ static int ipq40xx_pcm_i2s_mmap(struct snd_soc_component *component,
 		runtime->dma_area, runtime->dma_addr, runtime->dma_bytes);
 }
 
-static int ipq40xx_pcm_hw_free(struct snd_soc_component *component,
-			        struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_hw_free(struct snd_pcm_substream *substream)
 {
 	snd_pcm_set_runtime_buffer(substream, NULL);
 	return 0;
 }
 
 
-static int ipq40xx_pcm_i2s_prepare(struct snd_soc_component *component,
-				struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_prepare(struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
@@ -336,8 +331,7 @@ static int ipq40xx_pcm_i2s_prepare(struct snd_soc_component *component,
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_close(struct snd_soc_component *component,
-					struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_close(struct snd_pcm_substream *substream)
 {
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 	uint32_t ret;
@@ -355,8 +349,7 @@ static int ipq40xx_pcm_i2s_close(struct snd_soc_component *component,
 	return 0;
 }
 
-static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
-				struct snd_pcm_substream *substream, int cmd)
+static int ipq40xx_pcm_i2s_trigger(struct snd_pcm_substream *substream, int cmd)
 {
 	int ret;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
@@ -409,8 +402,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
-				struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_i2s_hw_params(struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *hw_params)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -449,8 +441,7 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
-				struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_open(struct snd_pcm_substream *substream)
 {
 	int ret;
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -512,44 +503,42 @@ error:
 	return ret;
 }
 
-static int ipq40xx_pcm_lib_ioctl(struct snd_soc_component *component,
-				struct snd_pcm_substream *substream, unsigned int cmd, void *arg)
-{
-	return snd_pcm_lib_ioctl(substream, cmd, arg);
-}
-
-static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_component_driver = {
+static struct snd_pcm_ops ipq40xx_asoc_pcm_i2s_driver = {
 	.open		= ipq40xx_pcm_i2s_open,
 	.hw_params	= ipq40xx_pcm_i2s_hw_params,
 	.hw_free	= ipq40xx_pcm_hw_free,
 	.trigger	= ipq40xx_pcm_i2s_trigger,
-	.ioctl		= ipq40xx_pcm_lib_ioctl,
+	.ioctl		= snd_pcm_lib_ioctl,
 	.close		= ipq40xx_pcm_i2s_close,
 	.prepare	= ipq40xx_pcm_i2s_prepare,
 	.mmap		= ipq40xx_pcm_i2s_mmap,
 	.pointer	= ipq40xx_pcm_i2s_pointer,
 	.copy_user	= ipq40xx_pcm_i2s_copy,
+        .pcm_construct  = ipq40xx_pcm_i2s_new,
 };
 
+void ipq40xx_asoc_platform_drv()
+{
+}
+/*
 static void ipq40xx_asoc_pcm_i2s_free(struct snd_pcm *pcm)
 {
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_PLAYBACK);
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_CAPTURE);
 }
-
-static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *component,
-					struct snd_soc_pcm_runtime *prtd)
+*/
+static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_pcm_runtime *prtd)
 {
-//	struct snd_card *card = prtd->card->snd_card;
+	struct snd_card *card = prtd->card->snd_card;
 	struct snd_pcm *pcm = prtd->pcm;
 
 	int ret = 0;
 
-	if (!component->dev->coherent_dma_mask)
-		component->dev->coherent_dma_mask = DMA_BIT_MASK(32);
+	if (!card->dev->coherent_dma_mask)
+		card->dev->coherent_dma_mask = DMA_BIT_MASK(32);
 
-	if (!component->dev->dma_mask)
-		component->dev->dma_mask = &component->dev->coherent_dma_mask;
+	if (!card->dev->dma_mask)
+		card->dev->dma_mask = &card->dev->coherent_dma_mask;
 
 	if (pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream) {
 		ret = ipq40xx_pcm_preallocate_dma_buffer(pcm,
