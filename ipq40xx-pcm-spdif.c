@@ -43,7 +43,7 @@ static struct snd_pcm_hardware ipq40xx_pcm_hardware_playback = {
 					SNDRV_PCM_INFO_PAUSE |
 					SNDRV_PCM_INFO_RESUME,
 	.formats		=	SNDRV_PCM_FMTBIT_S16 |
-					SNDRV_PCM_FMTBIT_S24_3,
+					SNDRV_PCM_FMTBIT_S24_3LE,
 	.rates			=	RATE_16000_96000,
 	.rate_min		=	FREQ_16000,
 	.rate_max		=	FREQ_96000,
@@ -568,7 +568,7 @@ static int ipq40xx_asoc_pcm_spdif_new(struct snd_soc_pcm_runtime *prtd)
 	return ret;
 }
 
-static struct snd_soc_platform_driver ipq40xx_asoc_pcm_spdif_platform = {
+static struct snd_soc_component_driver ipq40xx_asoc_pcm_spdif_component = {
 	.ops		= &ipq40xx_asoc_pcm_spdif_ops,
 	.pcm_new	= ipq40xx_asoc_pcm_spdif_new,
 	.pcm_free	= ipq40xx_asoc_pcm_spdif_free,
@@ -579,7 +579,7 @@ static const struct of_device_id ipq40xx_pcm_spdif_id_table[] = {
 	{ /* Sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_pcm_spdif_id_table);
-
+/*
 static int ipq40xx_pcm_spdif_driver_probe(struct platform_device *pdev)
 {
 	int ret;
@@ -611,7 +611,7 @@ static struct platform_driver ipq40xx_pcm_spdif_driver = {
 };
 
 module_platform_driver(ipq40xx_pcm_spdif_driver);
-
+*/
 MODULE_ALIAS("platform:qca-pcm-spdif");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx PCM SPDIF Platform Driver");
