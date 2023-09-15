@@ -61,7 +61,7 @@ uint8_t ipq40xx_compare_hw_params(struct audio_hw_params *curr_params)
  * 1	1	N/A			-
  */
 
-static int ipq40xx_codec_i2c_set_dfs(struct snd_soc_codec *codec, int mode)
+static int ipq40xx_codec_i2c_set_dfs(struct snd_soc_component *codec, int mode)
 {
 	uint32_t reg;
 
@@ -70,7 +70,7 @@ static int ipq40xx_codec_i2c_set_dfs(struct snd_soc_codec *codec, int mode)
 		return -EINVAL;
 	}
 
-	reg = snd_soc_read(codec, AKD4613_04_CTRL2);
+	reg = snd_soc_component_read32(codec, AKD4613_04_CTRL2);
 
 	reg &= ~(AKD4613_DFS_MASK);
 	reg |= AKD4613_DFS(mode);
@@ -89,7 +89,7 @@ static int ipq40xx_codec_i2c_set_dfs(struct snd_soc_codec *codec, int mode)
  * 1	1	512fs		256fs		128fs
  */
 
-static int ipq40xx_codec_i2c_set_cks(struct snd_soc_codec *codec,
+static int ipq40xx_codec_i2c_set_cks(struct snd_soc_component *codec,
 					int config, int mode)
 {
 	uint32_t cks_val;
@@ -124,7 +124,7 @@ static int ipq40xx_codec_i2c_set_cks(struct snd_soc_codec *codec,
 		return cks_val;
 	}
 
-	reg = snd_soc_read(codec, AKD4613_04_CTRL2);
+	reg = snd_soc_component_read32(codec, AKD4613_04_CTRL2);
 
 	reg &= ~(AKD4613_CKS_MASK);
 	reg |= AKD4613_CKS(cks_val);
@@ -134,7 +134,7 @@ static int ipq40xx_codec_i2c_set_cks(struct snd_soc_codec *codec,
 	return 0;
 }
 
-static int ipq40xx_codec_i2c_set_tdm_mode(struct snd_soc_codec *codec,
+static int ipq40xx_codec_i2c_set_tdm_mode(struct snd_soc_component *codec,
 						int tdm_mode)
 {
 	uint32_t reg;
@@ -144,7 +144,7 @@ static int ipq40xx_codec_i2c_set_tdm_mode(struct snd_soc_codec *codec,
 		return -EINVAL;
 	}
 
-	reg = snd_soc_read(codec, AKD4613_03_CTRL1);
+	reg = snd_soc_component_read32(codec, AKD4613_03_CTRL1);
 
 	reg &= ~(AKD4613_TDM_MODE_MASK);
 	reg |= AKD4613_TDM_MODE(tdm_mode);
@@ -154,12 +154,12 @@ static int ipq40xx_codec_i2c_set_tdm_mode(struct snd_soc_codec *codec,
 	return 0;
 }
 
-static int ipq40xx_codec_i2c_set_dif(struct snd_soc_codec *codec,
+static int ipq40xx_codec_i2c_set_dif(struct snd_soc_component *codec,
 						int dif_val)
 {
 	uint32_t reg;
 
-	reg = snd_soc_read(codec, AKD4613_03_CTRL1);
+	reg = snd_soc_component_read32(codec, AKD4613_03_CTRL1);
 
 	reg &= ~(AKD4613_DIF_MASK);
 	reg |= AKD4613_DIF(dif_val);
@@ -169,7 +169,7 @@ static int ipq40xx_codec_i2c_set_dif(struct snd_soc_codec *codec,
 	return 0;
 }
 
-static void ipq40xx_codec_i2c_write_defaults(struct snd_soc_codec *codec)
+static void ipq40xx_codec_i2c_write_defaults(struct snd_soc_component *codec)
 {
 	int i;
 
@@ -181,7 +181,7 @@ static void ipq40xx_codec_i2c_write_defaults(struct snd_soc_codec *codec)
 static int ipq40xx_codec_audio_startup(struct snd_pcm_substream *substream,
 					struct snd_soc_dai *dai)
 {
-	struct snd_soc_codec *codec;
+	struct snd_soc_component *codec;
 
 	codec = dai->codec;
 
@@ -198,7 +198,7 @@ static int ipq40xx_codec_audio_hw_params(struct snd_pcm_substream *substream,
 					struct snd_pcm_hw_params *params,
 					struct snd_soc_dai *dai)
 {
-	struct snd_soc_codec *codec;
+	struct snd_soc_component *codec;
 	int samp_rate = params_rate(params);
 	int bit_width = params_format(params);
 	int channels = params_channels(params);
@@ -386,7 +386,7 @@ static const struct snd_kcontrol_new vol_ctrl  = {
 	.info = ipq40xx_info,
 };
 
-unsigned int ipq40xx_codec_i2c_read(struct snd_soc_codec *codec,
+unsigned int ipq40xx_codec_i2c_read(struct snd_soc_component *codec,
 					unsigned int reg)
 {
 	int ret;
@@ -398,18 +398,18 @@ unsigned int ipq40xx_codec_i2c_read(struct snd_soc_codec *codec,
 	return ret;
 }
 
-static int ipq40xx_codec_probe(struct snd_soc_codec *codec)
+static int ipq40xx_codec_probe(struct snd_soc_component *codec)
 {
 	int ret;
 
-	ret = snd_soc_codec_set_cache_io(codec, 8, 8, SND_SOC_I2C);
+	ret = snd_soc_component_set_cache_io(codec, 8, 8, SND_SOC_I2C);
 	if (ret != 0)
 		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
 
 	return ret;
 }
 
-static const struct snd_soc_codec_driver ipq40xx_codec = {
+static const struct snd_soc_component_driver ipq40xx_codec = {
 	.probe = ipq40xx_codec_probe,
 	.num_controls = 0,
 	.reg_cache_size = ARRAY_SIZE(akd4613_reg),
