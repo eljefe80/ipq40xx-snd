@@ -298,10 +298,10 @@ static int ipq40xx_pcm_i2s_mmap(struct snd_pcm_substream *substream,
 		runtime->dma_area, runtime->dma_addr, runtime->dma_bytes);
 }
 
-static int ipq40xx_pcm_hw_free(struct snd_pcm_substream *substream)
+static void ipq40xx_pcm_hw_free(struct snd_soc_component *component,
+        struct snd_pcm_substream *substream)
 {
 	snd_pcm_set_runtime_buffer(substream, NULL);
-	return 0;
 }
 
 
@@ -503,7 +503,7 @@ error:
 	return ret;
 }
 
-static struct snd_pcm_ops ipq40xx_asoc_pcm_i2s_ops = {
+static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_component_driver = {
 	.open		= ipq40xx_pcm_i2s_open,
 	.hw_params	= ipq40xx_pcm_i2s_hw_params,
 	.hw_free	= ipq40xx_pcm_hw_free,
@@ -522,7 +522,7 @@ static void ipq40xx_asoc_pcm_i2s_free(struct snd_pcm *pcm)
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_CAPTURE);
 }
 
-static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_pcm_runtime *prtd)
+static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *prtd)
 {
 	struct snd_card *card = prtd->card->snd_card;
 	struct snd_pcm *pcm = prtd->pcm;
@@ -561,11 +561,13 @@ static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_pcm_runtime *prtd)
 	return ret;
 }
 
-static struct snd_soc_platform_driver ipq40xx_asoc_pcm_i2s_platform = {
+/*
+static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_platform = {
 	.ops		= &ipq40xx_asoc_pcm_i2s_ops,
 	.pcm_new	= ipq40xx_asoc_pcm_i2s_new,
 	.pcm_free	= ipq40xx_asoc_pcm_i2s_free,
 };
+*/
 
 static const struct of_device_id ipq40xx_pcm_i2s_id_table[] = {
 	{ .compatible = "qca,ipq40xx-pcm-i2s" },
@@ -575,6 +577,7 @@ static const struct of_device_id ipq40xx_pcm_i2s_id_table[] = {
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_pcm_i2s_id_table);
 
+/*
 static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 {
 	int ret;
@@ -606,7 +609,7 @@ static struct platform_driver ipq40xx_pcm_i2s_driver = {
 };
 
 module_platform_driver(ipq40xx_pcm_i2s_driver);
-
+*/
 MODULE_ALIAS("platform:qca-pcm-i2s");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx PCM I2S Platform Driver");
