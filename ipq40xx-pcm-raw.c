@@ -497,7 +497,7 @@ static int voice_allocate_dma_buffer(struct device *dev,
 	size = (dma_buffer->size * NUM_BUFFERS) + (ndescs *
 				sizeof(struct ipq40xx_mbox_desc));
 
-	dma_buffer->area = dma_zalloc_coherent(dev, size,
+	dma_buffer->area = dma_alloc_coherent(dev, size,
 					&dma_buffer->addr, GFP_KERNEL);
 
 	if (!dma_buffer->area)
