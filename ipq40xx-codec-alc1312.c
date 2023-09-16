@@ -702,6 +702,7 @@ static unsigned int alc1312_index_read(struct snd_soc_component *component,
  *
  * Returns 1 for change, 0 for no change, or negative error code.
  */
+/*
 static int alc1312_index_update_bits(struct snd_soc_component *component,
 	unsigned int reg, unsigned int mask, unsigned int value)
 {
@@ -729,7 +730,7 @@ static int alc1312_index_update_bits(struct snd_soc_component *component,
 err:
 	return ret;
 }
-
+*/
 extern unsigned int serial_in_i2c(unsigned int addr, int offset);
 extern unsigned int serial_out_i2c(unsigned int addr, int offset, int value);
 
