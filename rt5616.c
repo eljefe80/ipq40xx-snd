@@ -1274,7 +1274,7 @@ code_find:
 static int rt5616_set_dai_pll(struct snd_soc_dai *dai, int pll_id, int source,
 			      unsigned int freq_in, unsigned int freq_out)
 {
-	struct snd_soc_codec *component = dai->component;
+	struct snd_soc_component *component = dai->component;
 	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(component);
 	struct rt5616_pll_code pll_code;
 	int ret;
