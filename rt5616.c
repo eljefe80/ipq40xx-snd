@@ -1125,9 +1125,9 @@ static int rt5616_hw_params(struct snd_pcm_substream *substream,
 
 	mask_clk = RT5616_I2S_PD1_MASK;
 	val_clk = pre_div << RT5616_I2S_PD1_SFT;
-	snd_soc_update_bits(component, RT5616_I2S1_SDP,
+	snd_soc_component_update_bits(component, RT5616_I2S1_SDP,
 			    RT5616_I2S_DL_MASK, val_len);
-	snd_soc_update_bits(component, RT5616_ADDA_CLK1, mask_clk, val_clk);
+	snd_soc_component_update_bits(component, RT5616_ADDA_CLK1, mask_clk, val_clk);
 
 	return 0;
 }
@@ -1322,9 +1322,9 @@ static int rt5616_set_dai_pll(struct snd_soc_dai *dai, int pll_id, int source,
 		pll_code.m_bp, (pll_code.m_bp ? 0 : pll_code.m_code),
 		pll_code.n_code, pll_code.k_code);
 
-	snd_soc_write(component, RT5616_PLL_CTRL1,
+	snd_soc_component_write(component, RT5616_PLL_CTRL1,
 		      pll_code.n_code << RT5616_PLL_N_SFT | pll_code.k_code);
-	snd_soc_write(component, RT5616_PLL_CTRL2,
+	snd_soc_component_write(component, RT5616_PLL_CTRL2,
 		      (pll_code.m_bp ? 0 : pll_code.m_code) <<
 		      RT5616_PLL_M_SFT |
 		      pll_code.m_bp << RT5616_PLL_M_BP_SFT);
