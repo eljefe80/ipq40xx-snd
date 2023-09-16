@@ -1314,17 +1314,17 @@ static int rt5616_set_dai_pll(struct snd_soc_dai *dai, int pll_id, int source,
 
 	ret = rt5616_pll_calc(freq_in, freq_out, &pll_code);
 	if (ret < 0) {
-		dev_err(codec->dev, "Unsupport input clock %d\n", freq_in);
+		dev_err(component->dev, "Unsupport input clock %d\n", freq_in);
 		return ret;
 	}
 
-	dev_dbg(codec->dev, "bypass=%d m=%d n=%d k=%d\n",
+	dev_dbg(component->dev, "bypass=%d m=%d n=%d k=%d\n",
 		pll_code.m_bp, (pll_code.m_bp ? 0 : pll_code.m_code),
 		pll_code.n_code, pll_code.k_code);
 
-	snd_soc_write(codec, RT5616_PLL_CTRL1,
+	snd_soc_write(component, RT5616_PLL_CTRL1,
 		      pll_code.n_code << RT5616_PLL_N_SFT | pll_code.k_code);
-	snd_soc_write(codec, RT5616_PLL_CTRL2,
+	snd_soc_write(component, RT5616_PLL_CTRL2,
 		      (pll_code.m_bp ? 0 : pll_code.m_code) <<
 		      RT5616_PLL_M_SFT |
 		      pll_code.m_bp << RT5616_PLL_M_BP_SFT);
@@ -1398,7 +1398,7 @@ static int rt5616_set_bias_level(struct snd_soc_component *component,
 	default:
 		break;
 	}
-	codec->dapm.bias_level = level;
+	component->dapm.bias_level = level;
 
 	return 0;
 }
@@ -1419,9 +1419,9 @@ static int rt5616_probe(struct snd_soc_component *component)
 }
 
 #ifdef CONFIG_PM
-static int rt5616_suspend(struct snd_soc_codec *codec)
+static int rt5616_suspend(struct snd_soc_component *component)
 {
-	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(codec);
+	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(component);
 
 	regcache_cache_only(rt5616->regmap, true);
 	regcache_mark_dirty(rt5616->regmap);
