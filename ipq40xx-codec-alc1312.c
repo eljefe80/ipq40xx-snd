@@ -432,8 +432,9 @@ static struct alc1312_init_reg init_list[] = {
 
 static int alc1312_reg_init(struct snd_soc_component *component)
 {
+/*
 	int i;
-	codec->cache_only = false;
+	component->cache_only = false;
 	for (i = 0; i < ALC1312_INIT_REG_LEN; i++) {
 		snd_soc_component_write(component, init_list[i].reg, init_list[i].val);
 		mdelay(init_list[i].delay);
@@ -441,6 +442,8 @@ static int alc1312_reg_init(struct snd_soc_component *component)
 	//codec->cache_only = true;
 
 	return 0;
+*/
+
 }
 
 static struct alc1312_eq_reg eq_list[] = {
@@ -678,8 +681,8 @@ err:
  *
  * Returns private register value or negative error code.
  */
-static unsigned int alc1312_index_read(
-	struct snd_soc_codec *codec, unsigned int reg)
+static unsigned int alc1312_index_read(struct snd_soc_codec *codec,
+					unsigned int reg)
 {
 	int ret;
 	ret = snd_soc_component_write(codec, ALC1312_PRIV_INDEX, reg);
@@ -996,7 +999,7 @@ static ssize_t alc1312_index_show(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct alc1312_priv *alc1312 = i2c_get_clientdata(client);
-	struct snd_soc_codec *component = alc1312->component;
+	struct snd_soc_component *component = alc1312->component;
 	unsigned int val;
 	int cnt = 0, i;
 	codec->cache_only = false;
