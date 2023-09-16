@@ -432,15 +432,14 @@ static struct alc1312_init_reg init_list[] = {
 
 static int alc1312_reg_init(struct snd_soc_component *component)
 {
-/*
+
 	int i;
-	component->cache_only = false;
+//	component->cache_only = false;
 	for (i = 0; i < ALC1312_INIT_REG_LEN; i++) {
 		snd_soc_component_write(component, init_list[i].reg, init_list[i].val);
 		mdelay(init_list[i].delay);
 	}
 	//codec->cache_only = true;
-*/
 
 	return 0;
 }
