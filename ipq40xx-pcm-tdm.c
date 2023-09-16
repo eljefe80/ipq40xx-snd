@@ -473,16 +473,6 @@ error:
 }
 
 static struct snd_pcm_ops ipq40xx_asoc_pcm_tdm_ops = {
-	.open		= ipq40xx_pcm_tdm_open,
-	.hw_params	= ipq40xx_pcm_tdm_hw_params,
-	.hw_free	= ipq40xx_pcm_hw_free,
-	.trigger	= ipq40xx_pcm_tdm_trigger,
-	.ioctl		= snd_pcm_lib_ioctl,
-	.close		= ipq40xx_pcm_tdm_close,
-	.prepare	= ipq40xx_pcm_tdm_prepare,
-	.mmap		= ipq40xx_pcm_tdm_mmap,
-	.pointer	= ipq40xx_pcm_tdm_pointer,
-	.copy_user	= ipq40xx_pcm_tdm_copy,
 };
 
 /*
@@ -535,13 +525,22 @@ static int ipq40xx_asoc_pcm_tdm_new(struct snd_soc_pcm_runtime *prtd)
 
 	return ret;
 }
-/*
-static struct snd_soc_platform_driver ipq40xx_asoc_pcm_tdm_platform = {
-	.ops		= &ipq40xx_asoc_pcm_tdm_ops,
-	.pcm_new	= ipq40xx_asoc_pcm_tdm_new,
-	.pcm_free	= ipq40xx_asoc_pcm_tdm_free,
+
+static struct snd_soc_component_driver ipq40xx_asoc_pcm_tdm_component = {
+	.open		= ipq40xx_pcm_tdm_open,
+	.hw_params	= ipq40xx_pcm_tdm_hw_params,
+	.hw_free	= ipq40xx_pcm_hw_free,
+	.trigger	= ipq40xx_pcm_tdm_trigger,
+	.ioctl		= snd_pcm_lib_ioctl,
+	.close		= ipq40xx_pcm_tdm_close,
+	.prepare	= ipq40xx_pcm_tdm_prepare,
+	.mmap		= ipq40xx_pcm_tdm_mmap,
+	.pointer	= ipq40xx_pcm_tdm_pointer,
+	.copy_user	= ipq40xx_pcm_tdm_copy,
+	.pcm_construct	= ipq40xx_asoc_pcm_tdm_new,
+//	.pcm_free	= ipq40xx_asoc_pcm_tdm_free,
 };
-*/
+
 static const struct of_device_id ipq40xx_pcm_tdm_id_table[] = {
         { .compatible = "qca,ipq40xx-pcm-tdm" },
         { /* Sentinel */ },
@@ -553,8 +552,8 @@ static int ipq40xx_pcm_tdm_driver_probe(struct platform_device *pdev)
 	int ret = 0;
 	pr_debug("%s %d\n", __func__, __LINE__);
 
-	ret = snd_soc_register_platform(&pdev->dev,
-			&ipq40xx_asoc_pcm_tdm_platform);
+	ret = snd_soc_register_component(&pdev->dev,
+			&ipq40xx_asoc_pcm_tdm_component);
 	if (ret)
 		dev_err(&pdev->dev, "%s: Failed to register tdm pcm device\n",
 								__func__);
@@ -564,7 +563,7 @@ static int ipq40xx_pcm_tdm_driver_probe(struct platform_device *pdev)
 static int ipq40xx_pcm_tdm_driver_remove(struct platform_device *pdev)
 {
 	pr_debug("%s %d\n", __func__, __LINE__);
-	snd_soc_unregister_platform(&pdev->dev);
+	snd_soc_unregister_component(&pdev->dev);
 
 	return 0;
 }
