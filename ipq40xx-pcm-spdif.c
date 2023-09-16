@@ -519,14 +519,15 @@ error:
 }
 
 static int ipq40xx_asoc_pcm_spdif_free(struct snd_soc_component *component,
-					struct snd_pcm *pcm)
+					struct snd_pcm_substream *pcm, struct vm_area_struct *vm)
 {
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_PLAYBACK);
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_CAPTURE);
 	return 0;
 }
 
-static int ipq40xx_asoc_pcm_spdif_new(struct snd_soc_pcm_runtime *prtd)
+static int ipq40xx_asoc_pcm_spdif_new(struct snd_soc_component *component,
+					struct snd_soc_pcm_runtime *prtd)
 {
 	struct snd_card *card = prtd->card->snd_card;
 	struct snd_pcm *pcm = prtd->pcm;
