@@ -7,7 +7,7 @@ snd-soc-ipq40xx-codec-objs := ipq40xx-codec.o
 snd-soc-ipq40xx-codec-alc1312-objs := ipq40xx-codec-alc1312.o
 snd-soc-ipq40xx-dac-rt5616-objs := rt5616.o
 snd-soc-ipq40xx-cpu-dai-objs := ipq40xx-cpu-dai.o
-snd-soc-ipq40xx-pcm-raw-objs := ipq40xx-pcm-raw.o ipq40xx-pcm-raw-lb-test.o
+snd-soc-ipq40xx-pcm-raw-objs := ipq40xx-pcm-raw.o #ipq40xx-pcm-raw-lb-test.o
 
 obj-$(CONFIG_SND_QCA_SOC_IPQ40XX) += snd-soc-ipq40xx.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_I2S) += snd-soc-ipq40xx-pcm-i2s.o
