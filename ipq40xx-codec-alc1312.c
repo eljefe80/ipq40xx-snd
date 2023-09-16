@@ -1033,7 +1033,7 @@ static ssize_t alc1312_component_show(struct device *dev,
 	struct snd_soc_component *component = alc1312->component;
 	unsigned int val;
 	int cnt = 0, i;
-	component->cache_only = false;
+//	component->cache_only = false;
 	cnt += sprintf(buf, "ALC1312 codec register\n");
 	for (i = 0; i <= 0x8ff; i++) {
 		if (cnt + 22 >= PAGE_SIZE)
