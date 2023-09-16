@@ -620,7 +620,7 @@ static const struct reg_default alc1312_reg[] = {
 	//{ 0x0350,   0x88 },
 };
 
-
+#ifdef CONFIG_PM
 static void alc1312_index_sync(struct snd_soc_component *component)
 {
 	const u16 *reg_cache = component->reg_cache;
@@ -635,7 +635,7 @@ static void alc1312_index_sync(struct snd_soc_component *component)
 		snd_soc_component_write(component, i, reg_cache[i]);
 	}
 }
-
+#endif
 
 /**
  * alc1312_index_write - Write private register.
