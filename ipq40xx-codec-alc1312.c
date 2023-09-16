@@ -744,7 +744,7 @@ static bool alc1312_volatile_register(
 }
 
 static bool alc1312_readable_register(
-	struct snd_soc_component *component, unsigned int reg)
+	struct device *dev, unsigned int reg)
 {
 	switch (reg) {
 	case 0x0000 ... 0x000D:
@@ -1037,7 +1037,7 @@ static ssize_t alc1312_component_show(struct device *dev,
 	for (i = 0; i <= 0x8ff; i++) {
 		if (cnt + 22 >= PAGE_SIZE)
 			break;
-		if (alc1312_readable_register(component, i)) {
+		if (alc1312_readable_register(snd_soc_codec_get_drvdata(component), i)) {
 			val = snd_soc_component_read(component, i);
 
 			cnt += snprintf(buf + cnt, 22,
