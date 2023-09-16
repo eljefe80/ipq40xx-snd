@@ -166,14 +166,14 @@ static int ipq40xx_pcm_preallocate_dma_buffer(struct snd_pcm *pcm,
 
 }
 
-static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm_substream *pcmsubstream, int stream)
+static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm_substream *substream, int stream)
 {
 //	struct snd_pcm_substream *substream;
 	struct snd_pcm_hardware *pcm_hw;
 	struct snd_dma_buffer *buf;
 	size_t size;
 
-	substream = pcm->streams[stream].substream;
+//	substream = pcm->streams[stream].substream;
 	buf = &substream->dma_buffer;
 	switch (stream) {
 	case SNDRV_PCM_STREAM_PLAYBACK:
@@ -186,7 +186,7 @@ static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm_substream *pcmsubstream, 
 
 	size = ip40xx_dma_buffer_size(pcm_hw);
 
-	dma_free_coherent(pcm->card->dev, size, buf->area, buf->addr);
+	dma_free_coherent(substream->private_data->dev, size, buf->area, buf->addr);
 
 	buf->area = NULL;
 }
