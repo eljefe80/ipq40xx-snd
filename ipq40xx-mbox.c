@@ -153,6 +153,8 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 	return size_played;
 }
 
+EXPORT_SYMBOL(ipq40xx_mbox_get_played_offset_set_own);
+
 int ipq40xx_mbox_fifo_reset(int channel_id)
 {
 	volatile void __iomem *mbox_reg;
