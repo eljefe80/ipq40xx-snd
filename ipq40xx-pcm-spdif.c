@@ -557,7 +557,7 @@ static int ipq40xx_asoc_pcm_spdif_new(struct snd_soc_component *component,
 		if (ret) {
 			pr_err("%s: %d: Error allocating dma buf\n",
 						__func__, __LINE__);
-			ipq40xx_pcm_free_dma_buffer(pcm,
+			ipq40xx_pcm_free_dma_buffer(pcm->streams[SNDRV_PCM_STREAM_CAPTURE].substream,
 					SNDRV_PCM_STREAM_PLAYBACK);
 			return -ENOMEM;
 		}
