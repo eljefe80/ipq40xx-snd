@@ -46,7 +46,7 @@ static const struct regmap_range_cfg rt5616_ranges[] = {
 	},
 };
 
-static const struct reg_default init_list[] = {
+static const struct reg_sequence init_list[] = {
 	{RT5616_PR_BASE + 0x3d,	0x3e00},
 	{RT5616_PR_BASE + 0x25,	0x6110},
 	{RT5616_PR_BASE + 0x20,	0x611f},
@@ -1524,7 +1524,6 @@ static int rt5616_i2c_probe(struct i2c_client *i2c,
 	struct rt5616_priv *rt5616;
 	unsigned int val;
 	int ret;
-	int i;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	rt5616 = devm_kzalloc(&i2c->dev, sizeof(struct rt5616_priv),
