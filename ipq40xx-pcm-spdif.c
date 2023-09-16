@@ -577,7 +577,7 @@ static struct snd_soc_component_driver ipq40xx_asoc_pcm_spdif_component = {
 	.mmap		= ipq40xx_pcm_spdif_mmap,
 	.pointer	= ipq40xx_pcm_spdif_pointer,
 	.copy_user	= ipq40xx_pcm_spdif_copy,
-	.pcm_component	= ipq40xx_asoc_pcm_spdif_new,
+	.pcm_construct	= ipq40xx_asoc_pcm_spdif_new,
 //	.pcm_free	= ipq40xx_asoc_pcm_spdif_free,
 };
 static const struct of_device_id ipq40xx_pcm_spdif_id_table[] = {
