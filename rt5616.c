@@ -448,7 +448,7 @@ static int is_sys_clk_from_pll(struct snd_soc_dapm_widget *source,
 {
 	unsigned int val;
 
-	val = snd_soc_read(source->codec, RT5616_GLB_CLK);
+	val = snd_soc_component_read(source->component, RT5616_GLB_CLK);
 	val &= RT5616_SCLK_SRC_MASK;
 	if (val == RT5616_SCLK_SRC_PLL1)
 		return 1;
@@ -563,7 +563,7 @@ static const struct snd_kcontrol_new rt5616_lout_mix[] = {
 static int rt5616_adc_event(struct snd_soc_dapm_widget *w,
 			    struct snd_kcontrol *kcontrol, int event)
 {
-	struct snd_soc_codec *codec = w->codec;
+	struct snd_soc_component *component = w->component;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	switch (event) {
@@ -588,7 +588,7 @@ static int rt5616_adc_event(struct snd_soc_dapm_widget *w,
 static int rt5616_charge_pump_event(struct snd_soc_dapm_widget *w,
 				    struct snd_kcontrol *kcontrol, int event)
 {
-	struct snd_soc_codec *codec = w->codec;
+	struct snd_soc_component *component = w->component;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	switch (event) {
