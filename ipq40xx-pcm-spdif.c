@@ -166,9 +166,9 @@ static int ipq40xx_pcm_preallocate_dma_buffer(struct snd_pcm *pcm,
 
 }
 
-static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm *pcm, int stream)
+static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm_substream *pcmsubstream, int stream)
 {
-	struct snd_pcm_substream *substream;
+//	struct snd_pcm_substream *substream;
 	struct snd_pcm_hardware *pcm_hw;
 	struct snd_dma_buffer *buf;
 	size_t size;
