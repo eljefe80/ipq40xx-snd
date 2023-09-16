@@ -206,7 +206,7 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 	return IRQ_HANDLED;
 }
 
-static snd_pcm_uframes_t ipq40xx_pcm_spdif_pointer(
+static snd_pcm_uframes_t ipq40xx_pcm_spdif_pointer(struct snd_soc_component *component,
 				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -215,7 +215,8 @@ static snd_pcm_uframes_t ipq40xx_pcm_spdif_pointer(
 	return bytes_to_frames(runtime, pcm_rtpriv->curr_pos);
 }
 
-static int ipq40xx_pcm_spdif_copy(struct snd_pcm_substream *substream, int chan,
+static int ipq40xx_pcm_spdif_copy(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream, int chan,
 				snd_pcm_uframes_t hwoff, void __user *ubuf,
 				snd_pcm_uframes_t frames)
 {
@@ -263,7 +264,8 @@ static int ipq40xx_pcm_spdif_copy(struct snd_pcm_substream *substream, int chan,
 	return 0;
 }
 
-static int ipq40xx_pcm_spdif_mmap(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_spdif_mmap(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream,
 				struct vm_area_struct *vma)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -272,14 +274,16 @@ static int ipq40xx_pcm_spdif_mmap(struct snd_pcm_substream *substream,
 		runtime->dma_area, runtime->dma_addr, runtime->dma_bytes);
 }
 
-static int ipq40xx_pcm_hw_free(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_hw_free(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	snd_pcm_set_runtime_buffer(substream, NULL);
 	return 0;
 }
 
 
-static int ipq40xx_pcm_spdif_prepare(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_spdif_prepare(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
@@ -319,7 +323,8 @@ static int ipq40xx_pcm_spdif_prepare(struct snd_pcm_substream *substream)
 	return ret;
 }
 
-static int ipq40xx_pcm_spdif_close(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_spdif_close(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 	uint32_t ret;
@@ -350,7 +355,8 @@ static int ipq40xx_pcm_spdif_close(struct snd_pcm_substream *substream)
 	return ret;
 }
 
-static int ipq40xx_pcm_spdif_trigger(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_spdif_trigger(struct snd_soc_component *component,
+					struct snd_pcm_substream *substream,
 					int cmd)
 {
 	int ret;
@@ -409,7 +415,8 @@ static int ipq40xx_pcm_spdif_trigger(struct snd_pcm_substream *substream,
 	return ret;
 }
 
-static int ipq40xx_pcm_spdif_hw_params(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_spdif_hw_params(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *hw_params)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -452,7 +459,8 @@ static int ipq40xx_pcm_spdif_hw_params(struct snd_pcm_substream *substream,
 	return ret;
 }
 
-static int ipq40xx_pcm_spdif_open(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_spdif_open(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	int ret;
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -510,7 +518,8 @@ error:
 	return ret;
 }
 
-static void ipq40xx_asoc_pcm_spdif_free(struct snd_pcm *pcm)
+static void ipq40xx_asoc_pcm_spdif_free(struct snd_soc_component *component,
+					struct snd_pcm *pcm)
 {
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_PLAYBACK);
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_CAPTURE);
