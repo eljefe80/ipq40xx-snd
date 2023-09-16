@@ -107,6 +107,7 @@ uint32_t ipq40xx_mbox_get_played_offset(u32 channel_id)
 
 	return size_played * rtdir->read;
 }
+EXPORT_SYMBOL(ipq40xx_mbox_get_played_offset);
 
 uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 {
