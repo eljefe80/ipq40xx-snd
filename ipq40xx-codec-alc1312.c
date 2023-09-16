@@ -440,10 +440,9 @@ static int alc1312_reg_init(struct snd_soc_component *component)
 		mdelay(init_list[i].delay);
 	}
 	//codec->cache_only = true;
-
-	return 0;
 */
 
+	return 0;
 }
 
 static struct alc1312_eq_reg eq_list[] = {
@@ -709,7 +708,7 @@ static int alc1312_index_update_bits(struct snd_soc_component *component,
 {
 	unsigned int old, new;
 	int change, ret;
-	ret = alc1312_index_read(codec, reg);
+	ret = alc1312_index_read(component, reg);
 	if (ret < 0) {
 		dev_err(component->dev, "Failed to read private reg: %d\n", ret);
 		goto err;
