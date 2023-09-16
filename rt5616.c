@@ -568,12 +568,12 @@ static int rt5616_adc_event(struct snd_soc_dapm_widget *w,
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
-		snd_soc_update_bits(codec, RT5616_ADC_DIG_VOL,
+		snd_soc_component_update_bits(component, RT5616_ADC_DIG_VOL,
 				    RT5616_L_MUTE | RT5616_R_MUTE, 0);
 		break;
 
 	case SND_SOC_DAPM_POST_PMD:
-		snd_soc_update_bits(codec, RT5616_ADC_DIG_VOL,
+		snd_soc_component_update_bits(component, RT5616_ADC_DIG_VOL,
 				    RT5616_L_MUTE | RT5616_R_MUTE,
 				    RT5616_L_MUTE | RT5616_R_MUTE);
 		break;
@@ -594,46 +594,46 @@ static int rt5616_charge_pump_event(struct snd_soc_dapm_widget *w,
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
 		/* depop parameters */
-		snd_soc_update_bits(codec, RT5616_DEPOP_M2,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M2,
 				    RT5616_DEPOP_MASK, RT5616_DEPOP_MAN);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_HP_CP_MASK | RT5616_HP_SG_MASK |
 				    RT5616_HP_CB_MASK, RT5616_HP_CP_PU |
 				    RT5616_HP_SG_DIS | RT5616_HP_CB_PU);
-		snd_soc_write(codec, RT5616_PR_BASE +
+		snd_soc_component_write(component, RT5616_PR_BASE +
 			      RT5616_HP_DCC_INT1, 0x9f00);
 		/* headphone amp power on */
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG1,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG1,
 				    RT5616_PWR_FV1 | RT5616_PWR_FV2, 0);
-		snd_soc_update_bits(codec, RT5616_PWR_VOL,
+		snd_soc_component_update_bits(component, RT5616_PWR_VOL,
 				    RT5616_PWR_HV_L | RT5616_PWR_HV_R,
 				    RT5616_PWR_HV_L | RT5616_PWR_HV_R);
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG1,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG1,
 				    RT5616_PWR_HP_L | RT5616_PWR_HP_R |
 				    RT5616_PWR_HA, RT5616_PWR_HP_L |
 				    RT5616_PWR_HP_R | RT5616_PWR_HA);
 		msleep(50);
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG1,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG1,
 				    RT5616_PWR_FV1 | RT5616_PWR_FV2,
 				    RT5616_PWR_FV1 | RT5616_PWR_FV2);
 
-		snd_soc_update_bits(codec, RT5616_CHARGE_PUMP,
+		snd_soc_component_update_bits(component, RT5616_CHARGE_PUMP,
 				    RT5616_PM_HP_MASK, RT5616_PM_HP_HV);
-		snd_soc_update_bits(codec, RT5616_PR_BASE +
+		snd_soc_component_update_bits(component, RT5616_PR_BASE +
 				    RT5616_CHOP_DAC_ADC, 0x0200, 0x0200);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_HP_CO_MASK | RT5616_HP_SG_MASK,
 				    RT5616_HP_CO_EN | RT5616_HP_SG_EN);
 		break;
 	case SND_SOC_DAPM_PRE_PMD:
-		snd_soc_update_bits(codec, RT5616_PR_BASE +
+		snd_soc_component_update_bits(component, RT5616_PR_BASE +
 				    RT5616_CHOP_DAC_ADC, 0x0200, 0x0);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_HP_SG_MASK | RT5616_HP_L_SMT_MASK |
 				    RT5616_HP_R_SMT_MASK, RT5616_HP_SG_DIS |
 				    RT5616_HP_L_SMT_DIS | RT5616_HP_R_SMT_DIS);
 		/* headphone amp power down */
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_SMT_TRIG_MASK |
 				    RT5616_HP_CD_PD_MASK | RT5616_HP_CO_MASK |
 				    RT5616_HP_CP_MASK | RT5616_HP_SG_MASK |
@@ -641,7 +641,7 @@ static int rt5616_charge_pump_event(struct snd_soc_dapm_widget *w,
 				    RT5616_SMT_TRIG_DIS | RT5616_HP_CD_PD_EN |
 				    RT5616_HP_CO_DIS | RT5616_HP_CP_PD |
 				    RT5616_HP_SG_EN | RT5616_HP_CB_PD);
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG1,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG1,
 				    RT5616_PWR_HP_L | RT5616_PWR_HP_R |
 				    RT5616_PWR_HA, 0);
 		break;
@@ -655,62 +655,62 @@ static int rt5616_charge_pump_event(struct snd_soc_dapm_widget *w,
 static int rt5616_hp_event(struct snd_soc_dapm_widget *w,
 			   struct snd_kcontrol *kcontrol, int event)
 {
-	struct snd_soc_codec *codec = w->codec;
+	struct snd_soc_component *component = w->component;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
 		/* headphone unmute sequence */
-		snd_soc_update_bits(codec, RT5616_DEPOP_M3,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M3,
 				    RT5616_CP_FQ1_MASK | RT5616_CP_FQ2_MASK |
 				    RT5616_CP_FQ3_MASK,
 				    RT5616_CP_FQ_192_KHZ << RT5616_CP_FQ1_SFT |
 				    RT5616_CP_FQ_12_KHZ << RT5616_CP_FQ2_SFT |
 				    RT5616_CP_FQ_192_KHZ << RT5616_CP_FQ3_SFT);
-		snd_soc_write(codec, RT5616_PR_BASE +
+		snd_soc_component_write(component, RT5616_PR_BASE +
 			      RT5616_MAMP_INT_REG2, 0xfc00);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_SMT_TRIG_MASK, RT5616_SMT_TRIG_EN);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_RSTN_MASK, RT5616_RSTN_EN);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_RSTN_MASK | RT5616_HP_L_SMT_MASK |
 				    RT5616_HP_R_SMT_MASK, RT5616_RSTN_DIS |
 				    RT5616_HP_L_SMT_EN | RT5616_HP_R_SMT_EN);
-		snd_soc_update_bits(codec, RT5616_HP_VOL,
+		snd_soc_component_update_bits(component, RT5616_HP_VOL,
 				    RT5616_L_MUTE | RT5616_R_MUTE, 0);
 		msleep(100);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_HP_SG_MASK | RT5616_HP_L_SMT_MASK |
 				    RT5616_HP_R_SMT_MASK, RT5616_HP_SG_DIS |
 				    RT5616_HP_L_SMT_DIS | RT5616_HP_R_SMT_DIS);
 		msleep(20);
-		snd_soc_update_bits(codec, RT5616_HP_CALIB_AMP_DET,
+		snd_soc_component_update_bits(component, RT5616_HP_CALIB_AMP_DET,
 				    RT5616_HPD_PS_MASK, RT5616_HPD_PS_EN);
 		break;
 
 	case SND_SOC_DAPM_PRE_PMD:
 		/* headphone mute sequence */
-		snd_soc_update_bits(codec, RT5616_DEPOP_M3,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M3,
 				    RT5616_CP_FQ1_MASK | RT5616_CP_FQ2_MASK |
 				    RT5616_CP_FQ3_MASK,
 				    RT5616_CP_FQ_96_KHZ << RT5616_CP_FQ1_SFT |
 				    RT5616_CP_FQ_12_KHZ << RT5616_CP_FQ2_SFT |
 				    RT5616_CP_FQ_96_KHZ << RT5616_CP_FQ3_SFT);
-		snd_soc_write(codec, RT5616_PR_BASE +
+		snd_soc_component_write(component, RT5616_PR_BASE +
 			      RT5616_MAMP_INT_REG2, 0xfc00);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_HP_SG_MASK, RT5616_HP_SG_EN);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_RSTP_MASK, RT5616_RSTP_EN);
-		snd_soc_update_bits(codec, RT5616_DEPOP_M1,
+		snd_soc_component_update_bits(component, RT5616_DEPOP_M1,
 				    RT5616_RSTP_MASK | RT5616_HP_L_SMT_MASK |
 				    RT5616_HP_R_SMT_MASK, RT5616_RSTP_DIS |
 				    RT5616_HP_L_SMT_EN | RT5616_HP_R_SMT_EN);
-		snd_soc_update_bits(codec, RT5616_HP_CALIB_AMP_DET,
+		snd_soc_component_update_bits(component, RT5616_HP_CALIB_AMP_DET,
 				    RT5616_HPD_PS_MASK, RT5616_HPD_PS_DIS);
 		msleep(90);
-		snd_soc_update_bits(codec, RT5616_HP_VOL,
+		snd_soc_component_update_bits(component, RT5616_HP_VOL,
 				    RT5616_L_MUTE | RT5616_R_MUTE,
 				    RT5616_L_MUTE | RT5616_R_MUTE);
 		msleep(30);
@@ -726,22 +726,22 @@ static int rt5616_hp_event(struct snd_soc_dapm_widget *w,
 static int rt5616_lout_event(struct snd_soc_dapm_widget *w,
 			     struct snd_kcontrol *kcontrol, int event)
 {
-	struct snd_soc_codec *codec = w->codec;
+	struct snd_soc_component *component = w->component;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG1,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG1,
 				    RT5616_PWR_LM, RT5616_PWR_LM);
-		snd_soc_update_bits(codec, RT5616_LOUT_CTRL1,
+		snd_soc_component_update_bits(component, RT5616_LOUT_CTRL1,
 				    RT5616_L_MUTE | RT5616_R_MUTE, 0);
 		break;
 
 	case SND_SOC_DAPM_PRE_PMD:
-		snd_soc_update_bits(codec, RT5616_LOUT_CTRL1,
+		snd_soc_component_update_bits(component, RT5616_LOUT_CTRL1,
 				    RT5616_L_MUTE | RT5616_R_MUTE,
 				    RT5616_L_MUTE | RT5616_R_MUTE);
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG1,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG1,
 				    RT5616_PWR_LM, 0);
 		break;
 
@@ -755,17 +755,17 @@ static int rt5616_lout_event(struct snd_soc_dapm_widget *w,
 static int rt5616_bst1_event(struct snd_soc_dapm_widget *w,
 			     struct snd_kcontrol *kcontrol, int event)
 {
-	struct snd_soc_codec *codec = w->codec;
+	struct snd_soc_component *component = w->component;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG2,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG2,
 				    RT5616_PWR_BST1_OP2, RT5616_PWR_BST1_OP2);
 		break;
 
 	case SND_SOC_DAPM_PRE_PMD:
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG2,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG2,
 				    RT5616_PWR_BST1_OP2, 0);
 		break;
 
@@ -779,17 +779,17 @@ static int rt5616_bst1_event(struct snd_soc_dapm_widget *w,
 static int rt5616_bst2_event(struct snd_soc_dapm_widget *w,
 			     struct snd_kcontrol *kcontrol, int event)
 {
-	struct snd_soc_codec *codec = w->codec;
+	struct snd_soc_component *component = w->component;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG2,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG2,
 				    RT5616_PWR_BST2_OP2, RT5616_PWR_BST2_OP2);
 		break;
 
 	case SND_SOC_DAPM_PRE_PMD:
-		snd_soc_update_bits(codec, RT5616_PWR_ANLG2,
+		snd_soc_component_update_bits(component, RT5616_PWR_ANLG2,
 				    RT5616_PWR_BST2_OP2, 0);
 		break;
 
@@ -1081,7 +1081,7 @@ static int rt5616_hw_params(struct snd_pcm_substream *substream,
 			    struct snd_soc_dai *dai)
 {
 	struct snd_soc_component *component = dai->component;
-	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(codec);
+	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(component);
 	unsigned int val_len = 0, val_clk, mask_clk;
 	int pre_div, bclk_ms, frame_size;
 
