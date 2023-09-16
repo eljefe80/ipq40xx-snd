@@ -1270,7 +1270,7 @@ static int alc1312_resume(struct snd_soc_component *component)
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
 	codec->cache_only = false;
 //	codec->cache_sync = 1;
-/	snd_soc_cache_sync(component);
+	snd_soc_cache_sync(component);
 	alc1312_index_sync(component);
 	return 0;
 }
