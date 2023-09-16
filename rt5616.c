@@ -1135,7 +1135,7 @@ static int rt5616_hw_params(struct snd_pcm_substream *substream,
 static int rt5616_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 {
 	struct snd_soc_component *component = dai->component;
-	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(component;
+	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(component);
 	unsigned int reg_val = 0;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
