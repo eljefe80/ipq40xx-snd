@@ -951,7 +951,7 @@ static int alc1312_hw_params(struct snd_pcm_substream *substream,
 static int alc1312_prepare(struct snd_pcm_substream *substream,
 				struct snd_soc_dai *dai)
 {
-	struct snd_soc_codec *component = dai->component;
+	struct snd_soc_component *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	printk("enter %s\n",__func__);
 	return 0;
@@ -959,7 +959,7 @@ static int alc1312_prepare(struct snd_pcm_substream *substream,
 
 static int alc1312_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 {
-	struct snd_soc_codec *component = dai->component;
+	struct snd_soc_component *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	printk("enter %s\n",__func__);
 
@@ -1266,13 +1266,13 @@ static int alc1312_suspend(struct snd_soc_component *component)
 	return 0;
 }
 
-static int alc1312_resume(struct snd_soc_codec *codec)
+static int alc1312_resume(struct snd_soc_component *component)
 {
 	printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
 	codec->cache_only = false;
-	codec->cache_sync = 1;
-	snd_soc_cache_sync(codec);
-	alc1312_index_sync(codec);
+//	codec->cache_sync = 1;
+/	snd_soc_cache_sync(component);
+	alc1312_index_sync(component);
 	return 0;
 }
 #else
