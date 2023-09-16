@@ -704,14 +704,14 @@ static unsigned int alc1312_index_read(struct snd_soc_component *component,
  *
  * Returns 1 for change, 0 for no change, or negative error code.
  */
-static int alc1312_index_update_bits(struct snd_soc_codec *codec,
+static int alc1312_index_update_bits(struct snd_soc_component *component,
 	unsigned int reg, unsigned int mask, unsigned int value)
 {
 	unsigned int old, new;
 	int change, ret;
 	ret = alc1312_index_read(codec, reg);
 	if (ret < 0) {
-		dev_err(codec->dev, "Failed to read private reg: %d\n", ret);
+		dev_err(component->dev, "Failed to read private reg: %d\n", ret);
 		goto err;
 	}
 
@@ -721,7 +721,7 @@ static int alc1312_index_update_bits(struct snd_soc_codec *codec,
 	if (change) {
 		ret = alc1312_index_write(codec, reg, new);
 		if (ret < 0) {
-			dev_err(codec->dev,
+			dev_err(component->dev,
 				"Failed to write private reg: %d\n", ret);
 			goto err;
 		}
