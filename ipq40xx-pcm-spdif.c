@@ -517,7 +517,7 @@ error:
 	kfree(pcm_rtpriv);
 	return ret;
 }
-
+/*
 static int ipq40xx_asoc_pcm_spdif_free(struct snd_soc_component *component,
 					struct snd_pcm_substream *pcm, struct vm_area_struct *vm)
 {
@@ -525,7 +525,7 @@ static int ipq40xx_asoc_pcm_spdif_free(struct snd_soc_component *component,
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_CAPTURE);
 	return 0;
 }
-
+*/
 static int ipq40xx_asoc_pcm_spdif_new(struct snd_soc_component *component,
 					struct snd_soc_pcm_runtime *prtd)
 {
@@ -578,7 +578,7 @@ static struct snd_soc_component_driver ipq40xx_asoc_pcm_spdif_component = {
 	.pointer	= ipq40xx_pcm_spdif_pointer,
 	.copy_user	= ipq40xx_pcm_spdif_copy,
 	.pcm_component	= ipq40xx_asoc_pcm_spdif_new,
-	.pcm_free	= ipq40xx_asoc_pcm_spdif_free,
+//	.pcm_free	= ipq40xx_asoc_pcm_spdif_free,
 };
 static const struct of_device_id ipq40xx_pcm_spdif_id_table[] = {
 	{ .compatible = "qca,ipq40xx-pcm-spdif" },
