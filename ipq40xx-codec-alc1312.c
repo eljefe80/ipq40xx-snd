@@ -890,11 +890,11 @@ static int alc1312_init_type_get(struct snd_kcontrol *kcontrol,
 static int alc1312_init_type_put(struct snd_kcontrol *kcontrol,
 		struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
 	int init = ucontrol->value.integer.value[0];
 
 	if (init)
-		alc1312_reg_init(codec);
+		alc1312_reg_init(component);
 
 	return 0;
 }
