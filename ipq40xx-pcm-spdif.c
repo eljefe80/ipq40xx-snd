@@ -580,7 +580,7 @@ static int ipq40xx_pcm_spdif_driver_probe(struct platform_device *pdev)
 	int ret;
 	pr_debug("%s %d\n", __func__, __LINE__);
 	ret = snd_soc_register_component(&pdev->dev,
-			&ipq40xx_asoc_pcm_spdif_platform, NULL, 0);
+			&ipq40xx_asoc_pcm_spdif_component, NULL, 0);
 	if (ret)
 		dev_err(&pdev->dev, "%s: Failed to register spdif pcm device\n",
 								__func__);
