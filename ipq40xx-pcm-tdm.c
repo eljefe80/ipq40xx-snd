@@ -472,9 +472,6 @@ error:
 	return ret;
 }
 
-static struct snd_pcm_ops ipq40xx_asoc_pcm_tdm_ops = {
-};
-
 /*
 static void ipq40xx_asoc_pcm_tdm_free(struct snd_pcm *pcm)
 {
