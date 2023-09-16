@@ -982,6 +982,7 @@ static int alc1312_set_dai_mute(struct snd_soc_dai *dai, int mute)
 
         snd_soc_component_update_bits(dai->component, 0x0102, BIT(14)|BIT(15),
                             (mute ? (BIT(14)|BIT(15)) : 0));
+	return 0;
 }
 
 /**
