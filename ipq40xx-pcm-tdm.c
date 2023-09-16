@@ -277,7 +277,8 @@ static int ipq40xx_pcm_tdm_mmap(struct snd_soc_component *component,
 		runtime->dma_area, runtime->dma_addr, runtime->dma_bytes);
 }
 
-static int ipq40xx_pcm_hw_free(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_hw_free(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	snd_pcm_set_runtime_buffer(substream, NULL);
 	return 0;
@@ -306,7 +307,8 @@ static int ipq40xx_pcm_tdm_prepare(struct snd_soc_component *component,
 	return ret;
 }
 
-static int ipq40xx_pcm_tdm_close(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_tdm_close(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 	uint32_t ret;
@@ -326,7 +328,8 @@ static int ipq40xx_pcm_tdm_close(struct snd_pcm_substream *substream)
 	return 0;
 }
 
-static int ipq40xx_pcm_tdm_trigger(struct snd_pcm_substream *substream, int cmd)
+static int ipq40xx_pcm_tdm_trigger(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream, int cmd)
 {
 	int ret;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
@@ -379,7 +382,8 @@ static int ipq40xx_pcm_tdm_trigger(struct snd_pcm_substream *substream, int cmd)
 	return ret;
 }
 
-static int ipq40xx_pcm_tdm_hw_params(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_tdm_hw_params(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *hw_params)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -418,7 +422,8 @@ static int ipq40xx_pcm_tdm_hw_params(struct snd_pcm_substream *substream,
 	return ret;
 }
 
-static int ipq40xx_pcm_tdm_open(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_tdm_open(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	int ret;
 	struct snd_pcm_runtime *runtime = substream->runtime;
