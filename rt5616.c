@@ -1336,10 +1336,10 @@ static int rt5616_set_dai_pll(struct snd_soc_dai *dai, int pll_id, int source,
 	return 0;
 }
 
-static int rt5616_set_bias_level(struct snd_soc_codec *codec,
+static int rt5616_set_bias_level(struct snd_soc_component *component,
 				 enum snd_soc_bias_level level)
 {
-	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(codec);
+	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(component);
 	int ret;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
@@ -1359,7 +1359,7 @@ static int rt5616_set_bias_level(struct snd_soc_codec *codec,
 		if (IS_ERR(rt5616->mclk))
 			break;
 
-		if (codec->dapm.bias_level == SND_SOC_BIAS_ON) {
+		if (component->dapm.bias_level == SND_SOC_BIAS_ON) {
 			clk_disable_unprepare(rt5616->mclk);
 		} else {
 			ret = clk_prepare_enable(rt5616->mclk);
@@ -1369,30 +1369,30 @@ static int rt5616_set_bias_level(struct snd_soc_codec *codec,
 		break;
 
 	case SND_SOC_BIAS_STANDBY:
-		if (codec->dapm.bias_level == SND_SOC_BIAS_OFF) {
-			snd_soc_update_bits(codec, RT5616_PWR_ANLG1,
+		if (component->dapm.bias_level == SND_SOC_BIAS_OFF) {
+			snd_soc_component_update_bits(component, RT5616_PWR_ANLG1,
 					    RT5616_PWR_VREF1 | RT5616_PWR_MB |
 					    RT5616_PWR_BG | RT5616_PWR_VREF2,
 					    RT5616_PWR_VREF1 | RT5616_PWR_MB |
 					    RT5616_PWR_BG | RT5616_PWR_VREF2);
 			mdelay(10);
-			snd_soc_update_bits(codec, RT5616_PWR_ANLG1,
+			snd_soc_component_update_bits(component, RT5616_PWR_ANLG1,
 					    RT5616_PWR_FV1 | RT5616_PWR_FV2,
 					    RT5616_PWR_FV1 | RT5616_PWR_FV2);
-			snd_soc_update_bits(codec, RT5616_D_MISC,
+			snd_soc_component_update_bits(component, RT5616_D_MISC,
 					    RT5616_D_GATE_EN,
 					    RT5616_D_GATE_EN);
 		}
 		break;
 
 	case SND_SOC_BIAS_OFF:
-		snd_soc_update_bits(codec, RT5616_D_MISC, RT5616_D_GATE_EN, 0);
-		snd_soc_write(codec, RT5616_PWR_DIG1, 0x0000);
-		snd_soc_write(codec, RT5616_PWR_DIG2, 0x0000);
-		snd_soc_write(codec, RT5616_PWR_VOL, 0x0000);
-		snd_soc_write(codec, RT5616_PWR_MIXER, 0x0000);
-		snd_soc_write(codec, RT5616_PWR_ANLG1, 0x0000);
-		snd_soc_write(codec, RT5616_PWR_ANLG2, 0x0000);
+		snd_soc_component_update_bits(component, RT5616_D_MISC, RT5616_D_GATE_EN, 0);
+		snd_soc_component_write(component, RT5616_PWR_DIG1, 0x0000);
+		snd_soc_component_write(component, RT5616_PWR_DIG2, 0x0000);
+		snd_soc_component_write(component, RT5616_PWR_VOL, 0x0000);
+		snd_soc_component_write(component, RT5616_PWR_MIXER, 0x0000);
+		snd_soc_component_write(component, RT5616_PWR_ANLG1, 0x0000);
+		snd_soc_component_write(component, RT5616_PWR_ANLG2, 0x0000);
 		break;
 
 	default:
@@ -1403,17 +1403,17 @@ static int rt5616_set_bias_level(struct snd_soc_codec *codec,
 	return 0;
 }
 
-static int rt5616_probe(struct snd_soc_codec *codec)
+static int rt5616_probe(struct snd_soc_component *component)
 {
-	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(codec);
+	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(component);
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
 	/* Check if MCLK provided */
-	rt5616->mclk = devm_clk_get(codec->dev, "mclk");
+	rt5616->mclk = devm_clk_get(component->dev, "mclk");
 	if (PTR_ERR(rt5616->mclk) == -EPROBE_DEFER)
 		return -EPROBE_DEFER;
 
-	rt5616->codec = codec;
+	rt5616->component = component;
 
 	return 0;
 }
