@@ -1113,23 +1113,20 @@ static int alc1312_write_eq_param(struct snd_soc_component *component)
 	return 0;
 }
 
-
+/*
 static void alc1312_sync_cache(struct snd_soc_component *component)
 {
 	const u16 *reg_cache = component->regmap;
 	int i;
 
 	printk("<3> Keen %s %d %d\r\n",__FUNCTION__,__LINE__,component->val_bytes);
-	/* Sync back cached values if they're different from the
-	 * hardware default.
-	 */
 	for (i = 1; i < component->val_bytes; i++) {
 		if (reg_cache[i] == alc1312_reg[i].reg)
 			continue;
 		snd_soc_component_write(component, i, reg_cache[i]);
 	}
 }
-
+*/
 static int alc1312_set_bias_level(struct snd_soc_component *component,
 			enum snd_soc_bias_level level)
 {
