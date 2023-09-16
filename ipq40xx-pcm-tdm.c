@@ -538,7 +538,7 @@ static struct snd_soc_component_driver ipq40xx_asoc_pcm_tdm_component = {
 	.hw_params	= ipq40xx_pcm_tdm_hw_params,
 	.hw_free	= ipq40xx_pcm_hw_free,
 	.trigger	= ipq40xx_pcm_tdm_trigger,
-	.ioctl		= snd_pcm_lib_ioctl,
+//	.ioctl		= snd_pcm_component_lib_ioctl,
 	.close		= ipq40xx_pcm_tdm_close,
 	.prepare	= ipq40xx_pcm_tdm_prepare,
 	.mmap		= ipq40xx_pcm_tdm_mmap,
@@ -560,7 +560,7 @@ static int ipq40xx_pcm_tdm_driver_probe(struct platform_device *pdev)
 	pr_debug("%s %d\n", __func__, __LINE__);
 
 	ret = snd_soc_register_component(&pdev->dev,
-			&ipq40xx_asoc_pcm_tdm_component);
+			&ipq40xx_asoc_pcm_tdm_component, NULL, 0);
 	if (ret)
 		dev_err(&pdev->dev, "%s: Failed to register tdm pcm device\n",
 								__func__);
