@@ -206,6 +206,7 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 }
 
 static snd_pcm_uframes_t ipq40xx_pcm_tdm_pointer(
+				struct snd_soc_component *component,
 				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -218,7 +219,8 @@ static snd_pcm_uframes_t ipq40xx_pcm_tdm_pointer(
 	return ret;
 }
 
-static int ipq40xx_pcm_tdm_copy(struct snd_pcm_substream *substream, int chan,
+static int ipq40xx_pcm_tdm_copy(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream, int chan,
 				snd_pcm_uframes_t hwoff, void __user *ubuf,
 				snd_pcm_uframes_t frames)
 {
@@ -265,7 +267,8 @@ static int ipq40xx_pcm_tdm_copy(struct snd_pcm_substream *substream, int chan,
 	return 0;
 }
 
-static int ipq40xx_pcm_tdm_mmap(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_tdm_mmap(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream,
 				struct vm_area_struct *vma)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -281,7 +284,8 @@ static int ipq40xx_pcm_hw_free(struct snd_pcm_substream *substream)
 }
 
 
-static int ipq40xx_pcm_tdm_prepare(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_tdm_prepare(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
@@ -480,7 +484,8 @@ static void ipq40xx_asoc_pcm_tdm_free(struct snd_pcm *pcm)
 }
 */
 
-static int ipq40xx_asoc_pcm_tdm_new(struct snd_soc_pcm_runtime *prtd)
+static int ipq40xx_asoc_pcm_tdm_new(struct snd_soc_component *component,
+				struct snd_soc_pcm_runtime *prtd)
 {
 	struct snd_card *card = prtd->card->snd_card;
 	struct snd_pcm *pcm = prtd->pcm;
