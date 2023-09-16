@@ -940,7 +940,7 @@ static const struct snd_soc_dapm_route alc1312_dapm_routes[] = {
 static int alc1312_hw_params(struct snd_pcm_substream *substream,
 	struct snd_pcm_hw_params *params, struct snd_soc_dai *dai)
 {
-	struct snd_soc_codec *codec = dai->codec;
+	struct snd_soc_component *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	printk("enter %s\n",__func__);
 
@@ -951,7 +951,7 @@ static int alc1312_hw_params(struct snd_pcm_substream *substream,
 static int alc1312_prepare(struct snd_pcm_substream *substream,
 				struct snd_soc_dai *dai)
 {
-	struct snd_soc_codec *codec = dai->codec;
+	struct snd_soc_codec *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	printk("enter %s\n",__func__);
 	return 0;
@@ -959,7 +959,7 @@ static int alc1312_prepare(struct snd_pcm_substream *substream,
 
 static int alc1312_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 {
-	struct snd_soc_codec *codec = dai->codec;
+	struct snd_soc_codec *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	printk("enter %s\n",__func__);
 
@@ -969,7 +969,7 @@ static int alc1312_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 static int alc1312_set_dai_sysclk(struct snd_soc_dai *dai,
 		int clk_id, unsigned int freq, int dir)
 {
-	struct snd_soc_codec *codec = dai->codec;
+	struct snd_soc_component *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	printk("enter %s\n",__func__);
 
@@ -980,7 +980,7 @@ static int alc1312_set_dai_sysclk(struct snd_soc_dai *dai,
 static int alc1312_set_dai_mute(struct snd_soc_dai *dai, int mute)
 {
 
-        snd_soc_update_bits(dai->codec, 0x0102, BIT(14)|BIT(15),
+        snd_soc_component_update_bits(dai->component, 0x0102, BIT(14)|BIT(15),
                             (mute ? (BIT(14)|BIT(15)) : 0));
 }
 
