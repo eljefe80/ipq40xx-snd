@@ -976,6 +976,7 @@ static int alc1312_set_dai_sysclk(struct snd_soc_dai *dai,
 	return 0;
 }
 
+/*
 static int alc1312_set_dai_mute(struct snd_soc_dai *dai, int mute)
 {
 
@@ -983,7 +984,7 @@ static int alc1312_set_dai_mute(struct snd_soc_dai *dai, int mute)
                             (mute ? (BIT(14)|BIT(15)) : 0));
 	return 0;
 }
-
+*/
 /**
  * alc1312_index_show - Dump private registers.
  * @dev: codec device.
