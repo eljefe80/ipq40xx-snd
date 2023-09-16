@@ -1002,7 +1002,7 @@ static ssize_t alc1312_index_show(struct device *dev,
 	struct snd_soc_component *component = alc1312->component;
 	unsigned int val;
 	int cnt = 0, i;
-	codec->cache_only = false;
+	//component->cache_only = false;
 	cnt += sprintf(buf, "ALC1312 index register\n");
 	for (i = 0; i < 0x741; i++) {
 		if (cnt + ALC1312_REG_DISP_LEN >= PAGE_SIZE)
