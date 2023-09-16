@@ -148,7 +148,7 @@ struct rt5616_pll_code {
 };
 
 struct rt5616_priv {
-	struct snd_soc_codec *codec;
+	struct snd_soc_component *component;
 	struct delayed_work patch_work;
 	struct regmap *regmap;
 	struct clk *mclk;
