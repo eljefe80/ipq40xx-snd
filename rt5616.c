@@ -1580,14 +1580,14 @@ static int rt5616_i2c_probe(struct i2c_client *i2c,
 		printk("0x%02X 0x%02X \r\n",i,val);
 	}
 #endif
-	return snd_soc_register_codec(&i2c->dev, &soc_codec_dev_rt5616,
+	return snd_soc_register_component(&i2c->dev, &soc_codec_dev_rt5616,
 				      rt5616_dai, ARRAY_SIZE(rt5616_dai));
 }
 
 
 static int rt5616_i2c_remove(struct i2c_client *i2c)
 {
-	snd_soc_unregister_codec(&i2c->dev);
+	snd_soc_unregister_component(&i2c->dev);
 
 	return 0;
 }
@@ -1610,7 +1610,7 @@ static struct i2c_driver rt5616_i2c_driver = {
 	.shutdown = rt5616_i2c_shutdown,
 	.id_table = rt5616_i2c_id,
 };
-module_i2c_driver(rt5616_i2c_driver);
+//module_i2c_driver(rt5616_i2c_driver);
 
 static int __init rt5616_modinit(void)
 {
