@@ -547,7 +547,7 @@ static const struct of_device_id ipq40xx_pcm_tdm_id_table[] = {
         { /* Sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_pcm_tdm_id_table);
-/*
+
 static int ipq40xx_pcm_tdm_driver_probe(struct platform_device *pdev)
 {
 	int ret = 0;
@@ -579,7 +579,7 @@ static struct platform_driver ipq40xx_pcm_tdm_driver = {
 	},
 };
 module_platform_driver(ipq40xx_pcm_tdm_driver);
-*/
+
 MODULE_ALIAS("platform:qca-pcm-tdm");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx PCM TDM Platform Driver");
