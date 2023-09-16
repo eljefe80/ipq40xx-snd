@@ -510,19 +510,6 @@ error:
 	return ret;
 }
 
-static struct snd_pcm_ops ipq40xx_asoc_pcm_spdif_ops = {
-	.open		= ipq40xx_pcm_spdif_open,
-	.hw_params	= ipq40xx_pcm_spdif_hw_params,
-	.hw_free	= ipq40xx_pcm_hw_free,
-	.trigger	= ipq40xx_pcm_spdif_trigger,
-	.ioctl		= snd_pcm_lib_ioctl,
-	.close		= ipq40xx_pcm_spdif_close,
-	.prepare	= ipq40xx_pcm_spdif_prepare,
-	.mmap		= ipq40xx_pcm_spdif_mmap,
-	.pointer	= ipq40xx_pcm_spdif_pointer,
-	.copy_user	= ipq40xx_pcm_spdif_copy,
-};
-
 static void ipq40xx_asoc_pcm_spdif_free(struct snd_pcm *pcm)
 {
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_PLAYBACK);
@@ -567,25 +554,33 @@ static int ipq40xx_asoc_pcm_spdif_new(struct snd_soc_pcm_runtime *prtd)
 
 	return ret;
 }
-/*
 static struct snd_soc_component_driver ipq40xx_asoc_pcm_spdif_component = {
-	.ops		= &ipq40xx_asoc_pcm_spdif_ops,
-	.pcm_new	= ipq40xx_asoc_pcm_spdif_new,
+//	.ops		= &ipq40xx_asoc_pcm_spdif_ops,
+	.open		= ipq40xx_pcm_spdif_open,
+	.hw_params	= ipq40xx_pcm_spdif_hw_params,
+	.hw_free	= ipq40xx_pcm_hw_free,
+	.trigger	= ipq40xx_pcm_spdif_trigger,
+//	.ioctl		= snd_pcm_lib_ioctl,
+	.close		= ipq40xx_pcm_spdif_close,
+	.prepare	= ipq40xx_pcm_spdif_prepare,
+	.mmap		= ipq40xx_pcm_spdif_mmap,
+	.pointer	= ipq40xx_pcm_spdif_pointer,
+	.copy_user	= ipq40xx_pcm_spdif_copy,
+	.pcm_component	= ipq40xx_asoc_pcm_spdif_new,
 	.pcm_free	= ipq40xx_asoc_pcm_spdif_free,
 };
-*/
 static const struct of_device_id ipq40xx_pcm_spdif_id_table[] = {
 	{ .compatible = "qca,ipq40xx-pcm-spdif" },
 	{ /* Sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_pcm_spdif_id_table);
-/*
+
 static int ipq40xx_pcm_spdif_driver_probe(struct platform_device *pdev)
 {
 	int ret;
 	pr_debug("%s %d\n", __func__, __LINE__);
-	ret = snd_soc_register_platform(&pdev->dev,
-			&ipq40xx_asoc_pcm_spdif_platform);
+	ret = snd_soc_register_component(&pdev->dev,
+			&ipq40xx_asoc_pcm_spdif_platform, NULL, 0);
 	if (ret)
 		dev_err(&pdev->dev, "%s: Failed to register spdif pcm device\n",
 								__func__);
@@ -611,7 +606,7 @@ static struct platform_driver ipq40xx_pcm_spdif_driver = {
 };
 
 module_platform_driver(ipq40xx_pcm_spdif_driver);
-*/
+
 MODULE_ALIAS("platform:qca-pcm-spdif");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx PCM SPDIF Platform Driver");
