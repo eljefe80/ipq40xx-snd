@@ -1275,7 +1275,7 @@ static int rt5616_set_dai_pll(struct snd_soc_dai *dai, int pll_id, int source,
 			      unsigned int freq_in, unsigned int freq_out)
 {
 	struct snd_soc_codec *codec = dai->codec;
-	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(codec);
+	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(component);
 	struct rt5616_pll_code pll_code;
 	int ret;
 
@@ -1285,11 +1285,11 @@ static int rt5616_set_dai_pll(struct snd_soc_dai *dai, int pll_id, int source,
 		return 0;
 
 	if (!freq_in || !freq_out) {
-		dev_dbg(codec->dev, "PLL disabled\n");
+		dev_dbg(component->dev, "PLL disabled\n");
 
 		rt5616->pll_in = 0;
 		rt5616->pll_out = 0;
-		snd_soc_update_bits(codec, RT5616_GLB_CLK,
+		snd_soc_component_update_bits(component, RT5616_GLB_CLK,
 				    RT5616_SCLK_SRC_MASK,
 				    RT5616_SCLK_SRC_MCLK);
 		return 0;
@@ -1297,18 +1297,18 @@ static int rt5616_set_dai_pll(struct snd_soc_dai *dai, int pll_id, int source,
 
 	switch (source) {
 	case RT5616_PLL1_S_MCLK:
-		snd_soc_update_bits(codec, RT5616_GLB_CLK,
+		snd_soc_component_update_bits(component, RT5616_GLB_CLK,
 				    RT5616_PLL1_SRC_MASK,
 				    RT5616_PLL1_SRC_MCLK);
 		break;
 	case RT5616_PLL1_S_BCLK1:
 	case RT5616_PLL1_S_BCLK2:
-		snd_soc_update_bits(codec, RT5616_GLB_CLK,
+		snd_soc_component_update_bits(component, RT5616_GLB_CLK,
 				    RT5616_PLL1_SRC_MASK,
 				    RT5616_PLL1_SRC_BCLK1);
 		break;
 	default:
-		dev_err(codec->dev, "Unknown PLL source %d\n", source);
+		dev_err(component->dev, "Unknown PLL source %d\n", source);
 		return -EINVAL;
 	}
 
