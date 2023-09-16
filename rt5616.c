@@ -1080,8 +1080,8 @@ static int rt5616_hw_params(struct snd_pcm_substream *substream,
 			    struct snd_pcm_hw_params *params,
 			    struct snd_soc_dai *dai)
 {
-	struct snd_soc_codec *codec = dai->codec;
-	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(codec);
+	struct snd_soc_component *component = dai->component;
+	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(codec);
 	unsigned int val_len = 0, val_clk, mask_clk;
 	int pre_div, bclk_ms, frame_size;
 
@@ -1091,12 +1091,12 @@ static int rt5616_hw_params(struct snd_pcm_substream *substream,
 	pre_div = get_clk_info(rt5616->sysclk, rt5616->lrck[dai->id]);
 
 	if (pre_div < 0) {
-		dev_err(codec->dev, "Unsupported clock setting\n");
+		dev_err(component->dev, "Unsupported clock setting\n");
 		return -EINVAL;
 	}
 	frame_size = snd_soc_params_to_frame_size(params);
 	if (frame_size < 0) {
-		dev_err(codec->dev, "Unsupported frame size: %d\n", frame_size);
+		dev_err(component->dev, "Unsupported frame size: %d\n", frame_size);
 		return -EINVAL;
 	}
 	bclk_ms = frame_size > 32 ? 1 : 0;
@@ -1125,17 +1125,17 @@ static int rt5616_hw_params(struct snd_pcm_substream *substream,
 
 	mask_clk = RT5616_I2S_PD1_MASK;
 	val_clk = pre_div << RT5616_I2S_PD1_SFT;
-	snd_soc_update_bits(codec, RT5616_I2S1_SDP,
+	snd_soc_update_bits(component, RT5616_I2S1_SDP,
 			    RT5616_I2S_DL_MASK, val_len);
-	snd_soc_update_bits(codec, RT5616_ADDA_CLK1, mask_clk, val_clk);
+	snd_soc_update_bits(component, RT5616_ADDA_CLK1, mask_clk, val_clk);
 
 	return 0;
 }
 
 static int rt5616_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 {
-	struct snd_soc_codec *codec = dai->codec;
-	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(codec);
+	struct snd_soc_component *component = dai->component;
+	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(component;
 	unsigned int reg_val = 0;
 
 	printk("[Keen] %s %d %s \r\n",__func__,__LINE__,__FILE__);
@@ -1177,7 +1177,7 @@ static int rt5616_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 		return -EINVAL;
 	}
 
-	snd_soc_update_bits(codec, RT5616_I2S1_SDP,
+	snd_soc_component_update_bits(component, RT5616_I2S1_SDP,
 			    RT5616_I2S_MS_MASK | RT5616_I2S_BP_MASK |
 			    RT5616_I2S_DF_MASK, reg_val);
 
@@ -1187,7 +1187,7 @@ static int rt5616_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 static int rt5616_set_dai_sysclk(struct snd_soc_dai *dai,
 				 int clk_id, unsigned int freq, int dir)
 {
-	struct snd_soc_codec *codec = dai->codec;
+	struct snd_soc_codec *component = dai->component;
 	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(codec);
 	unsigned int reg_val = 0;
 
@@ -1203,11 +1203,11 @@ static int rt5616_set_dai_sysclk(struct snd_soc_dai *dai,
 		reg_val |= RT5616_SCLK_SRC_PLL1;
 		break;
 	default:
-		dev_err(codec->dev, "Invalid clock id (%d)\n", clk_id);
+		dev_err(component->dev, "Invalid clock id (%d)\n", clk_id);
 		return -EINVAL;
 	}
 
-	snd_soc_update_bits(codec, RT5616_GLB_CLK,
+	snd_soc_update_bits(component, RT5616_GLB_CLK,
 			    RT5616_SCLK_SRC_MASK, reg_val);
 	rt5616->sysclk = freq;
 	rt5616->sysclk_src = clk_id;
@@ -1275,7 +1275,7 @@ static int rt5616_set_dai_pll(struct snd_soc_dai *dai, int pll_id, int source,
 			      unsigned int freq_in, unsigned int freq_out)
 {
 	struct snd_soc_component *component = dai->component;
-	struct rt5616_priv *rt5616 = snd_soc_codec_get_drvdata(component);
+	struct rt5616_priv *rt5616 = snd_soc_component_get_drvdata(component);
 	struct rt5616_pll_code pll_code;
 	int ret;
 
