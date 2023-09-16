@@ -590,7 +590,7 @@ static int ipq40xx_pcm_spdif_driver_probe(struct platform_device *pdev)
 static int ipq40xx_pcm_spdif_driver_remove(struct platform_device *pdev)
 {
 	pr_debug("%s %d\n", __func__, __LINE__);
-	snd_soc_unregister_platform(&pdev->dev);
+	snd_soc_unregister_component(&pdev->dev);
 
 	return 0;
 }
