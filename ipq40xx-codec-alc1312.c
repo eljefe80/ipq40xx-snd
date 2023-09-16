@@ -681,16 +681,16 @@ err:
  *
  * Returns private register value or negative error code.
  */
-static unsigned int alc1312_index_read(struct snd_soc_codec *codec,
+static unsigned int alc1312_index_read(struct snd_soc_component *component,
 					unsigned int reg)
 {
 	int ret;
-	ret = snd_soc_component_write(codec, ALC1312_PRIV_INDEX, reg);
+	ret = snd_soc_component_write(component, ALC1312_PRIV_INDEX, reg);
 	if (ret < 0) {
-		dev_err(codec->dev, "Failed to set private addr: %d\n", ret);
+		dev_err(component->dev, "Failed to set private addr: %d\n", ret);
 		return ret;
 	}
-	return snd_soc_component_read(codec, ALC1312_PRIV_DATA);
+	return snd_soc_component_read(component, ALC1312_PRIV_DATA);
 }
 
 /**
