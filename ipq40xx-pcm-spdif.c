@@ -166,9 +166,9 @@ static int ipq40xx_pcm_preallocate_dma_buffer(struct snd_pcm *pcm,
 
 }
 
-static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm_substream *substream, int stream)
+static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm *pcm, int stream)
 {
-//	struct snd_pcm_substream *substream;
+	struct snd_pcm_substream *substream;
 	struct snd_pcm_hardware *pcm_hw;
 	struct snd_dma_buffer *buf;
 	size_t size;
@@ -186,7 +186,7 @@ static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm_substream *substream, int
 
 	size = ip40xx_dma_buffer_size(pcm_hw);
 
-	dma_free_coherent(substream->private_data->dev, size, buf->area, buf->addr);
+	dma_free_coherent(pcm->card->dev, size, buf->area, buf->addr);
 
 	buf->area = NULL;
 }
@@ -557,7 +557,7 @@ static int ipq40xx_asoc_pcm_spdif_new(struct snd_soc_component *component,
 		if (ret) {
 			pr_err("%s: %d: Error allocating dma buf\n",
 						__func__, __LINE__);
-			ipq40xx_pcm_free_dma_buffer(pcm->streams[SNDRV_PCM_STREAM_CAPTURE].substream,
+			ipq40xx_pcm_free_dma_buffer(pcm,
 					SNDRV_PCM_STREAM_PLAYBACK);
 			return -ENOMEM;
 		}
