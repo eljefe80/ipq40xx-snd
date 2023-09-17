@@ -511,7 +511,7 @@ error:
 	return ret;
 }
 
-static struct snd_pcm_ops ipq40xx_asoc_pcm_i2s_driver = {
+static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_driver = {
 	.open		= ipq40xx_pcm_i2s_open,
 	.hw_params	= ipq40xx_pcm_i2s_hw_params,
 	.hw_free	= ipq40xx_pcm_hw_free,
@@ -598,7 +598,7 @@ static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 {
 	int ret;
 	pr_debug("%s %d\n", __func__, __LINE__);
-	ret = snd_soc_register_platform(&pdev->dev,
+	ret = snd_soc_register_component(&pdev->dev,
 			&ipq40xx_asoc_pcm_i2s_platform);
 	if (ret)
 		dev_err(&pdev->dev, "%s: Failed to register i2s pcm device\n",
@@ -609,7 +609,7 @@ static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 static int ipq40xx_pcm_i2s_driver_remove(struct platform_device *pdev)
 {
 	pr_debug("%s %d\n", __func__, __LINE__);
-	snd_soc_unregister_platform(&pdev->dev);
+	snd_soc_unregister_component(&pdev->dev);
 
 	return 0;
 }
