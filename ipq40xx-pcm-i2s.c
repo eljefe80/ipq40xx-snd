@@ -511,20 +511,6 @@ error:
 	return ret;
 }
 
-static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_driver = {
-	.open		= ipq40xx_pcm_i2s_open,
-	.hw_params	= ipq40xx_pcm_i2s_hw_params,
-	.hw_free	= ipq40xx_pcm_hw_free,
-	.trigger	= ipq40xx_pcm_i2s_trigger,
-	.ioctl		= snd_pcm_lib_ioctl,
-	.close		= ipq40xx_pcm_i2s_close,
-	.prepare	= ipq40xx_pcm_i2s_prepare,
-	.mmap		= ipq40xx_pcm_i2s_mmap,
-	.pointer	= ipq40xx_pcm_i2s_pointer,
-	.copy_user	= ipq40xx_pcm_i2s_copy,
-//        .pcm_construct  = ipq40xx_pcm_i2s_new,
-};
-
 /*
 static void ipq40xx_asoc_pcm_i2s_free(struct snd_pcm *pcm)
 {
@@ -581,7 +567,7 @@ static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_platform = {
         .prepare        = ipq40xx_pcm_i2s_prepare,
         .mmap           = ipq40xx_pcm_i2s_mmap,
         .pointer        = ipq40xx_pcm_i2s_pointer,
-        .copy           = ipq40xx_pcm_i2s_copy,
+        .copy_user      = ipq40xx_pcm_i2s_copy,
 	.pcm_construct	= ipq40xx_asoc_pcm_i2s_new,
 //	.pcm_free	= ipq40xx_asoc_pcm_i2s_free,
 };
