@@ -26,6 +26,8 @@
 #include <sound/pcm_params.h>
 #include <asm/bitops.h>
 
+struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
+
 #include "ipq40xx-mbox.h"
 
 enum {
@@ -35,7 +37,6 @@ enum {
 	CHN_STATUS_DISABLE = 0xFF,
 };
 
-struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
 
 static struct ipq40xx_mbox_desc *get_next(
 				struct ipq40xx_mbox_rt_dir_priv *rtdir,
