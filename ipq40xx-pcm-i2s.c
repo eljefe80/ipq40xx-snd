@@ -225,7 +225,7 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 	return IRQ_HANDLED;
 }
 
-static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(
+static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(struct snd_soc_component *component,
 				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
