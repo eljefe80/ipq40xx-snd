@@ -238,7 +238,8 @@ static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_copy(struct snd_pcm_substream *substream, int chan,
+static int ipq40xx_pcm_i2s_copy(struct snd_pcm_component *component,
+				struct snd_pcm_substream *substream, int chan,
 				snd_pcm_uframes_t hwoff, void __user *ubuf,
 				snd_pcm_uframes_t frames)
 {
@@ -285,7 +286,8 @@ static int ipq40xx_pcm_i2s_copy(struct snd_pcm_substream *substream, int chan,
 	return 0;
 }
 
-static int ipq40xx_pcm_i2s_mmap(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_i2s_mmap(struct snd_pcm_component *component,
+				struct snd_pcm_substream *substream,
 				struct vm_area_struct *vma)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -298,14 +300,16 @@ static int ipq40xx_pcm_i2s_mmap(struct snd_pcm_substream *substream,
 		runtime->dma_area, runtime->dma_addr, runtime->dma_bytes);
 }
 
-static int ipq40xx_pcm_hw_free(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_hw_free(struct snd_pcm_component *component,
+				struct snd_pcm_substream *substream)
 {
 	snd_pcm_set_runtime_buffer(substream, NULL);
 	return 0;
 }
 
 
-static int ipq40xx_pcm_i2s_prepare(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_prepare(struct snd_pcm_component *component,
+				struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
@@ -331,7 +335,8 @@ static int ipq40xx_pcm_i2s_prepare(struct snd_pcm_substream *substream)
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_close(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_close(struct snd_pcm_component *component,
+				struct snd_pcm_substream *substream)
 {
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 	uint32_t ret;
@@ -349,7 +354,8 @@ static int ipq40xx_pcm_i2s_close(struct snd_pcm_substream *substream)
 	return 0;
 }
 
-static int ipq40xx_pcm_i2s_trigger(struct snd_pcm_substream *substream, int cmd)
+static int ipq40xx_pcm_i2s_trigger(struct snd_pcm_component *component,
+				struct snd_pcm_substream *substream, int cmd)
 {
 	int ret;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
@@ -402,7 +408,8 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_pcm_substream *substream, int cmd)
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_hw_params(struct snd_pcm_substream *substream,
+static int ipq40xx_pcm_i2s_hw_params(struct snd_pcm_component *component,
+				struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *hw_params)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -441,7 +448,8 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_pcm_substream *substream,
 	return ret;
 }
 
-static int ipq40xx_pcm_i2s_open(struct snd_pcm_substream *substream)
+static int ipq40xx_pcm_i2s_open(struct snd_pcm_component *component,
+				struct snd_pcm_substream *substream)
 {
 	int ret;
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -563,13 +571,20 @@ static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_pcm_runtime *prtd)
 	return ret;
 }
 
-/*
 static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_platform = {
-	.ops		= &ipq40xx_asoc_pcm_i2s_ops,
+        .open           = ipq40xx_pcm_i2s_open,
+        .hw_params      = ipq40xx_pcm_i2s_hw_params,
+        .hw_free        = ipq40xx_pcm_hw_free,
+        .trigger        = ipq40xx_pcm_i2s_trigger,
+//        .ioctl          = snd_pcm_lib_ioctl,
+        .close          = ipq40xx_pcm_i2s_close,
+        .prepare        = ipq40xx_pcm_i2s_prepare,
+        .mmap           = ipq40xx_pcm_i2s_mmap,
+        .pointer        = ipq40xx_pcm_i2s_pointer,
+        .copy           = ipq40xx_pcm_i2s_copy,
 	.pcm_new	= ipq40xx_asoc_pcm_i2s_new,
-	.pcm_free	= ipq40xx_asoc_pcm_i2s_free,
+//	.pcm_free	= ipq40xx_asoc_pcm_i2s_free,
 };
-*/
 
 static const struct of_device_id ipq40xx_pcm_i2s_id_table[] = {
 	{ .compatible = "qca,ipq40xx-pcm-i2s" },
@@ -579,7 +594,6 @@ static const struct of_device_id ipq40xx_pcm_i2s_id_table[] = {
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_pcm_i2s_id_table);
 
-/*
 static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 {
 	int ret;
@@ -611,7 +625,7 @@ static struct platform_driver ipq40xx_pcm_i2s_driver = {
 };
 
 module_platform_driver(ipq40xx_pcm_i2s_driver);
-*/
+
 MODULE_ALIAS("platform:qca-pcm-i2s");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx PCM I2S Platform Driver");
