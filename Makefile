@@ -36,7 +36,7 @@ obj-$(CONFIG_SND_IPQ40XX_SOC_CPU_DAI) += snd-soc-ipq40xx-cpu-dai.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_MBOX) += ipq40xx-mbox.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_ADSS) += ipq40xx-adss.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_STEREO) += ipq40xx-stereo.o
-obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_RAW) += ipq40xx-pcm-raw.o
+obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_RAW) += snd-soc-ipq40xx-pcm-raw.o
 
 
 modules:
