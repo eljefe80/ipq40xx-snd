@@ -81,8 +81,7 @@ enum {
 	ADSS_MBOX_NR_CHANNELS = 5,
 };
 
-//extern
-struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
+//extern struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
 
 struct ipq40xx_mbox_desc {
 
@@ -134,7 +133,7 @@ struct ipq40xx_pcm_pltfm_priv {
 };
 
 /* platform data */
-extern struct snd_soc_platform_driver ipq40xx_soc_platform;
+//extern struct snd_soc_platform_driver ipq40xx_soc_platform;
 
 int ipq40xx_mbox_fifo_reset(int channel_id);
 int ipq40xx_mbox_dma_start(int channel_id);
