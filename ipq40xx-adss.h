@@ -489,7 +489,7 @@
 						IPQ40xx_TDM_NO_OF_PERIODS)
 
 
-extern void __iomem *adss_audio_local_base;
+//extern void __iomem *adss_audio_local_base;
 
 /* Enumerations */
 
