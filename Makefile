@@ -23,7 +23,8 @@ snd-soc-ipq40xx-cpu-dai-objs := ipq40xx-cpu-dai.o
 #snd-soc-ipq40xx-mbox-objs := ipq40xx-mbox.o
 #snd-soc-ipq40xx-adss-objs := ipq40xx-adss.o
 #snd-soc-ipq40xx-stereo-objs := ipq40xx-stereo.o
-snd-soc-ipq40xx-pcm-raw-objs := ipq40xx-pcm-raw.o ipq40xx-pcm-raw-lb-test.o
+snd-soc-ipq40xx-pcm-raw-objs := ipq40xx-pcm-raw.o
+# ipq40xx-pcm-raw-lb-test.o
 
 obj-$(CONFIG_SND_QCA_SOC_IPQ40XX) += snd-soc-ipq40xx.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_I2S) += snd-soc-ipq40xx-pcm-i2s.o
