@@ -33,47 +33,6 @@
 #include "ipq40xx-adss.h"
 
 
-static int ipq40xx_startup(struct snd_pcm_substream *substream)
-{
-        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-        struct snd_soc_card *soc_card = rtd->card;
-        struct snd_soc_card_drvdata_davinci *drvdata =
-                snd_soc_card_get_drvdata(soc_card);
-
-        if (drvdata->mclk)
-                return clk_prepare_enable(drvdata->mclk);
-
-        return 0;
-}
-
-static void ipq40xx_shutdown(struct snd_pcm_substream *substream)
-{
-        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-        struct snd_soc_card *soc_card = rtd->card;
-        struct snd_soc_card_drvdata_davinci *drvdata =
-                snd_soc_card_get_drvdata(soc_card);
-
-        clk_disable_unprepare(drvdata->mclk);
-
-}
-
-static int ipq40xx_hw_params(struct snd_pcm_substream *substream,
-                         struct snd_pcm_hw_params *params)
-{
-       return 0;
-}
-
-static struct snd_soc_ops ipq40xx_ops = {
-        .startup = ipq40xx_startup,
-        .shutdown = ipq40xx_shutdown,
-        .hw_params = ipq40xx_hw_params,
-};
-
-static int ipq40xx_snd_init(struct snd_soc_pcm_runtime *rtd)
-{
-         return 0;
-}
-
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	/* Front end DAI Links */
 	{
@@ -88,9 +47,6 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 		/*Codec Driver Name */
 		//.codec_name	= "qca_codec.0-0012",
 		.codec_name	= "alc1312_codec.1-001a",
-                .init = ipq40xx_snd_init,
-                .ops = &ipq40xx_ops,
-                .dai_fmt = 0
 	},
 #if 0
 	{
@@ -199,20 +155,6 @@ static struct platform_driver ipq40xx_audio_driver = {
 	.probe = ipq40xx_audio_probe,
 	.remove = ipq40xx_audio_remove,
 };
-
-static int __init ipq40xx_init(void)
-{
-	return platform_driver_register(&ipq40xx_audio_driver);
-}
-
-static void __exit evm_exit(void)
-{
-        platform_driver_unregister(&ipq40xx_audio_driver);
-        return;
-}
-
-module_init(ipq40xx_init);
-module_exit(evm_exit);
 
 MODULE_ALIAS("platform:ipq40xx_audio");
 MODULE_LICENSE("Dual BSD/GPL");
