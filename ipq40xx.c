@@ -32,6 +32,11 @@
 
 #include "ipq40xx-adss.h"
 
+static struct struct snd_soc_dai_link_component ipq40xx_snd_dai_link_components[] = {
+	{
+		.name = "qca-i2s-dai",
+		.dai_name = "i2s-dai"
+}
 
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	/* Front end DAI Links */
@@ -39,13 +44,13 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 		.name		= "IPQ40xx Media1",
 		.stream_name	= "I2S",
 		/* Front End DAI Name */
-		//.cpu_dai_name	= "qca-i2s-dai",
+//		.cpu_dai_name	= "qca-i2s-dai",
 		/* Platform Driver Name */
-		//.platform_name	= "7709000.qca-pcm-i2s",
+//		.platform_name	= "7709000.qca-pcm-i2s",
 		/* Codec DAI Name */
-		//.codec_dai_name	= "alc1312-aif1",
+//		.codec_dai_name	= "alc1312-aif1",
 		/*Codec Driver Name */
-		//.codec_name	= "alc1312_codec.1-001a",
+//		.codec_name	= "alc1312_codec.1-001a",
 	},
 #if 0
 	{
