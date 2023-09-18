@@ -35,26 +35,26 @@
 
 static int ipq40xx_startup(struct snd_pcm_substream *substream)
 {
-/*        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
+        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
         struct snd_soc_card *soc_card = rtd->card;
         struct snd_soc_card_drvdata_davinci *drvdata =
                 snd_soc_card_get_drvdata(soc_card);
 
         if (drvdata->mclk)
                 return clk_prepare_enable(drvdata->mclk);
-*/
+
         return 0;
 }
 
 static void ipq40xx_shutdown(struct snd_pcm_substream *substream)
 {
-/*        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
+        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
         struct snd_soc_card *soc_card = rtd->card;
         struct snd_soc_card_drvdata_davinci *drvdata =
                 snd_soc_card_get_drvdata(soc_card);
 
         clk_disable_unprepare(drvdata->mclk);
-*/
+
 }
 
 static int ipq40xx_hw_params(struct snd_pcm_substream *substream,
@@ -80,14 +80,14 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 		.name		= "IPQ40xx Media1",
 		.stream_name	= "I2S",
 		/* Front End DAI Name */
-		//.cpu_dai_name	= "qca-i2s-dai",
+		.cpu_dai_name	= "qca-i2s-dai",
 		/* Platform Driver Name */
-		//.platform_name	= "7709000.qca-pcm-i2s",
+		.platform_name	= "7709000.qca-pcm-i2s",
 		/* Codec DAI Name */
-		//.codec_dai_name	= "alc1312-aif1",
+		.codec_dai_name	= "alc1312-aif1",
 		/*Codec Driver Name */
 		//.codec_name	= "qca_codec.0-0012",
-		//.codec_name	= "alc1312_codec.1-001a",
+		.codec_name	= "alc1312_codec.1-001a",
                 .init = ipq40xx_snd_init,
                 .ops = &ipq40xx_ops,
                 .dai_fmt = 0
