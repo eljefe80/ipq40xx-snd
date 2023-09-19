@@ -32,46 +32,11 @@
 
 #include "ipq40xx-adss.h"
 
-static struct struct snd_soc_dai_link_component ipq40xx_snd_dai_link_components[] = {
-	{
-		.name = "qca-i2s-dai",
-		.dai_name = "i2s-dai"
-}
-
-static int ipq40xx_hw_params(struct snd_pcm_substream *substream,
-                         struct snd_pcm_hw_params *params)
-{
-        struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-        struct snd_soc_dai *codec_dai = asoc_rtd_to_codec(rtd, 0);
-        struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
-        struct snd_soc_card *soc_card = rtd->card;
-        int ret = 0;
-
-        /* set the codec system clock */
-        ret = snd_soc_dai_set_sysclk(codec_dai, 0, sysclk, SND_SOC_CLOCK_OUT);
-        if (ret < 0)
-                return ret;
-        /* set the CPU system clock */
-        ret = snd_soc_dai_set_sysclk(cpu_dai, 0, sysclk, SND_SOC_CLOCK_OUT);
-        if (ret < 0 && ret != -ENOTSUPP)
-                return ret;
-
-        return 0;
-}
-
-static struct snd_soc_ops ipq4xx_ops = {
-//        .startup = ipq4xx_startup,
-//        .shutdown = ipq4xx_shutdown,
-//        .hw_params = ipq4xx_hw_params,
-};
-
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	/* Front end DAI Links */
 	{
 		.name		= "IPQ40xx Media1",
 		.stream_name	= "I2S",
-		.init		= ipq40xx_init,
-		.ops		= &ipq40xx_ops,
 		/* Front End DAI Name */
 //		.cpu_dai_name	= "qca-i2s-dai",
 		/* Platform Driver Name */
