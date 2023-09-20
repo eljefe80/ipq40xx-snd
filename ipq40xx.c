@@ -105,6 +105,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 	struct dev_pin_info *pins;
 	struct pinctrl_state *pin_state;
 
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 	card->dev = &pdev->dev;
 	pins = card->dev->pins;
 
