@@ -79,7 +79,7 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 		.codecs		= &ipq40xx_dai_link_codecs,
 		.num_codecs	= 1,
 		.platforms	= &ipq40xx_dai_link_platforms,
-		.num_platforms,
+		.num_platforms	= 1,
 
 		/* Front End DAI Name */
 //		.cpu_dai_name	= "qca-i2s-dai",
