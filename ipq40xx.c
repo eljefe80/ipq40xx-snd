@@ -32,11 +32,35 @@
 
 #include "ipq40xx-adss.h"
 
+static int ipq4xx_soc_startup() {
+	return 0;
+}
+
+static int ipq4xx_soc_shutdown() {
+	return 0;
+}
+
+static int ipq4xx_soc_hw_params() {
+	return 0;
+}
+
+static const struct snd_soc_ops ipq4xx_soc_ops = {
+        .startup        = ipq4xx_soc_startup,
+        .shutdown       = ipq4xx_soc_shutdown,
+        .hw_params      = ipq4xx_soc_hw_params,
+};
+
+static int ipq4xx_init() {
+	return 0;
+}
+
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	/* Front end DAI Links */
 	{
 		.name		= "IPQ40xx Media1",
 		.stream_name	= "I2S",
+		.ops		= &ipq40xx_ops,
+		.init		= ipq40xx_init;
 		/* Front End DAI Name */
 //		.cpu_dai_name	= "qca-i2s-dai",
 		/* Platform Driver Name */
@@ -45,6 +69,7 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 //		.codec_dai_name	= "alc1312-aif1",
 		/*Codec Driver Name */
 //		.codec_name	= "alc1312_codec.1-001a",
+
 	},
 #if 0
 	{
