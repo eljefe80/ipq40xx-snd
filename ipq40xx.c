@@ -50,7 +50,7 @@ static const struct snd_soc_ops ipq40xx_soc_ops = {
         .hw_params      = ipq40xx_soc_hw_params,
 };
 
-static int ipq40xx_init() {
+static int ipq40xx_init(struct snd_soc_pcm_runtime *rtd) {
 	return 0;
 }
 
