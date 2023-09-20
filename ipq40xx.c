@@ -54,6 +54,25 @@ static int ipq40xx_init(struct snd_soc_pcm_runtime *rtd) {
 	return 0;
 }
 
+static struct snd_soc_dai_link_component ipq40xx_dai_link_cpus[] = {
+	{
+		.dai_name = "qca-i2s-dai",
+		//.of_node =
+	},
+}
+static struct snd_soc_dai_link_component ipq40xx_dai_link_codecs[] = {
+	{
+		.name = "alc1312_codec.1-001a",
+		.dai_name = "alc1312-aif1"
+		//.of_node =
+	},
+}
+static struct snd_soc_dai_link_component ipq40xx_dai_link_platforms[] = {
+	{
+		.dai_name = "qca-i2s-dai",
+		//.of_node =
+	},
+}
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	/* Front end DAI Links */
 	{
@@ -61,6 +80,13 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 		.stream_name	= "I2S",
 		.ops		= &ipq40xx_soc_ops,
 		.init		= ipq40xx_init,
+		.cpus		= &ipq40xx_dai_link_cpus,
+		.num_cpus	= 1,
+		.codecs		= &ipq40xx_dai_link_codecs,
+		.num_codecs	= 1,
+		.platforms	= &ipq40xx_dai_link_platforms,
+		.num_platforms,
+
 		/* Front End DAI Name */
 //		.cpu_dai_name	= "qca-i2s-dai",
 		/* Platform Driver Name */
