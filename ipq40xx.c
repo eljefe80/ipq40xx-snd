@@ -32,15 +32,15 @@
 
 #include "ipq40xx-adss.h"
 
-static int ipq40xx_soc_startup() {
+static int ipq40xx_soc_startup(struct snd_pcm_substream *substream) {
 	return 0;
 }
 
 static void ipq40xx_soc_shutdown(struct snd_pcm_substream *) {
-	return 0;
 }
 
-static int ipq40xx_soc_hw_params() {
+static int ipq40xx_soc_hw_params(struct snd_pcm_substream *substream,
+				struct snd_pcm_hw_params *param) {
 	return 0;
 }
 
