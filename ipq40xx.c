@@ -121,6 +121,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 		pr_err("audio pinctrl state not available\n");
 		return PTR_ERR(pin_state);
 	}
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
 	if (ret) {
@@ -128,10 +129,13 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 		printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 		return ret;
 	}
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 
 	ipq40xx_audio_adss_init();
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 
 	pinctrl_select_state(pins->p, pin_state);
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 
 	return ret;
 }
