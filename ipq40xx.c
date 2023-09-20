@@ -36,7 +36,7 @@ static int ipq40xx_soc_startup() {
 	return 0;
 }
 
-static void *ipq40xx_soc_shutdown(struct snd_pcm_substream *) {
+static void ipq40xx_soc_shutdown(struct snd_pcm_substream *) {
 	return 0;
 }
 
@@ -59,8 +59,8 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	{
 		.name		= "IPQ40xx Media1",
 		.stream_name	= "I2S",
-		.ops		= &ipq40xx_ops,
-		.init		= ipq40xx_init;
+		.ops		= &ipq40xx_soc_ops,
+		.init		= ipq40xx_init,
 		/* Front End DAI Name */
 //		.cpu_dai_name	= "qca-i2s-dai",
 		/* Platform Driver Name */
