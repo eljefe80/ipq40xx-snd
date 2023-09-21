@@ -59,7 +59,7 @@ static struct snd_soc_dai_link_component ipq40xx_dai_link_cpus = {
 		//.of_node =
 };
 static struct snd_soc_dai_link_component ipq40xx_dai_link_codecs = {
-//		.name = "alc1312_codec.1-001a",
+		.name = "alc1312_codec.1-001a",
 		.dai_name = "alc1312-aif1"
 		//.of_node =
 };
