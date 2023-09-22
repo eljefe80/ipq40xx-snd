@@ -1611,7 +1611,7 @@ static struct i2c_driver rt5616_i2c_driver = {
 	.shutdown = rt5616_i2c_shutdown,
 	.id_table = rt5616_i2c_id,
 };
-//module_i2c_driver(rt5616_i2c_driver);
+module_i2c_driver(rt5616_i2c_driver);
 
 static int __init rt5616_modinit(void)
 {
