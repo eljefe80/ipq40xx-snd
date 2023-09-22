@@ -1618,14 +1618,14 @@ static int __init rt5616_modinit(void)
         printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
         return i2c_add_driver(&rt5616_i2c_driver);
 }
-module_init(rt5616_modinit);
+//module_init(rt5616_modinit);
 
 static void __exit rt5616_modexit(void)
 {
         printk("<3> Keen %s %d\r\n",__FUNCTION__,__LINE__);
         i2c_del_driver(&rt5616_i2c_driver);
 }
-module_exit(rt5616_modexit);
+//module_exit(rt5616_modexit);
 
 
 MODULE_DESCRIPTION("ASoC RT5616 driver");
