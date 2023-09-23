@@ -584,13 +584,13 @@ MODULE_DEVICE_TABLE(of, ipq40xx_pcm_i2s_id_table);
 static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 {
 	int ret;
-	pr_debug("%s %d\n", __func__, __LINE__,__FILE__);
+	pr_debug("%s %d %s\n", __func__, __LINE__,__FILE__);
 	ret = snd_soc_register_component(&pdev->dev,
 			&ipq40xx_asoc_pcm_i2s_platform, NULL, 0);
 	if (ret)
 		dev_err(&pdev->dev, "%s: Failed to register i2s pcm device\n",
-	pr_debug("%s %d\n", __func__, __LINE__,__FILE__);
 								__func__);
+	pr_debug("%s %d %s\n", __func__, __LINE__,__FILE__);
 	return ret;
 }
 
