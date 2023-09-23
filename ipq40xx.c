@@ -55,7 +55,7 @@ static int ipq40xx_init(struct snd_soc_pcm_runtime *rtd) {
 }
 
 static struct snd_soc_dai_link_component ipq40xx_dai_link_cpus = {
-		.dai_name = "qca-i2s-dai",
+		.name = "qca-i2s-dai",
 		//.of_node =
 };
 static struct snd_soc_dai_link_component ipq40xx_dai_link_codecs = {
@@ -64,7 +64,7 @@ static struct snd_soc_dai_link_component ipq40xx_dai_link_codecs = {
 		//.of_node =
 };
 static struct snd_soc_dai_link_component ipq40xx_dai_link_platforms = {
-		.dai_name = "7709000.qca-pcm-i2s",
+		.name = "7709000.qca-pcm-i2s",
 		//.of_node =
 };
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
