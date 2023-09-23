@@ -960,7 +960,7 @@ static int alc1312_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 {
 	struct snd_soc_component *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
-	printk("enter %s %s\n",__func__,,__FILE__);
+	printk("enter %s %s\n",__func__,__FILE__);
 
 	return 0;
 }
