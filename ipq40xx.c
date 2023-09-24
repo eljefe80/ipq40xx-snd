@@ -65,7 +65,7 @@ static const struct snd_soc_ops ipq40xx_soc_ops = {
 
 static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         struct device_node *node = priv->dev->of_node;
-	struct device_node *dai_node, *codec_node;
+	struct device_node *dai_node, *codec_node, *platform_node;
         struct snd_soc_dai_link_component *compnent;
         int comp_count = 6, ret = 0;
 
