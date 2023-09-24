@@ -1228,22 +1228,29 @@ static int alc1312_probe(struct snd_soc_component *component)
 
 	codec->cache_only = false;		// no cache
 */
+	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	alc1312->component = component;
+	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 
 	alc1312_init(component);
 
+	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	ret = device_create_file(component->dev, &dev_attr_index_reg);
+	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	if (ret != 0) {
 		dev_err(component->dev,
 			"Failed to create index_reg sysfs files: %d\n", ret);
 		return ret;
 	}
+	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	ret = device_create_file(component->dev, &dev_attr_codec_reg);
+	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	if (ret != 0) {
 		dev_err(component->dev,
 			"Failed to create codex_reg sysfs files: %d\n", ret);
 		return ret;
 	}
+	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	return 0;
 
 }
