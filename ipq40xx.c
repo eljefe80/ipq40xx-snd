@@ -66,7 +66,7 @@ static struct snd_soc_dai_link_component ipq40xx_dai_link_codecs = {
 };
 static struct snd_soc_dai_link_component ipq40xx_dai_link_platforms = {
 //		.dai_name = "qca-pcm-i2s",
-		.dai = "qca-pcm-i2s",
+		.name = "qca-pcm-i2s",
 //		.dai_name = "7709000.qca-pcm-i2s",
 		.dai_name = "qca-i2s-codec-dai",
 		//.of_node =
