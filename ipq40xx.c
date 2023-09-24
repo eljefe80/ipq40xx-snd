@@ -251,10 +251,10 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
         ipq40xx_soc_probe(priv);
 
         card->dai_link = priv->dai_links;
-        card->num_links = link_cnt;
+        card->num_links = 3;
 
         card->codec_conf = priv->codec_conf;
-        card->num_configs = conf_cnt;
+        card->num_configs = 0;
 
         snd_soc_card_set_drvdata(card, priv);
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
