@@ -1219,7 +1219,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 	printk("enter %s\n",__func__);
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	component->dapm.idle_bias_off = 1;
-/*
+
 	ret = snd_soc_codec_set_cache_io(codec, 16, 16, SND_SOC_I2C);
 	if (ret != 0) {
 		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
@@ -1227,7 +1227,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 	}
 
 	codec->cache_only = false;		// no cache
-*/
+
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	alc1312->component = component;
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
