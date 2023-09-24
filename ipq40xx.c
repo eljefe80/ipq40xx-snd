@@ -42,24 +42,22 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         struct device_node *node = priv->dev->of_node;
 	struct device_node *dai_node, *codec_node;
         struct snd_soc_dai_link_component *compnent;
-        int comp_count = 6;
+        int comp_count = 6, ret = 0;
 
 	codec_node = of_parse_phandle(node, "qca,ipq40xx-codec", 0);
         if (!codec_node) {
-		dev_err(priv->dev, "QCA IP4019 Codec node is not provided\n")
+		dev_err(priv->dev, "QCA IP4019 Codec node is not provided\n");
 		return -EINVAL;
         }
 
 	dai_node = of_parse_phandle(node, "qca,ipq40xx-pcm-i2s", 0);
         if (!dai_node) {
-		dev_err(priv->dev, "QCA IP4019 I2S node is not provided\n")
+		dev_err(priv->dev, "QCA IP4019 I2S node is not provided\n");
 		return -EINVAL;
         }
         comp_count = 1;
         compnent = devm_kzalloc(priv->dev, comp_count * sizeof(*compnent),
                                 GFP_KERNEL);
-	if (!compnent) {
-             comp_idx = 0;
         priv->dai_links[0].cpus = &compnent[comp_idx++];
         priv->dai_links[0].num_cpus = 1;
         priv->dai_links[0].codecs = &compnent[comp_idx++];
