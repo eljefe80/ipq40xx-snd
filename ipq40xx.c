@@ -203,6 +203,7 @@ MODULE_DEVICE_TABLE(of, ipq40xx_audio_id_table);
 static int ipq40xx_audio_probe(struct platform_device *pdev)
 {
 	int ret;
+	struct ipq40xx_soc_priv *priv;
 	struct snd_soc_card *card;
 	struct dev_pin_info *pins;
 	struct pinctrl_state *pin_state;
