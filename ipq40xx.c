@@ -36,7 +36,7 @@ struct ipq40xx_soc_priv {
 	struct device *dev;
 	struct snd_soc_card card;
 	struct snd_soc_dai_link *dai_links;
-}
+};
 
 static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         struct device_node *node = priv->dev->of_node;
@@ -55,29 +55,29 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
 		dev_err(priv->dev, "QCA IP4019 I2S node is not provided\n")
 		return -EINVAL;
         }
-        comp_count = 6;
+        comp_count = 1;
         compnent = devm_kzalloc(priv->dev, comp_count * sizeof(*compnent),
                                 GFP_KERNEL);
 	if (!compnent) {
              comp_idx = 0;
-        priv->dai_links[*link_idx].cpus = &compnent[comp_idx++];
-        priv->dai_links[*link_idx].num_cpus = 1;
-        priv->dai_links[*link_idx].codecs = &compnent[comp_idx++];
-        priv->dai_links[*link_idx].num_codecs = 1;
-        priv->dai_links[*link_idx].platforms = &compnent[comp_idx++];
-        priv->dai_links[*link_idx].num_platforms = 1;
+        priv->dai_links[0].cpus = &compnent[comp_idx++];
+        priv->dai_links[0].num_cpus = 1;
+        priv->dai_links[0].codecs = &compnent[comp_idx++];
+        priv->dai_links[0].num_codecs = 1;
+        priv->dai_links[0].platforms = &compnent[comp_idx++];
+        priv->dai_links[0].num_platforms = 1;
 
-        priv->dai_links[*link_idx].name = "IPQ4019 SOC Playback";
-        priv->dai_links[*link_idx].stream_name = "IPQ4019 I2S";
-        priv->dai_links[*link_idx].cpus->of_node = dai_node;
-        priv->dai_links[*link_idx].platforms->of_node = dai_node;
-        priv->dai_links[*link_idx].codecs->of_node = codec_node;
-        priv->dai_links[*link_idx].codecs->dai_name = "alc1312-aif1";
-        priv->dai_links[*link_idx].playback_only = 1;
-        priv->dai_links[*link_idx].id = J721E_AUDIO_DOMAIN_CPB;
-        priv->dai_links[*link_idx].dai_fmt = J721E_DAI_FMT;
-        priv->dai_links[*link_idx].init = ipq40xx_init,
-        priv->dai_links[*link_idx].ops = &ipq40xx_soc_ops,
+        priv->dai_links[0].name = "IPQ4019 SOC Playback";
+        priv->dai_links[0].stream_name = "IPQ4019 I2S";
+        priv->dai_links[0].cpus->of_node = dai_node;
+        priv->dai_links[0].platforms->of_node = dai_node;
+        priv->dai_links[0].codecs->of_node = codec_node;
+        priv->dai_links[0].codecs->dai_name = "alc1312-aif1";
+        priv->dai_links[0].playback_only = 1;
+        priv->dai_links[0].id = J721E_AUDIO_DOMAIN_CPB;
+        priv->dai_links[0].dai_fmt = J721E_DAI_FMT;
+        priv->dai_links[0].init = ipq40xx_init,
+        priv->dai_links[0].ops = &ipq40xx_soc_ops,
         of_node_put(codec_node);
         of_node_put(dai_node);
         return ret;
