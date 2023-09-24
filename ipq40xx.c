@@ -57,11 +57,13 @@ static int ipq40xx_init(struct snd_soc_pcm_runtime *rtd) {
 static struct snd_soc_dai_link_component ipq40xx_dai_link_cpus = {
 		.dai_name = "qca-i2s-dai",
 		.name = "qca-i2s-dai",
+		.of_node = of_parse_phandle(node, "", 0);
 		//.of_node =
 };
 static struct snd_soc_dai_link_component ipq40xx_dai_link_codecs = {
 		.dai_name = "alc1312_codec.1-001a",
 		.name = "alc1312-aif1"
+		.of_node = of_parse_phandle(node, "", 0);
 		//.of_node =
 };
 static struct snd_soc_dai_link_component ipq40xx_dai_link_platforms = {
@@ -69,7 +71,7 @@ static struct snd_soc_dai_link_component ipq40xx_dai_link_platforms = {
 		.name = "qca-pcm-i2s",
 //		.dai_name = "7709000.qca-pcm-i2s",
 		.dai_name = "qca-i2s-codec-dai",
-		//.of_node =
+		.of_node = of_parse_phandle(node, "", 0);
 };
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	/* Front end DAI Links */
@@ -186,6 +188,8 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 
 	pinctrl_select_state(pins->p, pin_state);
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+
+//        ipq40xx_soc_probe(card);
 
 	return ret;
 }
