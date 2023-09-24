@@ -32,6 +32,49 @@
 
 #include "ipq40xx-adss.h"
 
+static int ipq40xx_soc_probe(struct ipq40xx){
+        struct device_node *dai_node;
+        struct snd_soc_dai_link_component *compnent;
+        int comp_count = 6;
+
+	codec_node = of_parse_phandle(node, "qca,ipq40xx-codec", 0);
+        if (!codec_node) {
+		dev_err(priv->dev, "QCA IP4019 Codec node is not provided\n")
+		return -EINVAL;
+        }
+
+	dai_node = of_parse_phandle(node, "qca,ipq40xx-pcm-i2s", 0);
+        if (!dai_node) {
+		dev_err(priv->dev, "QCA IP4019 I2S node is not provided\n")
+		return -EINVAL;
+        }
+        comp_count = 6;
+        compnent = devm_kzalloc(priv->dev, comp_count * sizeof(*compnent),
+                                GFP_KERNEL);
+	if (!compnent) {
+             comp_idx = 0;
+        priv->dai_links[*link_idx].cpus = &compnent[comp_idx++];
+        priv->dai_links[*link_idx].num_cpus = 1;
+        priv->dai_links[*link_idx].codecs = &compnent[comp_idx++];
+        priv->dai_links[*link_idx].num_codecs = 1;
+        priv->dai_links[*link_idx].platforms = &compnent[comp_idx++];
+        priv->dai_links[*link_idx].num_platforms = 1;
+
+        priv->dai_links[*link_idx].name = "IPQ4019 SOC Playback";
+        priv->dai_links[*link_idx].stream_name = "IPQ4019 I2S";
+        priv->dai_links[*link_idx].cpus->of_node = dai_node;
+        priv->dai_links[*link_idx].platforms->of_node = dai_node;
+        priv->dai_links[*link_idx].codecs->of_node = codec_node;
+        priv->dai_links[*link_idx].codecs->dai_name = "alc1312-aif1";
+        priv->dai_links[*link_idx].playback_only = 1;
+        priv->dai_links[*link_idx].id = J721E_AUDIO_DOMAIN_CPB;
+        priv->dai_links[*link_idx].dai_fmt = J721E_DAI_FMT;
+        priv->dai_links[*link_idx].init = ipq40xx_init,
+        priv->dai_links[*link_idx].ops = &ipq40xx_soc_ops,
+        of_node_put(codec_node);
+        of_node_put(dai_node);
+        return ret;
+}
 static int ipq40xx_soc_startup(struct snd_pcm_substream *substream) {
 	return 0;
 }
@@ -78,8 +121,6 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	{
 		.name		= "IPQ40xx Media1",
 		.stream_name	= "I2S",
-		.ops		= &ipq40xx_soc_ops,
-		.init		= ipq40xx_init,
 		.cpus		= &ipq40xx_dai_link_cpus,
 		.num_cpus	= 1,
 		.codecs		= &ipq40xx_dai_link_codecs,
@@ -152,11 +193,15 @@ MODULE_DEVICE_TABLE(of, ipq40xx_audio_id_table);
 static int ipq40xx_audio_probe(struct platform_device *pdev)
 {
 	int ret;
-	struct snd_soc_card *card = &snd_soc_card_qca;
+	struct snd_soc_card *card;
 	struct dev_pin_info *pins;
 	struct pinctrl_state *pin_state;
 
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+        priv->dai_links = devm_kcalloc(&pdev->dev, priv->match_data->num_links,
+                                       sizeof(*priv->dai_links), GFP_KERNEL);
+        priv->dev = &pdev->dev;
+        card = &priv->card;
 	card->dev = &pdev->dev;
 	pins = card->dev->pins;
 
@@ -174,6 +219,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 		return PTR_ERR(pin_state);
 	}
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+        ipq40xx_soc_probe(card);
 
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
 	if (ret) {
@@ -188,8 +234,6 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 
 	pinctrl_select_state(pins->p, pin_state);
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
-
-//        ipq40xx_soc_probe(card);
 
 	return ret;
 }
