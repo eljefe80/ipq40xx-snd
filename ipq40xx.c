@@ -261,6 +261,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
         priv->dev = &pdev->dev;
         card = &priv->card;
 	card->dev = &pdev->dev;
+        card->name = "IPQ4019 Audio Interface";
 	pins = card->dev->pins;
         card->owner = THIS_MODULE;
         card->dapm_widgets = ipq40xx_audio_dapm_widgets;
@@ -293,8 +294,8 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 
         snd_soc_card_set_drvdata(card, priv);
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
-	if (ret) {
-		pr_err("\nsnd_soc_register_card() failed:%d\n", ret);
+	if (ret) 
+		pr_err("snd_soc_register_card() failed:%d\n", ret);
 		printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 		return ret;
 	}
