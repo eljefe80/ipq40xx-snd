@@ -76,7 +76,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
 		return -EINVAL;
         }
 
-	dai_node = of_parse_phandle(node, "i2s", 0);
+	dai_node = of_parse_phandle(node, "pcmi2s", 0);
         if (!dai_node) {
 		dev_err(priv->dev, "QCA IP4019 I2S node is not provided\n");
 		return -EINVAL;
