@@ -38,12 +38,38 @@ struct ipq40xx_soc_priv {
 	struct snd_soc_dai_link *dai_links;
 };
 
+static int ipq40xx_init(struct snd_soc_pcm_runtime *rtd) {
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+	return 0;
+}
+static int ipq40xx_soc_startup(struct snd_pcm_substream *substream) {
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+	return 0;
+}
+
+static void ipq40xx_soc_shutdown(struct snd_pcm_substream *) {
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+}
+
+static int ipq40xx_soc_hw_params(struct snd_pcm_substream *substream,
+				struct snd_pcm_hw_params *param) {
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+	return 0;
+}
+
+static const struct snd_soc_ops ipq40xx_soc_ops = {
+        .startup        = ipq40xx_soc_startup,
+        .shutdown       = ipq40xx_soc_shutdown,
+        .hw_params      = ipq40xx_soc_hw_params,
+};
+
 static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         struct device_node *node = priv->dev->of_node;
 	struct device_node *dai_node, *codec_node;
         struct snd_soc_dai_link_component *compnent;
         int comp_count = 6, ret = 0;
 
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 	codec_node = of_parse_phandle(node, "qca,ipq40xx-codec", 0);
         if (!codec_node) {
 		dev_err(priv->dev, "QCA IP4019 Codec node is not provided\n");
@@ -72,34 +98,13 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].codecs->of_node = codec_node;
         priv->dai_links[0].codecs->dai_name = "alc1312-aif1";
         priv->dai_links[0].playback_only = 1;
-        priv->dai_links[0].id = J721E_AUDIO_DOMAIN_CPB;
-        priv->dai_links[0].dai_fmt = J721E_DAI_FMT;
+//        priv->dai_links[0].id = J721E_AUDIO_DOMAIN_CPB;
+//        priv->dai_links[0].dai_fmt = J721E_DAI_FMT;
         priv->dai_links[0].init = ipq40xx_init,
         priv->dai_links[0].ops = &ipq40xx_soc_ops,
         of_node_put(codec_node);
         of_node_put(dai_node);
         return ret;
-}
-static int ipq40xx_soc_startup(struct snd_pcm_substream *substream) {
-	return 0;
-}
-
-static void ipq40xx_soc_shutdown(struct snd_pcm_substream *) {
-}
-
-static int ipq40xx_soc_hw_params(struct snd_pcm_substream *substream,
-				struct snd_pcm_hw_params *param) {
-	return 0;
-}
-
-static const struct snd_soc_ops ipq40xx_soc_ops = {
-        .startup        = ipq40xx_soc_startup,
-        .shutdown       = ipq40xx_soc_shutdown,
-        .hw_params      = ipq40xx_soc_hw_params,
-};
-
-static int ipq40xx_init(struct snd_soc_pcm_runtime *rtd) {
-	return 0;
 }
 
 static struct snd_soc_dai_link_component ipq40xx_dai_link_cpus = {
