@@ -32,8 +32,12 @@
 
 #include "ipq40xx-adss.h"
 
-static int ipq40xx_soc_probe(struct ipq40xx){
-        struct device_node *dai_node;
+struct ipq40xx_soc_priv {
+}
+
+static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
+        struct device_node *node = priv->dev->of_node;
+	struct device_node *dai_node, *codec_node;
         struct snd_soc_dai_link_component *compnent;
         int comp_count = 6;
 
@@ -197,6 +201,9 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 	struct dev_pin_info *pins;
 	struct pinctrl_state *pin_state;
 
+        priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+        if (!priv)
+                return -ENOMEM;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
         priv->dai_links = devm_kcalloc(&pdev->dev, priv->match_data->num_links,
                                        sizeof(*priv->dai_links), GFP_KERNEL);
@@ -219,7 +226,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 		return PTR_ERR(pin_state);
 	}
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
-        ipq40xx_soc_probe(card);
+        ipq40xx_soc_probe(priv);
 
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
 	if (ret) {
