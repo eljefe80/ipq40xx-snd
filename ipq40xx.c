@@ -34,7 +34,8 @@
 
 struct ipq40xx_soc_priv {
 	struct device *dev;
-	struct dail_link[] *dai_links;
+	struct snd_soc_card card;
+	struct snd_soc_dai_link *dai_links;
 }
 
 static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
