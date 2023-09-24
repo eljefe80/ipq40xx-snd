@@ -114,6 +114,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
 //        priv->dai_links[0].dai_fmt = J721E_DAI_FMT;
         priv->dai_links[0].init = ipq40xx_init,
         priv->dai_links[0].ops = &ipq40xx_soc_ops,
+        of_node_put(platform_node);
         of_node_put(codec_node);
         of_node_put(dai_node);
         return ret;
@@ -248,6 +249,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
         ipq40xx_soc_probe(priv);
 
+        snd_soc_card_set_drvdata(card, priv);
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
 	if (ret) {
 		pr_err("\nsnd_soc_register_card() failed:%d\n", ret);
