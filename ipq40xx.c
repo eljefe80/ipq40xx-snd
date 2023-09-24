@@ -265,8 +265,8 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
         card->owner = THIS_MODULE;
         card->dapm_widgets = ipq40xx_audio_dapm_widgets;
         card->num_dapm_widgets = ARRAY_SIZE(ipq40xx_audio_dapm_widgets);
-        card->dapm_routes = ipq40xx_audio_dapm_routes;
-        card->num_dapm_routes = ARRAY_SIZE(ipq40xx_audio_dapm_routes);
+        card->dapm_routes = ipq4019_audio_dapm_routes;
+        card->num_dapm_routes = ARRAY_SIZE(ipq4019_audio_dapm_routes);
         card->fully_routed = 1;
 
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
