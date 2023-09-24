@@ -58,11 +58,11 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         comp_count = 1;
         compnent = devm_kzalloc(priv->dev, comp_count * sizeof(*compnent),
                                 GFP_KERNEL);
-        priv->dai_links[0].cpus = &compnent[comp_idx++];
+        priv->dai_links[0].cpus = &compnent[0];
         priv->dai_links[0].num_cpus = 1;
-        priv->dai_links[0].codecs = &compnent[comp_idx++];
+        priv->dai_links[0].codecs = &compnent[1];
         priv->dai_links[0].num_codecs = 1;
-        priv->dai_links[0].platforms = &compnent[comp_idx++];
+        priv->dai_links[0].platforms = &compnent[2];
         priv->dai_links[0].num_platforms = 1;
 
         priv->dai_links[0].name = "IPQ4019 SOC Playback";
