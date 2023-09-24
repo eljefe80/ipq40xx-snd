@@ -106,7 +106,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         of_node_put(dai_node);
         return ret;
 }
-
+/*
 static struct snd_soc_dai_link_component ipq40xx_dai_link_cpus = {
 		.dai_name = "qca-i2s-dai",
 		.name = "qca-i2s-dai",
@@ -126,16 +126,17 @@ static struct snd_soc_dai_link_component ipq40xx_dai_link_platforms = {
 		.dai_name = "qca-i2s-codec-dai",
 		.of_node = of_parse_phandle(node, "", 0),
 };
+*/
 static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	/* Front end DAI Links */
 	{
 		.name		= "IPQ40xx Media1",
 		.stream_name	= "I2S",
-		.cpus		= &ipq40xx_dai_link_cpus,
+//		.cpus		= &ipq40xx_dai_link_cpus,
 		.num_cpus	= 1,
-		.codecs		= &ipq40xx_dai_link_codecs,
+//		.codecs		= &ipq40xx_dai_link_codecs,
 		.num_codecs	= 1,
-		.platforms	= &ipq40xx_dai_link_platforms,
+//		.platforms	= &ipq40xx_dai_link_platforms,
 		.num_platforms	= 1,
 
 		/* Front End DAI Name */
