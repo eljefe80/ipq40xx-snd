@@ -120,6 +120,35 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         of_node_put(dai_node);
         return ret;
 }
+
+static const struct snd_soc_dapm_widget ipq40xx_audio_dapm_widgets[] = {
+        SND_SOC_DAPM_HP("CPB Stereo HP 1", NULL),
+        SND_SOC_DAPM_HP("CPB Stereo HP 2", NULL),
+        SND_SOC_DAPM_HP("CPB Stereo HP 3", NULL),
+        SND_SOC_DAPM_LINE("CPB Line Out", NULL),
+        SND_SOC_DAPM_MIC("CPB Stereo Mic 1", NULL),
+        SND_SOC_DAPM_MIC("CPB Stereo Mic 2", NULL),
+        SND_SOC_DAPM_LINE("CPB Line In", NULL),
+};
+
+static const struct snd_soc_dapm_route ipq4019_audio_dapm_routes[] = {
+        {"CPB Stereo HP 1", NULL, "codec-1 AOUT1L"},
+        {"CPB Stereo HP 1", NULL, "codec-1 AOUT1R"},
+        {"CPB Stereo HP 2", NULL, "codec-1 AOUT2L"},
+        {"CPB Stereo HP 2", NULL, "codec-1 AOUT2R"},
+        {"CPB Stereo HP 3", NULL, "codec-1 AOUT3L"},
+        {"CPB Stereo HP 3", NULL, "codec-1 AOUT3R"},
+        {"CPB Line Out", NULL, "codec-1 AOUT4L"},
+        {"CPB Line Out", NULL, "codec-1 AOUT4R"},
+
+        {"codec-1 AIN1L", NULL, "CPB Stereo Mic 1"},
+        {"codec-1 AIN1R", NULL, "CPB Stereo Mic 1"},
+        {"codec-1 AIN2L", NULL, "CPB Stereo Mic 2"},
+        {"codec-1 AIN2R", NULL, "CPB Stereo Mic 2"},
+        {"codec-1 AIN3L", NULL, "CPB Line In"},
+        {"codec-1 AIN3R", NULL, "CPB Line In"},
+};
+
 /*
 static struct snd_soc_dai_link_component ipq40xx_dai_link_cpus = {
 		.dai_name = "qca-i2s-dai",
@@ -233,6 +262,12 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
         card = &priv->card;
 	card->dev = &pdev->dev;
 	pins = card->dev->pins;
+        card->owner = THIS_MODULE;
+        card->dapm_widgets = ipq40xx_audio_dapm_widgets;
+        card->num_dapm_widgets = ARRAY_SIZE(ipq40xx_audio_dapm_widgets);
+        card->dapm_routes = ipq40xx_audio_dapm_routes;
+        card->num_dapm_routes = ARRAY_SIZE(ipq40xx_audio_dapm_routes);
+        card->fully_routed = 1;
 
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 /*
