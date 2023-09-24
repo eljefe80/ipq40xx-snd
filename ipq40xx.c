@@ -70,7 +70,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         int comp_count = 6, ret = 0;
 
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
-	codec_node = of_parse_phandle(node, "qca,ipq40xx-codec", 0);
+	codec_node = of_parse_phandle(node, "qca,ipq40xx-codec-alc1312", 0);
         if (!codec_node) {
 		dev_err(priv->dev, "QCA IP4019 Codec node is not provided\n");
 		return -EINVAL;
