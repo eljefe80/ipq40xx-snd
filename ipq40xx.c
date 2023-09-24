@@ -213,7 +213,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
         if (!priv)
                 return -ENOMEM;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
-        priv->dai_links = devm_kcalloc(&pdev->dev, priv->match_data->num_links,
+        priv->dai_links = devm_kcalloc(&pdev->dev, 3,
                                        sizeof(*priv->dai_links), GFP_KERNEL);
         priv->dev = &pdev->dev;
         card = &priv->card;
