@@ -33,6 +33,8 @@
 #include "ipq40xx-adss.h"
 
 struct ipq40xx_soc_priv {
+	struct device *dev;
+	struct dail_link[] *dai_links;
 }
 
 static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
