@@ -73,11 +73,13 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         if (!node)
                 return 0;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+
 	dai_node = of_parse_phandle(node, "i2s", 0);
         if (!dai_node) {
 		dev_err(priv->dev, "QCA IP4019 I2S cpu node is not provided\n");
 		return -EINVAL;
         }
+
 	platform_node = of_parse_phandle(node, "i2splatform", 0);
         if (!platform_node) {
 		dev_err(priv->dev, "QCA IP4019 I2S platform node is not provided\n");
@@ -103,6 +105,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].name = "IPQ4019 SOC Playback";
         priv->dai_links[0].stream_name = "IPQ4019 I2S";
         priv->dai_links[0].cpus->of_node = dai_node;
+	priv->dai_links[0].platforms->dai_name = "7709000.qca-pcm-tdm",
         priv->dai_links[0].platforms->of_node = platform_node;
         priv->dai_links[0].codecs->of_node = codec_node;
         priv->dai_links[0].codecs->dai_name = "alc1312-aif1";
