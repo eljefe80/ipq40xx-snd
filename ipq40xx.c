@@ -287,14 +287,14 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
         ipq40xx_soc_probe(priv);
 
         card->dai_link = priv->dai_links;
-        card->num_links = 3;
+        card->num_links = 1;
 
         card->codec_conf = priv->codec_conf;
         card->num_configs = 0;
 
         snd_soc_card_set_drvdata(card, priv);
-//	ret = devm_snd_soc_register_card(&pdev->dev, card);
-	ret = snd_soc_register_card(card);
+
+	ret = devm_snd_soc_register_card(&pdev->dev, card);
 	if (ret) {
 		pr_err("snd_soc_register_card() failed:%d\n", ret);
 		printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
