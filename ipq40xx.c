@@ -35,6 +35,7 @@
 struct ipq40xx_soc_priv {
 	struct device *dev;
 	struct snd_soc_card card;
+        struct snd_soc_codec_conf codec_conf[1];
 	struct snd_soc_dai_link *dai_links;
 };
 
@@ -248,6 +249,12 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 	}
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
         ipq40xx_soc_probe(priv);
+
+        card->dai_link = priv->dai_links;
+        card->num_links = link_cnt;
+
+        card->codec_conf = priv->codec_conf;
+        card->num_configs = conf_cnt;
 
         snd_soc_card_set_drvdata(card, priv);
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
