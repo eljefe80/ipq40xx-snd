@@ -941,7 +941,7 @@ static int alc1312_hw_params(struct snd_pcm_substream *substream,
 {
 	struct snd_soc_component *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
-	printk("enter %s\n",__func__,__FILE__);
+	printk("enter %s %s\n",__func__,__FILE__);
 
 
 	return 0;
@@ -1216,7 +1216,6 @@ static const struct regmap_config alc1312_regmap_config;
 static int alc1312_probe(struct snd_soc_component *component)
 {
 	struct alc1312_priv *alc1312 = snd_soc_component_get_drvdata(component);
-	struct alc1312
 	int ret = 0;
 
 	printk("enter %s\n",__func__);
