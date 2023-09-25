@@ -1129,7 +1129,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 
 	printk("enter %s\n",__func__);
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
-	mutex_init(&component->io_mutex);
+//	mutex_init(&component->io_mutex);
 	component->dapm.idle_bias_off = 1;
 
 //        component->write = hw_write;
@@ -1147,7 +1147,8 @@ static int alc1312_probe(struct snd_soc_component *component)
 	alc1312->component = component;
 	component->regmap = alc1312->regmap;
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
-
+        if (IS_ERR(component->regmap))
+                return PTR_ERR(component->regmap);
 	alc1312_init(component);
 
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
@@ -1275,7 +1276,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 
 	i2c_set_clientdata(i2c, alc1312);
 
-	alc1312->regmap = devm_regmap_init_i2c(i2c, &alc1312_regmap_config);
+	alc1312#->regmap = devm_regmap_init_i2c(i2c, &alc1312_regmap_config);
 	if (IS_ERR(alc1312->regmap))
 		return PTR_ERR(alc1312->regmap);
 
