@@ -1226,13 +1226,13 @@ static int alc1312_probe(struct snd_soc_component *component)
         component->read = hw_read;
         component->regmap = regmap_init_i2c(to_i2c_client(codec->dev),
 						      &alc1312_regmap_config);
-	if (ret != 0) {
+/*	if (ret != 0) {
 		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
 		return ret;
 	}
 
 	component->cache_only = false;		// no cache
-
+*/
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	alc1312->component = component;
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
