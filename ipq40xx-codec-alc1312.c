@@ -1280,7 +1280,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 	if (IS_ERR(alc1312->regmap))
 		return PTR_ERR(alc1312->regmap);
 
-	ret = snd_soc_register_component(&i2c->dev, &soc_codec_dev_alc1312,
+	ret = devm_snd_soc_register_component(&i2c->dev, &soc_codec_dev_alc1312,
 			alc1312_dai, ARRAY_SIZE(alc1312_dai));
 	if (ret < 0)
 		kfree(alc1312);
