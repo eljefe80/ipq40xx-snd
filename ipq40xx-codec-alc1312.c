@@ -736,8 +736,12 @@ extern unsigned int serial_out_i2c(unsigned int addr, int offset, int value);
 static bool alc1312_volatile_register(struct device *codec, unsigned int reg)
 {
 
-	return 1;
-
+	switch(req) {
+	case 0x007C:
+		return 0;
+	default:
+		return 1;
+	}
 }
 
 static bool alc1312_readable_register(struct device *dev, unsigned int reg)
@@ -1257,7 +1261,7 @@ static const struct regmap_config alc1312_regmap_config = {
 	.val_bits = 16,
 
 	.readable_reg = alc1312_readable_register,
-//	.volatile_reg = alc1312_volatile_register,
+	.volatile_reg = alc1312_volatile_register,
 	.max_register = 0x8FF,
 	.reg_defaults = alc1312_reg,
 	.num_reg_defaults = ARRAY_SIZE(alc1312_reg),
