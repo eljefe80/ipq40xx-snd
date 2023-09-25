@@ -1276,7 +1276,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 
 	i2c_set_clientdata(i2c, alc1312);
 
-	alc1312#->regmap = devm_regmap_init_i2c(i2c, &alc1312_regmap_config);
+	alc1312->regmap = devm_regmap_init_i2c(i2c, &alc1312_regmap_config);
 	if (IS_ERR(alc1312->regmap))
 		return PTR_ERR(alc1312->regmap);
 
