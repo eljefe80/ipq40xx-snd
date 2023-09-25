@@ -1214,19 +1214,24 @@ static int alc1312_init(struct snd_soc_component *component)
 static int alc1312_probe(struct snd_soc_component *component)
 {
 	struct alc1312_priv *alc1312 = snd_soc_component_get_drvdata(component);
+	struct alc1312
 	int ret = 0;
 
 	printk("enter %s\n",__func__);
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	component->dapm.idle_bias_off = 1;
 
-	ret = snd_soc_codec_set_cache_io(codec, 16, 16, SND_SOC_I2C);
+
+        component->write = hw_write;
+        component->read = hw_read;
+        component->regmap = regmap_init_i2c(to_i2c_client(codec->dev),
+						      &alc1312_regmap_config);
 	if (ret != 0) {
 		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
 		return ret;
 	}
 
-	codec->cache_only = false;		// no cache
+	component->cache_only = false;		// no cache
 
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	alc1312->component = component;
