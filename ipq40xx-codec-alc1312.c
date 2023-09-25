@@ -1257,7 +1257,7 @@ static const struct regmap_config alc1312_regmap_config = {
 	.val_bits = 16,
 
 	.readable_reg = alc1312_readable_register,
-	.volatile_reg = alc1312_volatile_register,
+//	.volatile_reg = alc1312_volatile_register,
 	.max_register = 0x8FF,
 	.reg_defaults = alc1312_reg,
 	.num_reg_defaults = ARRAY_SIZE(alc1312_reg),
@@ -1274,11 +1274,14 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 	if (NULL == alc1312)
 		return -ENOMEM;
 
-	i2c_set_clientdata(i2c, alc1312);
+	alc1312->dev = dev;
+	alc1312->irq = i2c->irq;
 
 	alc1312->regmap = devm_regmap_init_i2c(i2c, &alc1312_regmap_config);
 	if (IS_ERR(alc1312->regmap))
 		return PTR_ERR(alc1312->regmap);
+
+	i2c_set_clientdata(i2c, alc1312);
 
 	ret = devm_snd_soc_register_component(&i2c->dev, &soc_codec_dev_alc1312,
 			alc1312_dai, ARRAY_SIZE(alc1312_dai));
