@@ -1375,7 +1375,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 			alc1312_dai, ARRAY_SIZE(alc1312_dai));
 	if (ret < 0)
 		kfree(alc1312);
-	mutex_init(alc1312->component->io_mutex);
+	mutex_init(&alc1312->component->io_mutex);
 
 	printk("<3> Keen %s %d %s\n",__FUNCTION__,__LINE__,__FILE__);
 	return ret;
