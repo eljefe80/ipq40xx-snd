@@ -599,7 +599,6 @@ static struct alc1312_eq_reg eq_list[] = {
 
 };
 
-
 static const struct reg_default alc1312_reg[] = {
 	{ 0x0000,   0x0    },
 	{ 0x0004,   0x1000 },
@@ -734,16 +733,14 @@ err:
 extern unsigned int serial_in_i2c(unsigned int addr, int offset);
 extern unsigned int serial_out_i2c(unsigned int addr, int offset, int value);
 
-static bool alc1312_volatile_register(
-	struct device *codec, unsigned int reg)
+static bool alc1312_volatile_register(struct device *codec, unsigned int reg)
 {
 
 	return 1;
 
 }
 
-static bool alc1312_readable_register(
-	struct device *dev, unsigned int reg)
+static bool alc1312_readable_register(struct device *dev, unsigned int reg)
 {
 	switch (reg) {
 	case 0x0000 ... 0x000D:
@@ -788,89 +785,7 @@ static int alc1312_index_readable_register(
 	}
 }
 
-
-#if 0
-/*
- * read alc1312 register cache
- */
-static inline unsigned int alc1312_read_reg_cache(struct snd_soc_component *component,
-	unsigned int reg)
-{
-	u16 *cache = component->reg_cache;
-	if (reg < 1 || reg > (ARRAY_SIZE(alc1312_reg) + 1))
-		return -1;
-	return cache[reg];
-}
-
-/*
- * write alc1312 register cache
- */
-
-static inline void alc1312_write_reg_cache(struct snd_soc_component *component,
-	unsigned int reg, unsigned int value)
-{
-	u16 *cache = component->reg_cache;
-	if (reg < 0 || reg > 0xfc)
-		return;
-	cache[reg] = value;
-}
-
-static int alc1312_write(struct snd_soc_component *component, unsigned int reg, unsigned int val)
-{
-	//panic_printk("write 0x%02x 0x%04x\n",reg,val);
-
-	alc1312_write_reg_cache(component, reg, val);
-
-	serial_out_i2c(ALC1312_I2C_ADDR, reg, val);
-
-	return 0;
-}
-
-static unsigned int alc1312_read(struct snd_soc_component *component, unsigned int reg)
-{
-	int ret=0;
-	if(alc1312_volatile_register(snd_soc_component_get_drvdata(component), reg))
-	{
-		ret=serial_in_i2c(ALC1312_I2C_ADDR, reg);
-		//panic_printk("from i2c read 0x%02x 0x%04x\n",reg,ret);
-		return ret;
-	}
-	ret = alc1312_read_reg_cache(component, reg);
-	//panic_printk("from cache read 0x%02x 0x%04x\n",reg,ret);
-	return ret;
-}
-#endif
-
-#if 0 /*Bard: keep it as a sample code*/
-static const DECLARE_TLV_DB_SCALE(out_vol_tlv, -4650, 150, 0);
-static const DECLARE_TLV_DB_SCALE(dac_vol_tlv, -65625, 375, 0);
-static const DECLARE_TLV_DB_SCALE(in_vol_tlv, -3450, 150, 0);
-static const DECLARE_TLV_DB_SCALE(adc_vol_tlv, -17625, 375, 0);
-static const DECLARE_TLV_DB_SCALE(adc_bst_tlv, 0, 1200, 0);
-
-/* {0, +20, +24, +30, +35, +40, +44, +50, +52} dB */
-static unsigned int bst_tlv[] = {
-	TLV_DB_RANGE_HEAD(7),
-	0, 0, TLV_DB_SCALE_ITEM(0, 0, 0),
-	1, 1, TLV_DB_SCALE_ITEM(2000, 0, 0),
-	2, 2, TLV_DB_SCALE_ITEM(2400, 0, 0),
-	3, 5, TLV_DB_SCALE_ITEM(3000, 500, 0),
-	6, 6, TLV_DB_SCALE_ITEM(4400, 0, 0),
-	7, 7, TLV_DB_SCALE_ITEM(5000, 0, 0),
-	8, 8, TLV_DB_SCALE_ITEM(5200, 0, 0),
-};
-
-
-static const char *alc1312_input_mode[] = {
-	"Single ended", "Differential"};
-
-static const struct soc_enum alc1312_in1_mode_enum = SOC_ENUM_SINGLE(ALC1312_IN1_IN2,
-	ALC1312_IN_SFT1, ARRAY_SIZE(alc1312_input_mode), alc1312_input_mode);
-#endif
-
-
 static const DECLARE_TLV_DB_SCALE(dac_vol_tlv, -6475, 37, 1);
-
 
 static const char *alc1312_init_type_mode[] = {
 	"nothing", "init"
@@ -943,7 +858,6 @@ static int alc1312_hw_params(struct snd_pcm_substream *substream,
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	printk("enter %s %s\n",__func__,__FILE__);
 
-
 	return 0;
 }
 
@@ -971,7 +885,6 @@ static int alc1312_set_dai_sysclk(struct snd_soc_dai *dai,
 	struct snd_soc_component *component = dai->component;
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	printk("enter %s\n",__func__);
-
 
 	return 0;
 }
@@ -1098,7 +1011,6 @@ static ssize_t alc1312_component_store(struct device *dev,
 
 static DEVICE_ATTR(codec_reg, 0644, alc1312_component_show, alc1312_component_store);
 
-
 static int alc1312_write_eq_param(struct snd_soc_component *component)
 {
 	int i;
@@ -1194,7 +1106,7 @@ static int alc1312_init(struct snd_soc_component *component)
 	unsigned val;
 	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
-        
+
         if(val != 0x10EC)
           return 0;
 
@@ -1210,9 +1122,6 @@ static int alc1312_init(struct snd_soc_component *component)
 	return 0;
 }
 
-static const struct regmap_config alc1312_regmap_config;
-
-
 static int alc1312_probe(struct snd_soc_component *component)
 {
 	struct alc1312_priv *alc1312 = snd_soc_component_get_drvdata(component);
@@ -1222,7 +1131,6 @@ static int alc1312_probe(struct snd_soc_component *component)
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	mutex_init(&component->io_mutex);
 	component->dapm.idle_bias_off = 1;
-
 
 //        component->write = hw_write;
 //        component->read = hw_read;
@@ -1237,6 +1145,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 */
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	alc1312->component = component;
+	component->regmap = alc1312->regmap;
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 
 	alc1312_init(component);
@@ -1259,7 +1168,6 @@ static int alc1312_probe(struct snd_soc_component *component)
 	}
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	return 0;
-
 }
 
 static void alc1312_remove(struct snd_soc_component *component)
@@ -1354,7 +1262,6 @@ static const struct regmap_config alc1312_regmap_config = {
 	.num_reg_defaults = ARRAY_SIZE(alc1312_reg),
 	.cache_type = REGCACHE_RBTREE,
 };
-
 
 static int alc1312_i2c_probe(struct i2c_client *i2c,
 		    const struct i2c_device_id *id)
