@@ -1220,7 +1220,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 
 	printk("enter %s\n",__func__);
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
-	mutex_init(component->io_mutex);
+	mutex_init(&component->io_mutex);
 	component->dapm.idle_bias_off = 1;
 
 
