@@ -736,7 +736,7 @@ extern unsigned int serial_out_i2c(unsigned int addr, int offset, int value);
 static bool alc1312_volatile_register(struct device *codec, unsigned int reg)
 {
 
-	switch(req) {
+	switch (reg) {
 	case 0x007C:
 		return 0;
 	default:
