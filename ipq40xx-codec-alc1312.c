@@ -1222,8 +1222,8 @@ static int alc1312_probe(struct snd_soc_component *component)
 	component->dapm.idle_bias_off = 1;
 
 
-        component->write = hw_write;
-        component->read = hw_read;
+//        component->write = hw_write;
+//        component->read = hw_read;
         component->regmap = regmap_init_i2c(to_i2c_client(codec->dev),
 						      &alc1312_regmap_config);
 /*	if (ret != 0) {
