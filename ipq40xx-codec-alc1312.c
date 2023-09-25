@@ -1224,7 +1224,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 
 //        component->write = hw_write;
 //        component->read = hw_read;
-        component->regmap = regmap_init_i2c(to_i2c_client(codec->dev),
+        component->regmap = regmap_init_i2c(to_i2c_client(component->dev),
 						      &alc1312_regmap_config);
 /*	if (ret != 0) {
 		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
