@@ -1210,6 +1210,8 @@ static int alc1312_init(struct snd_soc_component *component)
 	return 0;
 }
 
+static const struct regmap_config alc1312_regmap_config;
+
 
 static int alc1312_probe(struct snd_soc_component *component)
 {
