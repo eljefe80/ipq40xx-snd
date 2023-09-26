@@ -264,12 +264,13 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
         card->name = "IPQ4019 Audio Interface";
 	pins = card->dev->pins;
         card->owner = THIS_MODULE;
+/*
         card->dapm_widgets = ipq40xx_audio_dapm_widgets;
         card->num_dapm_widgets = ARRAY_SIZE(ipq40xx_audio_dapm_widgets);
         card->dapm_routes = ipq4019_audio_dapm_routes;
         card->num_dapm_routes = ARRAY_SIZE(ipq4019_audio_dapm_routes);
         card->fully_routed = 1;
-
+*/
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 /*
  * If the sound card registration fails, then the audio TLMM change

@@ -1288,8 +1288,8 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 	if (IS_ERR(alc1312->regmap))
 		return PTR_ERR(alc1312->regmap);
 
-        regmap_read(alc1312->regmap, 0x007C, &val);
-//	val = snd_soc_component_read(component, 0x007C);
+//        regmap_read(alc1312->regmap, 0x007C, &val);
+	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
 
 	ret = devm_snd_soc_register_component(&i2c->dev, &soc_codec_dev_alc1312,
