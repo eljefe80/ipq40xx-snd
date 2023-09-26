@@ -1134,6 +1134,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 
 	printk("enter %s\n",__func__);
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
+	alc1312_pdb_ctrl(1);
 //	mutex_init(&component->io_mutex);
 	component->dapm.idle_bias_off = 1;
 
@@ -1261,12 +1262,12 @@ static const struct regmap_config alc1312_regmap_config = {
 	.reg_bits = 16,
 	.val_bits = 16,
 
-//	.readable_reg = alc1312_readable_register,
-//	.volatile_reg = alc1312_volatile_register,
+	.readable_reg = alc1312_readable_register,
+	.volatile_reg = alc1312_volatile_register,
 	.max_register = 0x8FF,
-//	.reg_defaults = alc1312_reg,
-//	.num_reg_defaults = ARRAY_SIZE(alc1312_reg),
-//	.cache_type = REGCACHE_RBTREE,
+	.reg_defaults = alc1312_reg,
+	.num_reg_defaults = ARRAY_SIZE(alc1312_reg),
+	.cache_type = REGCACHE_RBTREE,
 };
 
 static int alc1312_i2c_probe(struct i2c_client *i2c,
