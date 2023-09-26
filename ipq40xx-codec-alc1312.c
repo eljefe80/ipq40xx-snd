@@ -32,8 +32,7 @@
 
 #define ALC1312_I2C_ADDR	0x54
 
-extern void rt5616_set_data_bypass(unsigned char onoff);
-extern void alc1312_pdb_ctrl(unsigned char onoff);
+//extern void alc1312_pdb_ctrl(unsigned char onoff);
 
 struct alc1312_init_reg {
 	u16 reg;
@@ -1043,6 +1042,15 @@ static void alc1312_sync_cache(struct snd_soc_component *component)
 	}
 }
 */
+
+void alc1312_pdb_ctrl(unsigned char onoff)
+{
+        gpio_set_value_cansleep(28, onoff);
+        //gpio_set_value_cansleep(63, onoff);
+        //gpio_set_value_cansleep(65, onoff);
+
+}
+
 static int alc1312_set_bias_level(struct snd_soc_component *component,
 			enum snd_soc_bias_level level)
 {
@@ -1094,14 +1102,6 @@ static int alc1312_set_bias_level(struct snd_soc_component *component,
 	return 0;
 }
 
-void alc1312_pdb_ctrl(unsigned char onoff)
-{
-        gpio_set_value_cansleep(28, onoff);
-        //gpio_set_value_cansleep(63, onoff);
-        //gpio_set_value_cansleep(65, onoff);
-
-}
-EXPORT_SYMBOL(alc1312_pdb_ctrl);
 
 static int alc1312_init(struct snd_soc_component *component)
 {
