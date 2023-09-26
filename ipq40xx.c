@@ -75,6 +75,12 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
                 return 0;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 
+	codec_node = of_parse_phandle(node, "codec", 0);
+        if (!codec_node) {
+		dev_err(priv->dev, "QCA IP4019 Codec node is not provided\n");
+		return -EINVAL;
+        }
+
 	dai_node = of_parse_phandle(node, "i2s", 0);
         if (!dai_node) {
 		dev_err(priv->dev, "QCA IP4019 I2S cpu node is not provided\n");
@@ -84,12 +90,6 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
 	platform_node = of_parse_phandle(node, "i2splatform", 0);
         if (!platform_node) {
 		dev_err(priv->dev, "QCA IP4019 I2S platform node is not provided\n");
-		return -EINVAL;
-        }
-
-	codec_node = of_parse_phandle(node, "codec", 0);
-        if (!codec_node) {
-		dev_err(priv->dev, "QCA IP4019 Codec node is not provided\n");
 		return -EINVAL;
         }
 
