@@ -1266,7 +1266,7 @@ static const struct regmap_config alc1312_regmap_config = {
 	.max_register = 0x8FF,
 	.reg_defaults = alc1312_reg,
 	.num_reg_defaults = ARRAY_SIZE(alc1312_reg),
-	.cache_type = REGCACHE_RBTREE,
+//	.cache_type = REGCACHE_RBTREE,
 };
 
 static int alc1312_i2c_probe(struct i2c_client *i2c,
