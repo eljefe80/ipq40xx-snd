@@ -730,16 +730,14 @@ err:
 	return ret;
 }
 */
-extern unsigned int serial_in_i2c(unsigned int addr, int offset);
-extern unsigned int serial_out_i2c(unsigned int addr, int offset, int value);
 
 static bool alc1312_volatile_register(struct device *codec, unsigned int reg)
 {
 
-	printk("Requesting volatile reg %02x\n",reg);
 
 	switch (reg) {
 	case 0x007C:
+		printk("Requesting non-volatile reg %02x\n",reg);
 		return 0;
 	default:
 		return 1;
@@ -1110,7 +1108,8 @@ static int alc1312_init(struct snd_soc_component *component)
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	//int ret;
 	unsigned val;
-	val = snd_soc_component_read(component, 0x007C);
+        regmap_read(component->regmap, 0x007C, &val);
+//	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
 
         if(val != 0x10EC)
