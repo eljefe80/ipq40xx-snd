@@ -1273,7 +1273,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 		    const struct i2c_device_id *id)
 {
 	struct alc1312_priv *alc1312;
-	int ret;
+	int ret, val;
 	printk("<3> Keen %s %d %s\n",__FUNCTION__,__LINE__,__FILE__);
 	alc1312 = kzalloc(sizeof(struct alc1312_priv), GFP_KERNEL);
 	if (NULL == alc1312)
