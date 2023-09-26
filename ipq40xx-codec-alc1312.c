@@ -1108,8 +1108,8 @@ static int alc1312_init(struct snd_soc_component *component)
 	//struct alc1312_priv *alc1312 = snd_soc_codec_get_drvdata(codec);
 	//int ret;
 	unsigned val;
-        regmap_read(component->regmap, 0x007C, &val);
-//	val = snd_soc_component_read(component, 0x007C);
+//        regmap_read(component->regmap, 0x007C, &val);
+	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
 
         if(val != 0x10EC)
@@ -1282,11 +1282,15 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 /*	alc1312->dev = dev;
 	alc1312->irq = i2c->irq;
 */
+	i2c_set_clientdata(i2c, alc1312);
+
 	alc1312->regmap = devm_regmap_init_i2c(i2c, &alc1312_regmap_config);
 	if (IS_ERR(alc1312->regmap))
 		return PTR_ERR(alc1312->regmap);
 
-	i2c_set_clientdata(i2c, alc1312);
+        regmap_read(alc1312->regmap, 0x007C, &val);
+//	val = snd_soc_component_read(component, 0x007C);
+        printk("Device id =0x%x\r\n",val);
 
 	ret = devm_snd_soc_register_component(&i2c->dev, &soc_codec_dev_alc1312,
 			alc1312_dai, ARRAY_SIZE(alc1312_dai));
