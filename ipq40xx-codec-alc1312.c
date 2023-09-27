@@ -1132,8 +1132,8 @@ static int alc1312_init(struct snd_soc_component *component)
 	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
 
-        if(val != 0x10EC)
-          return 0;
+//        if(val != 0x10EC)
+//          return 0;
 
 	printk("enter %s\n",__func__);
 
