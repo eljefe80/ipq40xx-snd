@@ -1109,6 +1109,8 @@ static int alc1312_init(struct snd_soc_component *component)
 	//int ret;
 	unsigned val;
 //        regmap_read(component->regmap, 0x007C, &val);
+	alc1312_pdb_ctrl(1);
+
 	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
 
