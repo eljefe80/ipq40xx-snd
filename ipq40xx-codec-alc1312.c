@@ -1046,7 +1046,7 @@ static void alc1312_sync_cache(struct snd_soc_component *component)
 void alc1312_pdb_ctrl(unsigned char onoff)
 {
 
-        gpio_direction_output(28, 0);
+        gpio_direction_output(28, onoff);
         /* 20us sleep required after pulling the reset gpio to LOW */
         usleep_range(20, 30);
         gpio_set_value(28, onoff);
