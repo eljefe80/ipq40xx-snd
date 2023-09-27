@@ -1283,6 +1283,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 	alc1312 = kzalloc(sizeof(struct alc1312_priv), GFP_KERNEL);
 	if (NULL == alc1312)
 		return -ENOMEM;
+        gpio_set_value_cansleep(28, 1);
 
 /*	alc1312->dev = dev;
 	alc1312->irq = i2c->irq;
