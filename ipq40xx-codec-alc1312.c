@@ -1110,6 +1110,7 @@ static int alc1312_init(struct snd_soc_component *component)
 	unsigned val;
 //        regmap_read(component->regmap, 0x007C, &val);
 
+        gpio_set_value_cansleep(28, 1);
 	val = gpio_get_value_cansleep(28);
         printk("GPIO 28 =0x%x\r\n",val);
 	val = snd_soc_component_read(component, 0x007C);
