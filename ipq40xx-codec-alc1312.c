@@ -1132,8 +1132,8 @@ static int alc1312_init(struct snd_soc_component *component)
 	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
 
-//        if(val != 0x10EC)
-//          return 0;
+        if(val != 0x10EC)
+          return 0;
 
 	printk("enter %s\n",__func__);
 
@@ -1154,7 +1154,7 @@ static int alc1312_probe(struct snd_soc_component *component)
 
 	printk("enter %s\n",__func__);
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
-	alc1312_pdb_ctrl(1);
+
 //	mutex_init(&component->io_mutex);
 	component->dapm.idle_bias_off = 1;
 
@@ -1291,7 +1291,7 @@ static const struct regmap_config alc1312_regmap_config = {
 };
 
 static int alc1312_i2c_probe(struct i2c_client *i2c,
-		    const struct i2c_device_id *id)
+			     const struct i2c_device_id *id)
 {
 	struct alc1312_priv *alc1312;
 	int ret, val;
@@ -1299,7 +1299,6 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 	alc1312 = kzalloc(sizeof(struct alc1312_priv), GFP_KERNEL);
 	if (NULL == alc1312)
 		return -ENOMEM;
-        gpio_set_value_cansleep(28, 1);
 
 /*	alc1312->dev = dev;
 	alc1312->irq = i2c->irq;
