@@ -1122,17 +1122,13 @@ static int alc1312_init(struct snd_soc_component *component)
 
 //        gpio_set_value_cansleep(28, 1);
 //	val = gpio_get_value_cansleep(28);
-        gpio_direction_output(28, 0);
-        /* 20us sleep required after pulling the reset gpio to LOW */
-        usleep_range(20, 30);
-        gpio_set_value(28, 1);
-        /* 20us sleep required after pulling the reset gpio to HIGH */
+        gpio_direction_output(28, 1);
         usleep_range(20, 30);
         gpio_direction_input(28);
-        /* 20us sleep required after pulling the reset gpio to LOW */
         usleep_range(20, 30);
 	val = gpio_get_value(28);
         printk("GPIO 28 =0x%x\r\n",val);
+
 	val = snd_soc_component_read(component, 0x007C);
         printk("Device id =0x%x\r\n",val);
 
