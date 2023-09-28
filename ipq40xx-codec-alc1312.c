@@ -1147,6 +1147,18 @@ static int alc1312_init(struct snd_soc_component *component)
 	return 0;
 }
 
+static const struct regmap_config alc1312_regmap_config = {
+	.reg_bits = 16,
+	.val_bits = 16,
+
+	.readable_reg = alc1312_readable_register,
+	.volatile_reg = alc1312_volatile_register,
+	.max_register = 0x8FF,
+	.reg_defaults = alc1312_reg,
+	.num_reg_defaults = ARRAY_SIZE(alc1312_reg),
+	.cache_type = REGCACHE_RBTREE,
+};
+
 static int alc1312_probe(struct snd_soc_component *component)
 {
 	struct alc1312_priv *alc1312 = snd_soc_component_get_drvdata(component);
@@ -1160,8 +1172,8 @@ static int alc1312_probe(struct snd_soc_component *component)
 
 //        component->write = hw_write;
 //        component->read = hw_read;
-//        component->regmap = regmap_init_i2c(to_i2c_client(component->dev),
-//						      &alc1312_regmap_config);
+        component->regmap = regmap_init_i2c(to_i2c_client(component->dev),
+						      &alc1312_regmap_config);
 /*	if (ret != 0) {
 		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
 		return ret;
@@ -1171,7 +1183,8 @@ static int alc1312_probe(struct snd_soc_component *component)
 */
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	alc1312->component = component;
-	component->regmap = alc1312->regmap;
+	alc1312->regmap = component->regmap;
+
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
         if (IS_ERR(component->regmap))
                 return PTR_ERR(component->regmap);
@@ -1278,17 +1291,6 @@ static const struct i2c_device_id alc1312_i2c_id[] = {
 };
 MODULE_DEVICE_TABLE(i2c, alc1312_i2c_id);
 
-static const struct regmap_config alc1312_regmap_config = {
-	.reg_bits = 16,
-	.val_bits = 16,
-
-	.readable_reg = alc1312_readable_register,
-	.volatile_reg = alc1312_volatile_register,
-	.max_register = 0x8FF,
-	.reg_defaults = alc1312_reg,
-	.num_reg_defaults = ARRAY_SIZE(alc1312_reg),
-	.cache_type = REGCACHE_RBTREE,
-};
 
 static int alc1312_i2c_probe(struct i2c_client *i2c,
 			     const struct i2c_device_id *id)
@@ -1305,9 +1307,7 @@ static int alc1312_i2c_probe(struct i2c_client *i2c,
 */
 	i2c_set_clientdata(i2c, alc1312);
 
-	alc1312->regmap = devm_regmap_init_i2c(i2c, &alc1312_regmap_config);
-	if (IS_ERR(alc1312->regmap))
-		return PTR_ERR(alc1312->regmap);
+//	alc1312->regmap = devm_regmap_init_i2c(i2c, &alc1312_regmap_config);
 
 //        regmap_read(alc1312->regmap, 0x007C, &val);
 //	val = snd_soc_component_read(component, 0x007C);
