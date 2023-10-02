@@ -59,7 +59,7 @@ struct clk *audio_spdifinfast_src;
 /* Get Stereo channel ID based on I2S/TDM/SPDIF intf and direction */
 uint32_t get_stereo_id(struct snd_pcm_substream *substream, int intf)
 {
-	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
+	dev_dbg("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
 		return dai_priv[intf].stereo_tx;
 	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
@@ -72,7 +72,7 @@ EXPORT_SYMBOL(get_stereo_id);
 /* Get MBOX channel ID based on I2S/TDM/SPDIF intf and direction */
 uint32_t get_mbox_id(struct snd_pcm_substream *substream, int intf)
 {
-	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
+	dev_dbg("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
 		return dai_priv[intf].mbox_tx;
 	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
@@ -117,7 +117,7 @@ EXPORT_SYMBOL(ipq40xx_get_act_bit_width);
 static int ipq40xx_audio_clk_get(struct clk **clk, struct device *dev,
 					const char *id)
 {
-	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
+	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 	*clk = devm_clk_get(dev, id);
 	if (IS_ERR(*clk)) {
 		dev_err(dev, "%s: Error in %s\n", __func__, id);
@@ -132,7 +132,7 @@ static int ipq40xx_audio_clk_set(struct clk *clk, struct device *dev,
 {
 	int ret;
 
-	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
+	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 	ret = clk_set_rate(clk, val);
 	if (ret != 0) {
 		dev_err(dev, "%s: Error in setting %s\n", __func__,
@@ -152,7 +152,7 @@ static int ipq40xx_audio_clk_set(struct clk *clk, struct device *dev,
 
 static void ipq40xx_audio_clk_disable(struct clk **clk, struct device *dev)
 {
-	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
+	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 	if (*clk) {
 		if (__clk_is_enabled(*clk))
 			clk_disable_unprepare(*clk);
@@ -166,7 +166,7 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 	uint32_t intf = dai->driver->id;
 	int ret = 0;
 	struct device *dev = &(dai_priv[intf].pdev->dev);
-	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
+	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		/* Check if the direction is enabled */
@@ -212,7 +212,7 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 		ipq40xx_glb_tdm_ctrl_delay(TDM_DELAY, substream->stream);
 	}
 
-	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
+	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 
 	return 0;
 error:
@@ -240,7 +240,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 	uint32_t mclk, bclk;
 	struct device *dev = &(dai_priv[intf].pdev->dev);
 
-	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
+	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 	bit_width = params_format(params);
 	channels = params_channels(params);
 	rate = params_rate(params);
