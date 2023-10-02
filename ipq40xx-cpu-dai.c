@@ -59,7 +59,7 @@ struct clk *audio_spdifinfast_src;
 /* Get Stereo channel ID based on I2S/TDM/SPDIF intf and direction */
 uint32_t get_stereo_id(struct snd_pcm_substream *substream, int intf)
 {
-	dev_dbg("%s:%d\n", __func__, __LINE__);
+//	dev_dbg("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
 		return dai_priv[intf].stereo_tx;
 	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
@@ -72,7 +72,7 @@ EXPORT_SYMBOL(get_stereo_id);
 /* Get MBOX channel ID based on I2S/TDM/SPDIF intf and direction */
 uint32_t get_mbox_id(struct snd_pcm_substream *substream, int intf)
 {
-	dev_dbg("%s:%d\n", __func__, __LINE__);
+//	dev_dbg("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
 		return dai_priv[intf].mbox_tx;
 	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
