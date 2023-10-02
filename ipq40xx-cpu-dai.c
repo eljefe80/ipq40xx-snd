@@ -238,7 +238,9 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 
 	bit_act = ipq40xx_get_act_bit_width(bit_width);
 
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	if (intf == TDM) {
+
 		/* Set TDM number of channels */
 		ipq40xx_glb_tdm_ctrl_ch_num((channels-1), substream->stream);
 		mclk = bclk = rate * bit_act * channels;
@@ -305,6 +307,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 			return ret;
 	}
 
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	return 0;
 }
 
@@ -697,6 +700,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 
 	of_node_put(pdev->dev.of_node);
 
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	return 0;
 error_node:
 	of_node_put(pdev->dev.of_node);
