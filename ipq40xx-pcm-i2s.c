@@ -79,6 +79,7 @@ static struct snd_pcm_hardware ipq40xx_pcm_hardware_capture = {
 
 static size_t ip40xx_dma_buffer_size(struct snd_pcm_hardware *pcm_hw)
 {
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return pcm_hw->buffer_bytes_max +
 		(pcm_hw->periods_min * sizeof(struct ipq40xx_mbox_desc));
 }
@@ -95,11 +96,13 @@ static int ipq40xx_mbox_buf_is_aligned(void *c_ptr, ssize_t size)
 {
 	u32 ptr = (u32)c_ptr;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return (ptr & 0xF0000000) == ((ptr + size - 1) & 0xF0000000);
 }
 
 static struct device *ss2dev(struct snd_pcm_substream *substream)
 {
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return substream->pcm->card->dev;
 }
 
@@ -115,6 +118,7 @@ static int ipq40xx_pcm_preallocate_dma_buffer(struct snd_pcm *pcm,
 	u32 num_periods;
 	struct device_node *np;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
 		pcm_hw = &ipq40xx_pcm_hardware_playback;
 	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
@@ -176,6 +180,7 @@ static int ipq40xx_pcm_preallocate_dma_buffer(struct snd_pcm *pcm,
 	}
 
 	buf->bytes = pcm_hw->buffer_bytes_max;
+	pr_debug("%s %d\n", __func__, __LINE__);
 
 	return 0;
 }
@@ -187,6 +192,7 @@ static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm *pcm, int stream)
 	struct snd_dma_buffer *buf;
 	size_t size;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	substream = pcm->streams[stream].substream;
 	buf = &substream->dma_buffer;
 	switch (stream) {
@@ -203,6 +209,7 @@ static void ipq40xx_pcm_free_dma_buffer(struct snd_pcm *pcm, int stream)
 	dma_free_coherent(pcm->card->dev, size, buf->area, buf->addr);
 
 	buf->addr = 0;
+	pr_debug("%s %d\n", __func__, __LINE__);
 }
 
 static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
@@ -212,6 +219,7 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
 		(struct ipq40xx_pcm_rt_priv *)runtime->private_data;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	if (pcm_rtpriv->mmap_flag)
 		pcm_rtpriv->curr_pos =
 			ipq40xx_mbox_get_played_offset_set_own(
@@ -221,6 +229,7 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 			ipq40xx_mbox_get_played_offset(pcm_rtpriv->channel);
 
 	snd_pcm_period_elapsed(substream);
+	pr_debug("%s %d\n", __func__, __LINE__);
 
 	return IRQ_HANDLED;
 }
@@ -232,9 +241,11 @@ static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(struct snd_soc_component *compo
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 	snd_pcm_uframes_t ret;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	pcm_rtpriv = runtime->private_data;
 
 	ret = bytes_to_frames(runtime, pcm_rtpriv->curr_pos);
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 
@@ -250,6 +261,7 @@ static int ipq40xx_pcm_i2s_copy(struct snd_soc_component *component,
 	u32 offset, size;
 	u32 period_size, i, no_of_descs;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	offset = frames_to_bytes(runtime, hwoff);
 	size = frames_to_bytes(runtime, frames);
 	period_size = pcm_rtpriv->period_size;
@@ -283,6 +295,7 @@ static int ipq40xx_pcm_i2s_copy(struct snd_soc_component *component,
 	if (pcm_rtpriv->dma_started)
 		ipq40xx_mbox_dma_resume(pcm_rtpriv->channel);
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 
@@ -293,9 +306,11 @@ static int ipq40xx_pcm_i2s_mmap(struct snd_soc_component *component,
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
 		(struct ipq40xx_pcm_rt_priv *)runtime->private_data;
+	pr_debug("%s %d\n", __func__, __LINE__);
 
 	pcm_rtpriv->mmap_flag = 1;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return dma_mmap_coherent(substream->pcm->card->dev, vma,
 		runtime->dma_area, runtime->dma_addr, runtime->dma_bytes);
 }
@@ -303,7 +318,9 @@ static int ipq40xx_pcm_i2s_mmap(struct snd_soc_component *component,
 static int ipq40xx_pcm_hw_free(struct snd_soc_component *component,
 				struct snd_pcm_substream *substream)
 {
+	pr_debug("%s %d\n", __func__, __LINE__);
 	snd_pcm_set_runtime_buffer(substream, NULL);
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 
@@ -316,6 +333,7 @@ static int ipq40xx_pcm_i2s_prepare(struct snd_soc_component *component,
 
 	uint32_t ret;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	pcm_rtpriv = runtime->private_data;
 
 	ret = ipq40xx_mbox_dma_prepare(pcm_rtpriv->channel);
@@ -332,6 +350,7 @@ static int ipq40xx_pcm_i2s_prepare(struct snd_soc_component *component,
 
 	pcm_rtpriv->last_played = NULL;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 
@@ -340,6 +359,7 @@ static int ipq40xx_pcm_i2s_close(struct snd_soc_component *component,
 {
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 	uint32_t ret;
+	pr_debug("%s %d\n", __func__, __LINE__);
 	pcm_rtpriv = substream->runtime->private_data;
 	pcm_rtpriv->mmap_flag = 0;
 
@@ -350,6 +370,7 @@ static int ipq40xx_pcm_i2s_close(struct snd_soc_component *component,
 	}
 
 	kfree(pcm_rtpriv);
+	pr_debug("%s %d\n", __func__, __LINE__);
 
 	return 0;
 }
@@ -364,6 +385,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	uint32_t intf = dai->driver->id;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	switch (cmd) {
 	case SNDRV_PCM_TRIGGER_START:
 	case SNDRV_PCM_TRIGGER_RESUME:
@@ -405,6 +427,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 		ret = -EINVAL;
 		break;
 	}
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 
@@ -445,6 +468,7 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	snd_pcm_set_runtime_buffer(substream, &substream->dma_buffer);
 
 	runtime->dma_bytes = params_buffer_bytes(hw_params);
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 
@@ -505,6 +529,7 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 		goto error;
 	}
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return 0;
 error:
 	kfree(pcm_rtpriv);
@@ -526,6 +551,7 @@ static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *component,
 
 	int ret = 0;
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	if (!card->dev->coherent_dma_mask)
 		card->dev->coherent_dma_mask = DMA_BIT_MASK(32);
 
@@ -555,6 +581,7 @@ static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *component,
 		}
 	}
 
+	pr_debug("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 
@@ -598,6 +625,7 @@ static int ipq40xx_pcm_i2s_driver_remove(struct platform_device *pdev)
 {
 	pr_debug("%s %d\n", __func__, __LINE__);
 	snd_soc_unregister_component(&pdev->dev);
+	pr_debug("%s %d\n", __func__, __LINE__);
 
 	return 0;
 }
