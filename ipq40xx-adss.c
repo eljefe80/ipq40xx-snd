@@ -437,7 +437,7 @@ MODULE_DEVICE_TABLE(of, ipq40xx_audio_adss_id_table);
 static int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 {
 	struct resource *res;
-
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	adss_audio_local_base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(adss_audio_local_base))
@@ -451,7 +451,7 @@ static int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 	audio_blk_rst = devm_reset_control_get(&pdev->dev, "blk_rst");
 	if (IS_ERR(audio_blk_rst))
 		return PTR_ERR(audio_blk_rst);
-
+	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 	return 0;
 }
 
