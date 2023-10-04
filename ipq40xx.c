@@ -100,7 +100,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].num_cpus = 1;
 //        priv->dai_links[0].codecs = &compnent[1];
         priv->dai_links[0].num_codecs = 0;
-        priv->dai_links[0].platforms = &compnent[2];
+        priv->dai_links[0].platforms = &compnent[1];
         priv->dai_links[0].num_platforms = 1;
 
         priv->dai_links[0].name = "IPQ4019 SOC Playback";
