@@ -112,7 +112,6 @@ uint32_t ipq40xx_get_act_bit_width(uint32_t bit_width)
 		return __BIT_INVAL;
 	}
 }
-EXPORT_SYMBOL(ipq40xx_get_act_bit_width);
 
 static int ipq40xx_audio_clk_get(struct clk **clk, struct device *dev,
 					const char *id)
