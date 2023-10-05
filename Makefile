@@ -34,6 +34,7 @@ obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_TDM) += snd-soc-ipq40xx-pcm-tdm.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_SPDIF) += snd-soc-ipq40xx-pcm-spdif.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_CODEC) += snd-soc-ipq40xx-codec.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_CODEC_ALC1312) += snd-soc-ipq40xx-codec-alc1312.o
+obj-$(CONFIG_SND_IPQ40XX_SOC_CODEC_TAS5782M) += snd-soc-ipq40xx-codec-tas5782m.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_DAC_RT5616) += snd-soc-ipq40xx-dac-rt5616.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_CPU_DAI) += snd-soc-ipq40xx-cpu-dai.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_MBOX) += snd-soc-ipq40xx-mbox.o
