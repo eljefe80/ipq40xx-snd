@@ -19,6 +19,7 @@
 #include <linux/delay.h>
 #include <linux/i2c.h>
 #include <linux/gpio.h>
+#include <linux/of_gpio.h>
 #include <linux/slab.h>
 #include <sound/core.h>
 #include <sound/pcm.h>
@@ -572,7 +573,7 @@ static int tas5782m_probe(struct snd_soc_component *codec)
 	schedule_work(&tas5782m->work);
 	return 0;
 }
-static int tas5782m_remove(struct snd_soc_component *codec)
+static void tas5782m_remove(struct snd_soc_component *codec)
 {
 	struct tas5782m_priv *tas5782m;
 #ifdef CONFIG_HAS_EARLYSUSPEND
@@ -701,7 +702,7 @@ static int tas5782m_i2c_probe(struct i2c_client *i2c,
 	if (codec_name)
 		dev_set_name(&i2c->dev, "%s", codec_name);
 	i2c_set_clientdata(i2c, tas5782m);
-	ret = snd_soc_register_codec(&i2c->dev,
+	ret = snd_soc_register_component(&i2c->dev,
 		&soc_codec_dev_tas5782m, &tas5782m_dai, 1);
 	if (ret != 0)
 		dev_err(&i2c->dev, "Failed to register codec (%d)\n", ret);
@@ -709,7 +710,7 @@ static int tas5782m_i2c_probe(struct i2c_client *i2c,
 }
 static int tas5782m_i2c_remove(struct i2c_client *client)
 {
-	snd_soc_unregister_codec(&client->dev);
+	snd_soc_unregister_component(&client->dev);
 	return 0;
 }
 static const struct i2c_device_id tas5782m_i2c_id[] = {
