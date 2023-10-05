@@ -136,7 +136,7 @@ static int tas5782m_ch2_mute_info(struct snd_kcontrol *kcontrol,
 static int tas5782m_ch1_vol_get(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_component *codec = snd_soc_kcontrol_codec(kcontrol);
+	struct snd_soc_component *codec = snd_soc_kcontrol_component(kcontrol);
 	struct tas5782m_priv *tas5782m = snd_soc_component_get_drvdata(codec);
 	ucontrol->value.integer.value[0] = tas5782m->Ch1_vol;
 	return 0;
@@ -144,7 +144,7 @@ static int tas5782m_ch1_vol_get(struct snd_kcontrol *kcontrol,
 static int tas5782m_ch2_vol_get(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_component *codec = snd_soc_kcontrol_codec(kcontrol);
+	struct snd_soc_component *codec = snd_soc_kcontrol_component(kcontrol);
 	struct tas5782m_priv *tas5782m = snd_soc_component_get_drvdata(codec);
 	ucontrol->value.integer.value[0] = tas5782m->Ch2_vol;
 	return 0;
@@ -152,7 +152,7 @@ static int tas5782m_ch2_vol_get(struct snd_kcontrol *kcontrol,
 static int tas5782m_ch1_mute_get(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_component *codec = snd_soc_kcontrol_codec(kcontrol);
+	struct snd_soc_component *codec = snd_soc_kcontrol_component(kcontrol);
 	struct tas5782m_priv *tas5782m = snd_soc_component_get_drvdata(codec);
 	ucontrol->value.integer.value[0] = tas5782m->Ch1_mute;
 	return 0;
@@ -160,7 +160,7 @@ static int tas5782m_ch1_mute_get(struct snd_kcontrol *kcontrol,
 static int tas5782m_ch2_mute_get(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_component *codec = snd_soc_kcontrol_codec(kcontrol);
+	struct snd_soc_component *codec = snd_soc_kcontrol_component(kcontrol);
 	struct tas5782m_priv *tas5782m = snd_soc_component_get_drvdata(codec);
 	ucontrol->value.integer.value[0] = tas5782m->Ch2_mute;
 	return 0;
@@ -200,7 +200,7 @@ static void tas5782m_set_volume(struct snd_soc_component *codec,
 static int tas5782m_ch1_vol_put(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_component *codec = snd_soc_kcontrol_codec(kcontrol);
+	struct snd_soc_component *codec = snd_soc_kcontrol_component(kcontrol);
 	struct tas5782m_priv *tas5782m = snd_soc_component_get_drvdata(codec);
 	int value;
 	value = ucontrol->value.integer.value[0];
@@ -212,7 +212,7 @@ static int tas5782m_ch1_vol_put(struct snd_kcontrol *kcontrol,
 static int tas5782m_ch2_vol_put(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_component *codec = snd_soc_kcontrol_codec(kcontrol);
+	struct snd_soc_component *codec = snd_soc_kcontrol_component(kcontrol);
 	struct tas5782m_priv *tas5782m = snd_soc_component_get_drvdata(codec);
 	int value;
 	value = ucontrol->value.integer.value[0];
@@ -253,7 +253,7 @@ static void tas5782m_set_mute(struct snd_soc_component *codec,
 static int tas5782m_ch1_mute_set(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_component *codec = snd_soc_kcontrol_codec(kcontrol);
+	struct snd_soc_component *codec = snd_soc_kcontrol_component(kcontrol);
 	struct tas5782m_priv *tas5782m = snd_soc_component_get_drvdata(codec);
 	int value;
 	value = ucontrol->value.integer.value[0];
@@ -264,7 +264,7 @@ static int tas5782m_ch1_mute_set(struct snd_kcontrol *kcontrol,
 static int tas5782m_ch2_mute_set(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
-	struct snd_soc_component *codec = snd_soc_kcontrol_codec(kcontrol);
+	struct snd_soc_component *codec = snd_soc_kcontrol_component(kcontrol);
 	struct tas5782m_priv *tas5782m = snd_soc_component_get_drvdata(codec);
 	int value;
 	value = ucontrol->value.integer.value[0];
