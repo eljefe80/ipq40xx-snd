@@ -375,7 +375,7 @@ static int tas5782m_set_bias_level(struct snd_soc_component *codec,
 		/* The chip runs through the power down sequence for us. */
 		break;
 	}
-	codec->component.dapm.bias_level = level;
+	codec->dapm.bias_level = level;
 	return 0;
 }
 static const struct snd_soc_dai_ops tas5782m_dai_ops = {
@@ -617,7 +617,7 @@ static void tas5782m_late_resume(struct early_suspend *h)
 static const struct snd_soc_dapm_widget tas5782m_dapm_widgets[] = {
 	SND_SOC_DAPM_DAC("DAC", "HIFI Playback", SND_SOC_NOPM, 0, 0),
 };
-static const struct snd_soc_codec_driver soc_codec_dev_tas5782m = {
+static const struct snd_soc_component_driver soc_codec_dev_tas5782m = {
 	.probe = tas5782m_probe,
 	.remove = tas5782m_remove,
 #ifdef CONFIG_PM
@@ -625,12 +625,12 @@ static const struct snd_soc_codec_driver soc_codec_dev_tas5782m = {
 	.resume = tas5782m_resume,
 #endif
 	.set_bias_level = tas5782m_set_bias_level,
-	.component_driver = {
+//	.component_driver = {
 		.controls = tas5782m_snd_controls,
 		.num_controls = ARRAY_SIZE(tas5782m_snd_controls),
 		.dapm_widgets = tas5782m_dapm_widgets,
 		.num_dapm_widgets = ARRAY_SIZE(tas5782m_dapm_widgets),
-	}
+//	}
 };
 /*
  *static const struct regmap_config tas5782m_regmap = {
