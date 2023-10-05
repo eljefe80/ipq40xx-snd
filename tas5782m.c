@@ -24,9 +24,9 @@
 #include <sound/pcm_params.h>
 #include <sound/soc.h>
 #include <sound/tlv.h>
-#include <sound/tas57xx.h>
 #include <linux/amlogic/aml_gpio_consumer.h>
 #include "tas5782m.h"
+#include "tas57xx.h"
 #define DEV_NAME	"tas5782m"
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
