@@ -582,7 +582,6 @@ static void tas5782m_remove(struct snd_soc_component *codec)
 #endif
 	tas5782m = snd_soc_component_get_drvdata(codec);
 	cancel_work_sync(&tas5782m->work);
-	return 0;
 }
 #ifdef CONFIG_PM
 static int tas5782m_suspend(struct snd_soc_component *codec)
