@@ -206,7 +206,7 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 static const struct snd_soc_dapm_route ipq4019_audio_map[] = {
 //	{"DAC", NULL, "AIF1RX"},
 	{"Amp", NULL, "DAC"},
-}
+};
 static const struct snd_soc_dapm_widget ipq4019_dapm_widgets[] = {
         /* Output Lines */
         SND_SOC_DAPM_OUTPUT("Amp"),
