@@ -585,12 +585,18 @@ static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *component,
 	return ret;
 }
 
+static int ipq40xx_pcm_lib_ioctl(struct snd_soc_component *component,
+				struct snd_pcm_substream *substream, unsigned int cmd,  void *arg) {
+	pr_debug("%s %d %i\n", __func__, __LINE__, cmd);
+	return snd_pcm_lib_ioctl(substream, cmd, arg);
+}
+
 static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_platform = {
         .open           = ipq40xx_pcm_i2s_open,
         .hw_params      = ipq40xx_pcm_i2s_hw_params,
         .hw_free        = ipq40xx_pcm_hw_free,
         .trigger        = ipq40xx_pcm_i2s_trigger,
-        .ioctl          = snd_pcm_lib_ioctl,
+        .ioctl          = ipq40xx_pcm_lib_ioctl,
         .close          = ipq40xx_pcm_i2s_close,
         .prepare        = ipq40xx_pcm_i2s_prepare,
         .mmap           = ipq40xx_pcm_i2s_mmap,
