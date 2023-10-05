@@ -207,17 +207,19 @@ static const struct snd_soc_dapm_route ipq4019_audio_map[] = {
 //	{"DAC", NULL, "AIF1RX"},
 	{"Amp", NULL, "DAC"},
 }
-static const struct snd_soc_dapm_widget alc1312_dapm_widgets[] = {
+static const struct snd_soc_dapm_widget ipq4019_dapm_widgets[] = {
         /* Output Lines */
         SND_SOC_DAPM_OUTPUT("Amp"),
 };
 static struct snd_soc_card snd_soc_card_qca = {
-	.name		= "ipq40xx_snd_card",
-	.dai_link	= ipq40xx_snd_dai,
-	.num_links	= ARRAY_SIZE(ipq40xx_snd_dai),
-	.owner		= THIS_MODULE,
-	.num_routes	= 1,
-	.dapm_routes	= ipq4019_audio_map,
+	.name			= "ipq40xx_snd_card",
+	.dai_link		= ipq40xx_snd_dai,
+	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
+	.owner			= THIS_MODULE,
+	.num_dapm_routes	= ARRAY_SIZE(ipq4019_audio_map),
+	.dapm_routes		= ipq4019_audio_map,
+	.num_dapm_widgets	= ARRAY_SIZE(ipq4019_dapm_widgets),
+	.dapm_widgets		= ipq4019_dapm_widgets,
 };
 
 static const struct of_device_id ipq40xx_audio_id_table[] = {
