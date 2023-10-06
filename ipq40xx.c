@@ -272,12 +272,6 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
  * to audio functionality only when the sound card registration is
  * successful.
  */
-        gpio_direction_output(28, 1);
-        /* 20us sleep required after pulling the reset gpio to LOW */
-        usleep_range(20, 30);
-        gpio_set_value(28, 1);
-        /* 20us sleep required after pulling the reset gpio to HIGH */
-        usleep_range(20, 30);
 	pin_state = pinctrl_lookup_state(pins->p, "default");
 	if (IS_ERR(pin_state)) {
 		pr_err("audio pinctrl state not available\n");
@@ -287,11 +281,11 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
         ipq40xx_soc_probe(priv);
 
         card->dai_link = priv->dai_links;
+/*
         card->num_links = 1;
-
         card->codec_conf = priv->codec_conf;
         card->num_configs = 0;
-
+*/
         snd_soc_card_set_drvdata(card, priv);
 
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
