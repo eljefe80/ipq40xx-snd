@@ -120,7 +120,9 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
 
         priv->dai_links[0].playback_only = 1;
         priv->dai_links[0].id = 0;
-        priv->dai_links[0].dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_CBS_CFS | SND_SOC_DAIFMT_INV_MASK;
+        priv->dai_links[0].dai_fmt = (SND_SOC_DAIFMT_I2S |
+					SND_SOC_DAIFMT_CBS_CFS |
+					SND_SOC_DAIFMT_NB_NF);
         priv->dai_links[0].init = ipq40xx_init;
         priv->dai_links[0].ops = &ipq40xx_soc_ops;
 
