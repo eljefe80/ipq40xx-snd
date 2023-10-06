@@ -116,8 +116,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].platforms->of_node = platform_node;
 
         priv->dai_links[0].codecs->of_node = codec_node;
-//        priv->dai_links[0].codecs->dai_name = "tas5782m";
-        priv->dai_links[0].codecs->dai_name = "Playback";
+        priv->dai_links[0].codecs->dai_name = "tas5782m";
 
         priv->dai_links[0].playback_only = 1;
         priv->dai_links[0].id = 0;
