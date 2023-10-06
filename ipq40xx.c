@@ -112,7 +112,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
 //	priv->dai_links[0].cpus->dai_name = "Playback";
         priv->dai_links[0].cpus->of_node = dai_node;
 
-	priv->dai_links[0].platforms->name = "qca-pcm-i2s",
+	priv->dai_links[0].platforms->dai_name = "qca-pcm-i2s",
         priv->dai_links[0].platforms->of_node = platform_node;
 
         priv->dai_links[0].codecs->of_node = codec_node;
