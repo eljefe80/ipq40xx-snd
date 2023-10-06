@@ -336,6 +336,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 static void ipq40xx_audio_shutdown(struct snd_pcm_substream *substream,
 					struct snd_soc_dai *dai)
 {
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 #if 0 /* Keen@foxconn bclk always enable */ 
 	uint32_t intf = dai->driver->id;
 	struct device *dev = &(dai_priv[intf].pdev->dev);
