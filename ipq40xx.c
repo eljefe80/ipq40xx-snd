@@ -108,8 +108,8 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].stream_name = "I2S";
 //	priv->dai_links[0].cpus->dai_name = "qca-cpu-dai";
 
-//	priv->dai_links[0].cpus->dai_name = "qca-i2s-dai";
-	priv->dai_links[0].cpus->dai_name = "Playback";
+	priv->dai_links[0].cpus->dai_name = "qca-i2s-dai";
+//	priv->dai_links[0].cpus->dai_name = "Playback";
         priv->dai_links[0].cpus->of_node = dai_node;
 
 	priv->dai_links[0].platforms->dai_name = "qca-pcm-i2s",
