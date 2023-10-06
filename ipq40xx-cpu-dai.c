@@ -546,6 +546,7 @@ static struct snd_soc_dai_ops ipq40xx_spdif_ops = {
 static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
 	{
 		.playback = {
+			.stream_name = "Playback",
 			.rates		= RATE_16000_96000,
 			.formats	= SNDRV_PCM_FMTBIT_S16 |
 					SNDRV_PCM_FMTBIT_S32,
@@ -641,7 +642,6 @@ static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
 		.name = "qca-spdif-dai"
 	},
 };
-
 static const struct snd_soc_component_driver ipq40xx_i2s_component = {
 	.name           = "qca-cpu-dai",
 };
