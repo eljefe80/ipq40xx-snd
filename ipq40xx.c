@@ -115,7 +115,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].codecs->dai_name = "tas5782m";
         priv->dai_links[0].playback_only = 1;
         priv->dai_links[0].id = 0;
-        priv->dai_links[0].dai_fmt = SND_SOC_DAIFMT_I2S;
+        priv->dai_links[0].dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_CBS_CFS | SND_SOC_DAIFMT_INV_MASK;
         priv->dai_links[0].init = ipq40xx_init,
         priv->dai_links[0].ops = &ipq40xx_soc_ops,
         of_node_put(platform_node);
@@ -210,6 +210,7 @@ static const struct snd_soc_dapm_route ipq4019_audio_map[] = {
 static const struct snd_soc_dapm_widget ipq4019_dapm_widgets[] = {
 	SND_SOC_DAPM_AIF_IN("AIF1RX", "AIF1 Playback", 0, SND_SOC_NOPM, 0, 0),
         /* Output Lines */
+        SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
         SND_SOC_DAPM_OUTPUT("Amp"),
 };
 static struct snd_soc_card snd_soc_card_qca = {
