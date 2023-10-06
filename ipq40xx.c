@@ -208,7 +208,8 @@ static const struct snd_soc_dapm_route ipq4019_audio_map[] = {
         {"DAC", NULL, "AIF1RX"},
 };
 static const struct snd_soc_dapm_widget ipq4019_dapm_widgets[] = {
-	SND_SOC_DAPM_AIF_IN("AIF1RX", "AIF1 Playback", 0, SND_SOC_NOPM, 0, 0),
+	SND_SOC_DAPM_AIF_IN("AIF1RX", "IPQ4019 I2S", 0, SND_SOC_NOPM, 0, 0),
+//	SND_SOC_DAPM_AIF_IN("AIF1RX", "AIF1 Playback", 0, SND_SOC_NOPM, 0, 0),
         /* Output Lines */
         SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
         SND_SOC_DAPM_OUTPUT("Amp"),
