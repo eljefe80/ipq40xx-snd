@@ -38,7 +38,7 @@ struct ipq40xx_soc_priv {
         struct snd_soc_codec_conf codec_conf[1];
 	struct snd_soc_dai_link *dai_links;
 };
-
+/*
 static int ipq40xx_init(struct snd_soc_pcm_runtime *rtd) {
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 	return 0;
@@ -57,12 +57,12 @@ static int ipq40xx_soc_hw_params(struct snd_pcm_substream *substream,
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 	return 0;
 }
-
 static const struct snd_soc_ops ipq40xx_soc_ops = {
         .startup        = ipq40xx_soc_startup,
         .shutdown       = ipq40xx_soc_shutdown,
         .hw_params      = ipq40xx_soc_hw_params,
 };
+*/
 
 static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         struct device_node *node = priv->dev->of_node;
@@ -123,8 +123,8 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].dai_fmt = (SND_SOC_DAIFMT_I2S |
 					SND_SOC_DAIFMT_CBS_CFS |
 					SND_SOC_DAIFMT_NB_NF);
-        priv->dai_links[0].init = ipq40xx_init;
-        priv->dai_links[0].ops = &ipq40xx_soc_ops;
+//        priv->dai_links[0].init = ipq40xx_init;
+//        priv->dai_links[0].ops = &ipq40xx_soc_ops;
 
         of_node_put(platform_node);
         of_node_put(codec_node);
