@@ -223,6 +223,7 @@ static struct snd_soc_card snd_soc_card_qca = {
 	.dapm_routes		= ipq4019_audio_map,
 	.num_dapm_widgets	= ARRAY_SIZE(ipq4019_dapm_widgets),
 	.dapm_widgets		= ipq4019_dapm_widgets,
+	.fully_routed		= true,
 };
 
 static const struct of_device_id ipq40xx_audio_id_table[] = {
