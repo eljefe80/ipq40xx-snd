@@ -81,7 +81,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
 		return -EINVAL;
         }
 
-	dai_node = of_parse_phandle(node, "i2s", 0);
+	dai_node = of_parse_phandle(node, "i2scpu", 0);
         if (!dai_node) {
 		dev_err(priv->dev, "QCA IP4019 I2S cpu node is not provided\n");
 		return -EINVAL;
@@ -104,7 +104,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].num_platforms = 1;
 
         priv->dai_links[0].name = "IPQ4019 SOC Playback";
-        priv->dai_links[0].stream_name = "IPQ4019 I2S";
+        priv->dai_links[0].stream_name = "I2S";
 //	priv->dai_links[0].cpus->dai_name = "qca-cpu-dai";
 	priv->dai_links[0].cpus->dai_name = "qca-i2s-dai";
         priv->dai_links[0].cpus->of_node = dai_node;
@@ -118,6 +118,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_CBS_CFS | SND_SOC_DAIFMT_INV_MASK;
         priv->dai_links[0].init = ipq40xx_init,
         priv->dai_links[0].ops = &ipq40xx_soc_ops,
+        priv->dai_links[0].fully_routed = true,
         of_node_put(platform_node);
         of_node_put(codec_node);
         of_node_put(dai_node);
