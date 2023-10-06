@@ -68,7 +68,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         struct device_node *node = priv->dev->of_node;
 	struct device_node *dai_node, *codec_node, *platform_node;
         struct snd_soc_dai_link_component *compnent;
-        int comp_count = 6, ret = 0;
+        int comp_count, ret = 0;
 
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
         if (!node)
@@ -96,6 +96,7 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         comp_count = 1;
         compnent = devm_kzalloc(priv->dev, comp_count * sizeof(*compnent),
                                 GFP_KERNEL);
+
         priv->dai_links[0].cpus = &compnent[0];
         priv->dai_links[0].num_cpus = 1;
         priv->dai_links[0].codecs = &compnent[1];
@@ -106,21 +107,28 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].name = "IPQ4019 SOC Playback";
         priv->dai_links[0].stream_name = "I2S";
 //	priv->dai_links[0].cpus->dai_name = "qca-cpu-dai";
-	priv->dai_links[0].cpus->dai_name = "qca-i2s-dai";
+
+//	priv->dai_links[0].cpus->dai_name = "qca-i2s-dai";
+	priv->dai_links[0].cpus->dai_name = "Playback";
         priv->dai_links[0].cpus->of_node = dai_node;
+
 	priv->dai_links[0].platforms->dai_name = "qca-pcm-i2s",
-//	priv->dai_links[0].platforms->name = "qca-pcm-i2s",
         priv->dai_links[0].platforms->of_node = platform_node;
+
         priv->dai_links[0].codecs->of_node = codec_node;
-        priv->dai_links[0].codecs->dai_name = "tas5782m";
+//        priv->dai_links[0].codecs->dai_name = "tas5782m";
+        priv->dai_links[0].codecs->dai_name = "Playback";
+
         priv->dai_links[0].playback_only = 1;
         priv->dai_links[0].id = 0;
         priv->dai_links[0].dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_CBS_CFS | SND_SOC_DAIFMT_INV_MASK;
         priv->dai_links[0].init = ipq40xx_init;
         priv->dai_links[0].ops = &ipq40xx_soc_ops;
+
         of_node_put(platform_node);
         of_node_put(codec_node);
         of_node_put(dai_node);
+
         return ret;
 }
 
