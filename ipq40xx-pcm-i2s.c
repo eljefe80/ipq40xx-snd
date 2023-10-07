@@ -35,6 +35,21 @@
 #include "ipq40xx-pcm.h"
 #include "ipq40xx-adss.h"
 
+static int ipq40xx_pcm_open(struct snd_pcm_substream *substream) {
+	pr_debug("%s %d\n", __func__, __LINE__);
+	return 0;
+}
+static int ipq40xx_pcm_close(struct snd_pcm_substream *substream) {
+	pr_debug("%s %d\n", __func__, __LINE__);
+	return 0;
+}
+
+static struct snd_pcm_ops ipq40xx_asoc_pcm_i2s_pcm = {
+	.open		= ipq40xx_pcm_open,
+	.close		= ipq40xx_pcm_close,
+}
+
+
 static struct snd_pcm_hardware ipq40xx_pcm_hardware_playback = {
 	.info			=	SNDRV_PCM_INFO_MMAP |
 					SNDRV_PCM_INFO_BLOCK_TRANSFER |
@@ -591,6 +606,7 @@ static int ipq40xx_pcm_lib_ioctl(struct snd_soc_component *component,
 	return snd_pcm_lib_ioctl(substream, cmd, arg);
 }
 
+
 static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_platform = {
         .open           = ipq40xx_pcm_i2s_open,
         .hw_params      = ipq40xx_pcm_i2s_hw_params,
@@ -604,6 +620,7 @@ static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_platform = {
         .copy_user      = ipq40xx_pcm_i2s_copy,
 	.pcm_construct	= ipq40xx_asoc_pcm_i2s_new,
 //	.pcm_free	= ipq40xx_asoc_pcm_i2s_free,
+	.ops		= ipq40xx_asoc_pcm_i2s_pcm,
 };
 
 static const struct of_device_id ipq40xx_pcm_i2s_id_table[] = {
