@@ -225,8 +225,8 @@ static const struct snd_soc_dapm_widget ipq4019_dapm_widgets[] = {
 };
 static struct snd_soc_card snd_soc_card_qca = {
 	.name			= "ipq40xx_snd_card",
-	.dai_link		= ipq40xx_snd_dai,
-	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
+//	.dai_link		= ipq40xx_snd_dai,
+//	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
 	.owner			= THIS_MODULE,
 	.num_dapm_routes	= ARRAY_SIZE(ipq4019_audio_map),
 	.dapm_routes		= ipq4019_audio_map,
@@ -265,6 +265,15 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 	pins = card->dev->pins;
         card->owner = THIS_MODULE;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+	card->name = "ipq40xx_snd_card";
+//	.dai_link		= ipq40xx_snd_dai,
+//	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
+	card->owner = THIS_MODULE;
+	card->num_dapm_routes = ARRAY_SIZE(ipq4019_audio_map);
+	card->dapm_routes = ipq4019_audio_map;
+	card->num_dapm_widgets = ARRAY_SIZE(ipq4019_dapm_widgets);
+	card->dapm_widgets = ipq4019_dapm_widgets;
+	card->fully_routed = true;
 /*
  * If the sound card registration fails, then the audio TLMM change
  * is also reverted. Due to this, the pins are seen to toggle causing
