@@ -41,14 +41,14 @@ static struct ipq40xx_mbox_desc *get_next(
 				struct ipq40xx_mbox_desc *desc)
 {
 	struct ipq40xx_mbox_desc *end;
-
+        printk("%s %d\n", __func__, __LINE__);
 	end = rtdir->dma_virt_head + rtdir->ndescs;
 
 	desc++;
 
 	if (desc >= end)
 		desc = rtdir->dma_virt_head;
-
+	printk("%s %d\n", __func__, __LINE__);
 	return desc;
 }
 
@@ -58,6 +58,7 @@ void ipq40xx_mbox_desc_own(u32 channel_id, int desc_no, int own)
 	struct ipq40xx_mbox_rt_dir_priv *rtdir;
 	u32 chan;
 	u32 dir;
+	printk("%s %d\n", __func__, __LINE__);
 
 	chan = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
@@ -71,6 +72,7 @@ void ipq40xx_mbox_desc_own(u32 channel_id, int desc_no, int own)
 
 	desc->OWN = own;
 	desc->ei = 1;
+	printk("%s %d\n", __func__, __LINE__);
 }
 EXPORT_SYMBOL(ipq40xx_mbox_desc_own);
 
@@ -80,6 +82,7 @@ uint32_t ipq40xx_mbox_get_played_offset(u32 channel_id)
 	struct ipq40xx_mbox_rt_dir_priv *rtdir;
 	unsigned int i, size_played = 0;
 	u32 chan, dir;
+	printk("%s %d\n", __func__, __LINE__);
 
 	chan = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
@@ -104,6 +107,7 @@ uint32_t ipq40xx_mbox_get_played_offset(u32 channel_id)
 		desc = get_next(rtdir, desc);
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return size_played * rtdir->read;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_get_played_offset);
@@ -115,6 +119,7 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 	unsigned int i, desc_own, size_played = 0;
 	u32 chan, dir;
 
+	printk("%s %d\n", __func__, __LINE__);
 	chan = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
@@ -150,6 +155,7 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 		rtdir->last_played_is_null++;
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return size_played;
 }
 
@@ -160,6 +166,7 @@ int ipq40xx_mbox_fifo_reset(int channel_id)
 	volatile void __iomem *mbox_reg;
 	uint32_t index, dir;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
@@ -179,6 +186,7 @@ int ipq40xx_mbox_fifo_reset(int channel_id)
 		break;
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_fifo_reset);
@@ -188,6 +196,7 @@ int ipq40xx_mbox_dma_start(int channel_id)
 	volatile void __iomem *mbox_reg;
 	uint32_t index, dir;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
@@ -209,6 +218,7 @@ int ipq40xx_mbox_dma_start(int channel_id)
 		break;
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_dma_start);
@@ -218,6 +228,7 @@ int ipq40xx_mbox_dma_resume(int channel_id)
 	volatile void __iomem *mbox_reg;
 	uint32_t index, dir;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
@@ -242,6 +253,7 @@ int ipq40xx_mbox_dma_resume(int channel_id)
 		break;
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_dma_resume);
@@ -252,6 +264,7 @@ int ipq40xx_mbox_dma_stop(int channel_id)
 	struct ipq40xx_mbox_rt_dir_priv *mbox_cb;
 	uint32_t index, dir;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
@@ -283,6 +296,7 @@ int ipq40xx_mbox_dma_stop(int channel_id)
 	mbox_cb->read = 0;
 	mbox_cb->write = 0;
 
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 
 }
@@ -290,6 +304,7 @@ EXPORT_SYMBOL(ipq40xx_mbox_dma_stop);
 
 static inline bool ipq40xx_is_chn_already_inited(uint32_t index, uint32_t dir)
 {
+	printk("%s %d\n", __func__, __LINE__);
 	if (dir == PLAYBACK)
 		return (test_bit(CHN_STARTED,
 			&mbox_rtime[index]->dir_priv[CAPTURE].status));
@@ -304,6 +319,7 @@ int ipq40xx_mbox_dma_reset_swap(int channel_id)
 	volatile void __iomem *mbox_reg;
 	uint32_t index;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 
 	if (!mbox_rtime[index])
@@ -316,6 +332,7 @@ int ipq40xx_mbox_dma_reset_swap(int channel_id)
 
 	writel(val, mbox_reg + ADSS_MBOXn_MBOX_DMA_POLICY_REG);
 
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_dma_reset_swap);
@@ -326,6 +343,7 @@ int ipq40xx_mbox_dma_swap(int channel_id, snd_pcm_format_t format)
 	volatile void __iomem *mbox_reg;
 	uint32_t index;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 
 	if (!mbox_rtime[index])
@@ -348,6 +366,7 @@ int ipq40xx_mbox_dma_swap(int channel_id, snd_pcm_format_t format)
 		break;
 	}
 	writel(val, mbox_reg + ADSS_MBOXn_MBOX_DMA_POLICY_REG);
+	printk("%s %d\n", __func__, __LINE__);
 
 	return 0;
 }
@@ -361,6 +380,7 @@ int ipq40xx_mbox_dma_prepare(int channel_id)
 	volatile void __iomem *mbox_reg;
 	dma_addr_t phys_addr;
 	uint32_t index, dir;
+	printk("%s %d\n", __func__, __LINE__);
 
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
@@ -422,6 +442,7 @@ int ipq40xx_mbox_dma_prepare(int channel_id)
 				MBOX_INT_ENABLE_TX_DMA_COMPLETE);
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return err;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_dma_prepare);
@@ -433,6 +454,7 @@ void ipq40xx_mbox_vuc_setup(int channel_id)
 	int ndescs;
 	int i;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 	ndescs = mbox_rtime[index]->dir_priv[dir].ndescs;
@@ -463,6 +485,7 @@ void ipq40xx_mbox_vuc_setup(int channel_id)
 		desc[i].vuc_dword[CHANNEL_A_CDWORD_1] = SPDIF_CONSUMER_COMPRESD;
 		desc[i].vuc_dword[CHANNEL_B_CDWORD_2] = SPDIF_CONSUMER_COMPRESD;
 	}
+	printk("%s %d\n", __func__, __LINE__);
 }
 EXPORT_SYMBOL(ipq40xx_mbox_vuc_setup);
 
@@ -474,6 +497,7 @@ int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *area,
 	unsigned int i, ndescs;
 	uint32_t index, dir;
 	struct ipq40xx_mbox_rt_dir_priv *mbox_cb;
+	printk("%s %d\n", __func__, __LINE__);
 
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
@@ -525,6 +549,7 @@ int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *area,
 		desc += 1;
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_form_ring);
@@ -533,6 +558,7 @@ int ipq40xx_mbox_dma_release(int channel_id)
 {
 	uint32_t index, dir;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
@@ -553,6 +579,7 @@ int ipq40xx_mbox_dma_release(int channel_id)
 		return 0;
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return -ENXIO;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_dma_release);
@@ -563,6 +590,7 @@ static irqreturn_t ipq40xx_mbox_dma_irq(int irq, void *dev_id)
 	unsigned int status;
 	struct ipq40xx_mbox_rt_priv *curr_rtime =
 				(struct ipq40xx_mbox_rt_priv*)dev_id;
+	printk("%s %d\n", __func__, __LINE__);
 
 	status = readl(curr_rtime->mbox_reg_base +
 			ADSS_MBOXn_MBOX_INT_STATUS_REG);
@@ -601,6 +629,7 @@ static irqreturn_t ipq40xx_mbox_dma_irq(int irq, void *dev_id)
 		ret = IRQ_HANDLED;
 	}
 
+	printk("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 
@@ -609,6 +638,7 @@ int ipq40xx_mbox_dma_init(struct device *dev, int channel_id,
 {
 	uint32_t index;
 	uint32_t dir;
+	printk("%s %d\n", __func__, __LINE__);
 
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
@@ -630,6 +660,7 @@ int ipq40xx_mbox_dma_init(struct device *dev, int channel_id,
 	mbox_rtime[index]->dir_priv[dir].callback = callback;
 	mbox_rtime[index]->dir_priv[dir].dev = dev;
 
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 EXPORT_SYMBOL(ipq40xx_mbox_dma_init);
@@ -645,6 +676,7 @@ static int ipq40xx_mbox_probe(struct platform_device *pdev)
 	struct resource *res;
 	int rc;
 
+	printk("%s %d\n", __func__, __LINE__);
 	if (!pdev)
 		return -ENODEV;
 
@@ -711,6 +743,7 @@ static int ipq40xx_mbox_probe(struct platform_device *pdev)
 	mbox_rtime[id]->irq_no = irq;
 init_err:
 	of_node_put(pdev->dev.of_node);
+	printk("%s %d\n", __func__, __LINE__);
 	return rc;
 }
 
@@ -718,6 +751,7 @@ static int ipq40xx_mbox_remove(struct platform_device *pdev)
 {
 	uint32_t i;
 
+	printk("%s %d\n", __func__, __LINE__);
 	for (i = 0; i < ADSS_MBOX_NR_CHANNELS; i++) {
 		if (mbox_rtime[i]) {
 			free_irq(mbox_rtime[i]->irq_no, mbox_rtime[i]);
@@ -727,6 +761,7 @@ static int ipq40xx_mbox_remove(struct platform_device *pdev)
 			mbox_rtime[i] = NULL;
 		}
 	}
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 
