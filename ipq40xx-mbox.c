@@ -386,6 +386,7 @@ int ipq40xx_mbox_dma_prepare(int channel_id)
 
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
+	printk("%s %d index=%d\n", __func__, __LINE__, index);
 
 	if (!mbox_rtime[index])
 		return -ENOMEM;
@@ -426,6 +427,7 @@ int ipq40xx_mbox_dma_prepare(int channel_id)
 
 		err = ipq40xx_mbox_interrupt_enable(channel_id,
 				MBOX_INT_ENABLE_RX_DMA_COMPLETE);
+		printk("%s %d interrupt enable=%d\n", __func__, __LINE__, err);
 	} else {
 
 		val |= MBOX_DMA_POLICY_TX_INT_TYPE |
