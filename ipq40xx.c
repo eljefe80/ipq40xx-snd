@@ -105,7 +105,8 @@ static int ipq40xx_soc_probe(struct ipq40xx_soc_priv *priv){
         priv->dai_links[0].num_platforms = 1;
 
         priv->dai_links[0].name = "IPQ4019 SOC Playback";
-        priv->dai_links[0].stream_name = "I2S";
+        priv->dai_links[0].stream_name = "Playback";
+//        priv->dai_links[0].stream_name = "I2S";
 //	priv->dai_links[0].cpus->dai_name = "qca-cpu-dai";
 
 	priv->dai_links[0].cpus->dai_name = "qca-i2s-dai";
@@ -229,9 +230,9 @@ static struct snd_soc_card snd_soc_card_qca = {
 //	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
 	.owner			= THIS_MODULE,
 	.num_dapm_routes	= ARRAY_SIZE(ipq4019_audio_map),
-	.dapm_routes		= &ipq4019_audio_map,
+	.dapm_routes		= ipq4019_audio_map,
 	.num_dapm_widgets	= ARRAY_SIZE(ipq4019_dapm_widgets),
-	.dapm_widgets		= &ipq4019_dapm_widgets,
+	.dapm_widgets		= ipq4019_dapm_widgets,
 	.fully_routed		= true,
 };
 
@@ -267,7 +268,6 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 //	.dai_link		= ipq40xx_snd_dai,
 //	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
-	card->owner = THIS_MODULE;
 	card->num_dapm_routes = ARRAY_SIZE(ipq4019_audio_map);
 	card->dapm_routes = ipq4019_audio_map;
 	card->num_dapm_widgets = ARRAY_SIZE(ipq4019_dapm_widgets);
