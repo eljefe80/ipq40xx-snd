@@ -229,9 +229,9 @@ static struct snd_soc_card snd_soc_card_qca = {
 //	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
 	.owner			= THIS_MODULE,
 	.num_dapm_routes	= ARRAY_SIZE(ipq4019_audio_map),
-	.dapm_routes		= ipq4019_audio_map,
+	.dapm_routes		= &ipq4019_audio_map,
 	.num_dapm_widgets	= ARRAY_SIZE(ipq4019_dapm_widgets),
-	.dapm_widgets		= ipq4019_dapm_widgets,
+	.dapm_widgets		= &ipq4019_dapm_widgets,
 	.fully_routed		= true,
 };
 
@@ -265,7 +265,6 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 	pins = card->dev->pins;
         card->owner = THIS_MODULE;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
-	card->name = "ipq40xx_snd_card";
 //	.dai_link		= ipq40xx_snd_dai,
 //	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
 	card->owner = THIS_MODULE;
