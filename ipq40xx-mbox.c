@@ -210,6 +210,8 @@ int ipq40xx_mbox_dma_start(int channel_id)
 	case PLAYBACK:
 		writel(ADSS_MBOXn_DMA_RX_CONTROL_START,
 			mbox_reg + ADSS_MBOXn_MBOXn_DMA_RX_CONTROL_REG);
+
+		printk("%s %d\n", __func__, __LINE__);
 		break;
 
 	case CAPTURE:
