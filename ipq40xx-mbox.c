@@ -728,7 +728,7 @@ static int ipq40xx_mbox_probe(struct platform_device *pdev)
 		mbox_rtime[id] = kzalloc(sizeof(struct ipq40xx_mbox_rt_priv),
 								GFP_KERNEL);
 
-	rc = devm_request_irq(irq, ipq40xx_mbox_dma_irq, 0, "ipq40xx-mbox",
+	rc = devm_request_irq(&pdev->dev, irq, ipq40xx_mbox_dma_irq, 0, "ipq40xx-mbox",
 					mbox_rtime[id]);
 	if (rc) {
 		of_node_put(pdev->dev.of_node);
