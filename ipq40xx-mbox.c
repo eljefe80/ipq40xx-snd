@@ -712,7 +712,7 @@ static int ipq40xx_mbox_probe(struct platform_device *pdev)
 
 	/* Read interrupt and store */
 	irq = platform_get_irq(pdev, 0);
-	printk("%s %d, irq=%d\n", __func__, __LINE__, irq);
+	printk("%s %d, irq=%d mem=%x\n", __func__, __LINE__, irq, res);
 	if (irq < 0) {
 		dev_err(&pdev->dev, "%s: MBOX %d IRQ is not provided\n",
 						__func__, id);
