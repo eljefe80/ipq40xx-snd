@@ -170,13 +170,13 @@ static inline int ipq40xx_mbox_interrupt_enable(int channel_id,
 	volatile void __iomem *mbox_reg;
 	unsigned int val;
 	uint32_t index;
-
 	index = ipq40xx_convert_id_to_channel(channel_id);
 
 	if (!mbox_rtime[index])
 		return -ENOMEM;
 
 	mbox_reg = mbox_rtime[index]->mbox_reg_base;
+	printk("Enabling INT base:%0x4x, CHANNEL: %d", mbox_reg, channel_id);
 
 	val = readl(mbox_reg + ADSS_MBOXn_MBOX_INT_ENABLE_REG);
 	val |= mask;
