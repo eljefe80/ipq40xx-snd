@@ -177,7 +177,7 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 
 		ret = ipq40xx_audio_clk_get(&audio_tx_bclk, dev,
 						"audio_tx_bclk");
-
+		printk("Return from ipq40xx_audio_clk_get: %d", ret);
 		if (!ret && !(dai_priv[intf].is_txmclk_fixed))
 			ret = ipq40xx_audio_clk_get(&audio_tx_mclk, dev,
 						"audio_tx_mclk");
