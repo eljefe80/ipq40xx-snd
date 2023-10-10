@@ -427,7 +427,7 @@ int ipq40xx_mbox_dma_prepare(int channel_id)
 
 		err = ipq40xx_mbox_interrupt_enable(channel_id,
 				MBOX_INT_ENABLE_RX_DMA_COMPLETE);
-		printk("%s %d interrupt enable=%d dma policy=%04x, irq: %d, io_resource: %0x\n", __func__, __LINE__, err, val, mbox_rtime[index]->irq, mbox_rtime[index]->io_resource);
+		printk("%s %d interrupt enable=%d dma policy=%04x, irq: %d, io_resource: %0x\n", __func__, __LINE__, err, val, mbox_rtime[index]->irq_no, mbox_rtime[index]->io_resource);
 	} else {
 
 		val |= MBOX_DMA_POLICY_TX_INT_TYPE |
