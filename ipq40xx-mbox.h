@@ -82,7 +82,7 @@ enum {
 };
 
 //extern 
-struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
+static struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
 
 struct ipq40xx_mbox_desc {
 
