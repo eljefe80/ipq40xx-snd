@@ -131,7 +131,7 @@ static int ipq40xx_audio_clk_set(struct clk *clk, struct device *dev,
 {
 	int ret;
 
-	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
+	printk("%s:%d\n", __func__, __LINE__);
 	ret = clk_set_rate(clk, val);
 	if (ret != 0) {
 		dev_err(dev, "%s: Error in setting %s\n", __func__,
@@ -314,6 +314,8 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 			if (ret)
 				return ret;
 		}
+		printk("audio_tx_bclk min_rate: %x, max_rate %x", audio_tx_bclk->min_rate, audio_tx_bclk->max_rate);
+		printk("audio_tx_bclk min_rate: %x, max_rate %x", audio_tx_bclk->core->rate, audio_tx_bclk->core->req_rate);
 
 		ret = ipq40xx_audio_clk_set(audio_tx_bclk, dev, bclk);
 		if (ret)
