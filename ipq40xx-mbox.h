@@ -181,6 +181,8 @@ static inline int ipq40xx_mbox_interrupt_enable(int channel_id,
 	printk("Enabling INT base:%04x, CHANNEL: %d, val %x", mbox_reg, channel_id, val);
 	val |= mask;
 	writel(val, mbox_reg + ADSS_MBOXn_MBOX_INT_ENABLE_REG);
+	val = readl(mbox_reg + ADSS_MBOXn_MBOX_INT_ENABLE_REG);
+	printk("Enabling INT base:%04x, CHANNEL: %d, val %x", mbox_reg, channel_id, val);
 
 	return 0;
 }
