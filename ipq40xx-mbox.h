@@ -122,6 +122,7 @@ struct ipq40xx_mbox_rt_dir_priv {
 
 struct ipq40xx_mbox_rt_priv {
 	int irq_no;
+	u32 io_resource;
 	volatile void __iomem *mbox_reg_base;
 	struct ipq40xx_mbox_rt_dir_priv dir_priv[2];
 	int mbox_started;
@@ -178,7 +179,6 @@ static inline int ipq40xx_mbox_interrupt_enable(int channel_id,
 	mbox_reg = mbox_rtime[index]->mbox_reg_base;
 
 	val = readl(mbox_reg + ADSS_MBOXn_MBOX_INT_ENABLE_REG);
-	printk("Enabling INT base:%04x, CHANNEL: %d, val %x", mbox_reg, channel_id, val);
 	val |= mask;
 	writel(val, mbox_reg + ADSS_MBOXn_MBOX_INT_ENABLE_REG);
 	val = readl(mbox_reg + ADSS_MBOXn_MBOX_INT_ENABLE_REG);

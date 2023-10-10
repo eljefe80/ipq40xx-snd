@@ -75,7 +75,7 @@ void ipq40xx_glb_i2s_interface_en(int enable)
 	spin_unlock_irqrestore(&i2s_ctrl_lock, flags);
 	mdelay(5);
 }
-EXPORT_SYMBOL(ipq40xx_glb_i2s_interface_en);
+//EXPORT_SYMBOL(ipq40xx_glb_i2s_interface_en);
 
 /* Enable Stereo0/Stereo1/Stereo2 channel */
 void ipq40xx_glb_stereo_ch_en(int enable, int stereo_ch)
@@ -107,7 +107,7 @@ void ipq40xx_glb_i2s_reset(uint32_t reset)
 	mdelay(5);
 	writel(0x0, adss_audio_local_base + ADSS_GLB_I2S_RST_REG);
 }
-EXPORT_SYMBOL(ipq40xx_glb_i2s_reset);
+//EXPORT_SYMBOL(ipq40xx_glb_i2s_reset);
 
 /* Enable I2S/TDM and Playback/Capture Audio Mode */
 void ipq40xx_glb_audio_mode(int mode, int dir)
