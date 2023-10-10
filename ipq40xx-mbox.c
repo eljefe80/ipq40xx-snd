@@ -746,7 +746,7 @@ static int ipq40xx_mbox_probe(struct platform_device *pdev)
 	mbox_rtime[id]->dir_priv[CAPTURE].status =
 		(rx_channel == CHN_STATUS_DISABLE) ? CHN_DISABLED : CHN_ENABLED;
 	mbox_rtime[id]->irq_no = irq;
-	mbox_rtime[id]->io_resouce = res->start;
+	mbox_rtime[id]->io_resource = res->start;
 init_err:
 	of_node_put(pdev->dev.of_node);
 	printk("%s %d\n", __func__, __LINE__);
