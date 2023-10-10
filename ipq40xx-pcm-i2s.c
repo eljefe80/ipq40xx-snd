@@ -435,33 +435,7 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 				struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *hw_params)
 {
-	struct snd_pcm_runtime *runtime = substream->runtime;
-	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
-	int ret;
-	unsigned int period_size, sample_size, sample_rate, frames, channels;
-
-	printk("%s %d\n", __func__, __LINE__);
-
-	pcm_rtpriv = runtime->private_data;
-
-	ret = ipq40xx_mbox_form_ring(pcm_rtpriv->channel,
-			substream->dma_buffer.addr,
-			substream->dma_buffer.area,
-			params_period_bytes(hw_params),
-			params_buffer_bytes(hw_params),
-			(substream->stream == SNDRV_PCM_STREAM_CAPTURE));
-	if (ret) {
-		pr_err("%s: %d: Error dma form ring\n",
-				__func__, __LINE__);
-		ipq40xx_mbox_dma_release(pcm_rtpriv->channel);
-		return ret;
-	}
-
-	period_size = params_period_bytes(hw_params);
-	sample_size = snd_pcm_format_size(params_format(hw_params), 1);
-	sample_rate = params_rate(hw_params);
-	channels = params_channels(hw_params);
-	frames = period_size / (sample_size * channels);
+	struct snd_pcm_ize * channels);
 
 	pcm_rtpriv->period_size = params_period_bytes(hw_params);
 
@@ -536,13 +510,14 @@ error:
 	return ret;
 }
 
-/*
-static void ipq40xx_asoc_pcm_i2s_free(struct snd_pcm *pcm)
+
+static void ipq40xx_asoc_pcm_i2s_free(struct snd_soc_component *component,
+					struct snd_pcm *pcm)
 {
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_PLAYBACK);
 	ipq40xx_pcm_free_dma_buffer(pcm, SNDRV_PCM_STREAM_CAPTURE);
 }
-*/
+
 static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *component,
 					struct snd_soc_pcm_runtime *prtd)
 {
@@ -604,7 +579,7 @@ static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_platform = {
         .pointer        = ipq40xx_pcm_i2s_pointer,
         .copy_user      = ipq40xx_pcm_i2s_copy,
 	.pcm_construct	= ipq40xx_asoc_pcm_i2s_new,
-//	.pcm_free	= ipq40xx_asoc_pcm_i2s_free,
+	.pcm_destruct	= ipq40xx_asoc_pcm_i2s_free,
 };
 
 static const struct of_device_id ipq40xx_pcm_i2s_id_table[] = {
