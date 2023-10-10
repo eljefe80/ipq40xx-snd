@@ -712,7 +712,7 @@ static int ipq40xx_mbox_probe(struct platform_device *pdev)
 
 	/* Read interrupt and store */
 	irq = platform_get_irq(pdev, 0);
-	printk("%s %d, irq=%d mem=%x\n", __func__, __LINE__, irq, res);
+	printk("%s %d, irq=%d mem=%x\n", __func__, __LINE__, irq, res->start);
 	if (irq < 0) {
 		dev_err(&pdev->dev, "%s: MBOX %d IRQ is not provided\n",
 						__func__, id);
@@ -746,7 +746,7 @@ static int ipq40xx_mbox_probe(struct platform_device *pdev)
 	mbox_rtime[id]->dir_priv[CAPTURE].status =
 		(rx_channel == CHN_STATUS_DISABLE) ? CHN_DISABLED : CHN_ENABLED;
 	mbox_rtime[id]->irq_no = irq;
-	mbox_rtime[id]->io_resource = *res;
+	mbox_rtime[id]->io_resou ce =*res->start;
 init_err:
 	of_node_put(pdev->dev.of_node);
 	printk("%s %d\n", __func__, __LINE__);
