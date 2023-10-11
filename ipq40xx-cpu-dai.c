@@ -167,7 +167,7 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 	int ret = 0;
 	struct device *dev = &(dai_priv[intf].pdev->dev);
 	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
-
+	printk("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		/* Check if the direction is enabled */
 		if (dai_priv[intf].tx_enabled != ENABLE)
@@ -202,6 +202,7 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 
 	if (intf == I2S || intf == I2S1 || intf == I2S2) {
 		/* Select I2S mode */
+		printk("%s:%d\n", __func__, __LINE__);
 		ipq40xx_glb_audio_mode(I2S, substream->stream);
 	} else if (intf == TDM) {
 		/* Select TDM mode */
@@ -212,6 +213,7 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 		ipq40xx_glb_tdm_ctrl_delay(TDM_DELAY, substream->stream);
 	}
 
+	printk("%s:%d\n", __func__, __LINE__);
 	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 
 	return 0;
