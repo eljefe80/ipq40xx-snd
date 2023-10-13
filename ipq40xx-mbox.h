@@ -100,7 +100,7 @@ struct ipq40xx_mbox_desc {
 
 	unsigned int vuc_dword[36];
 
-} __packed;
+}; // __packed;
 
 struct ipq40xx_mbox_rt_dir_priv {
 	/* Desc array in virtual space */
