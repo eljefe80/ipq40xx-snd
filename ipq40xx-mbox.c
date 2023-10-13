@@ -220,6 +220,7 @@ int ipq40xx_mbox_dma_start(int channel_id)
 		break;
 	}
 
+	printk("checking irq: 0x%x",readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
