@@ -428,7 +428,7 @@ int ipq40xx_mbox_dma_prepare(int channel_id)
 			mbox_reg + ADSS_MBOXn_MBOXn_DMA_RX_DESCRIPTOR_BASE_REG);
 		printk("Writing 0x%08x to 0x%08x", readl(mbox_reg + ADSS_MBOXn_MBOX_DMA_POLICY_REG) |
                         ADSS_MBOX_DMA_POLICY_SRAM_AC(phys_addr), mbox_reg + ADSS_MBOXn_MBOX_DMA_POLICY_REG);
-		printk("Writing 0x%08x(0x%08x) to 0x%08x", pyhs_addr, phys_addr & 0xfffffff,
+		printk("Writing 0x%08x(0x%08x) to 0x%08x", phys_addr, phys_addr & 0xfffffff,
                         mbox_reg + ADSS_MBOXn_MBOXn_DMA_RX_DESCRIPTOR_BASE_REG);
 		err = ipq40xx_mbox_interrupt_enable(channel_id,
 				MBOX_INT_ENABLE_RX_DMA_COMPLETE);
