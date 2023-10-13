@@ -153,12 +153,12 @@ static int ipq40xx_pcm_preallocate_dma_buffer(struct snd_pcm *pcm,
 	area = dma_alloc_coherent(pcm->card->dev, size, &addr, GFP_KERNEL);
 
 	if (!area) {
-		dev_info(ss2dev(substream), "Alloc coherent memory failed\n");
+		printk(ss2dev(substream), "Alloc coherent memory failed\n");
 		return -ENOMEM;
 	}
 
 	if (!ipq40xx_mbox_buf_is_aligned(area, size)) {
-		dev_info(ss2dev(substream),
+		printk(ss2dev(substream),
 			 "First allocation %p not within 256M region\n", area);
 
 		buf->area = dma_alloc_coherent(pcm->card->dev, size,
@@ -170,7 +170,7 @@ static int ipq40xx_pcm_preallocate_dma_buffer(struct snd_pcm *pcm,
 		 */
 		dma_free_coherent(pcm->card->dev, size, area, addr);
 		if (!buf->area) {
-			dev_info(ss2dev(substream),
+			printk(ss2dev(substream),
 				 "Second Alloc coherent memory failed\n");
 			return -ENOMEM;
 		}

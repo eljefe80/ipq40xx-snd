@@ -688,7 +688,7 @@ static int ipq40xx_mbox_probe(struct platform_device *pdev)
 	printk("%s %d\n", __func__, __LINE__);
 	if (!pdev)
 		return -ENODEV;
-
+	printk("Size of desc %d", sizeof(struct ipq40xx_mbox_desc));
 	np = of_node_get(pdev->dev.of_node);
 	if ((of_property_read_u32(np, "dma-index", &id))) {
 		pr_err("%s: error reading critical device "
