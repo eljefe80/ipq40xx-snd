@@ -555,9 +555,9 @@ int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *area,
 
 			baseaddr = baseaddr_const;
 		}
-		printk("Descriptor %i", i);
+		printk("Descriptor %i %08x", i, &_desc_p[i]);
 		printk("Descriptor: desc->OWN:     %08x", desc->OWN);
-		printk("Descriptor: desc->ie:      %08x", desc->ei);
+		printk("Descriptor: desc->ei:      %08x", desc->ei);
 		printk("Descriptor: desc->BufPtr:  %08x", desc->BufPtr);
 		printk("Descriptor: desc->NextPtr: %08x", desc->NextPtr);
 		printk("Descriptor: desc->size:    %08x", desc->size);
