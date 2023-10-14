@@ -79,7 +79,7 @@ void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_id)
 {
 	uint32_t cfg;
 	unsigned long flags;
-
+	printk("%s %d\n", __func__, __LINE__);
 	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
 	cfg = readl(stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
@@ -89,6 +89,7 @@ void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_id)
 	writel(cfg, stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
+	printk("%s %d\n", __func__, __LINE__);
 }
 EXPORT_SYMBOL(ipq40xx_stereo_config_enable);
 
@@ -136,6 +137,7 @@ int ipq40xx_cfg_bit_width(uint32_t bit_width, uint32_t stereo_id)
 	uint32_t cfg, mask = 0;
 	unsigned long flags;
 	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
+	printk("%s %d\n", __func__, __LINE__);
 	switch(bit_width) {
 	case SNDRV_PCM_FORMAT_S16_LE:
 	case SNDRV_PCM_FORMAT_S16_BE:
@@ -171,6 +173,7 @@ int ipq40xx_cfg_bit_width(uint32_t bit_width, uint32_t stereo_id)
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 EXPORT_SYMBOL(ipq40xx_cfg_bit_width);
@@ -181,6 +184,7 @@ void ipq40xx_config_stereo_mode(uint32_t mode, uint32_t stereo_id)
 	uint32_t cfg;
 	unsigned long flags;
 
+	printk("%s %d\n", __func__, __LINE__);
 	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
 	cfg = readl(stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
@@ -190,6 +194,7 @@ void ipq40xx_config_stereo_mode(uint32_t mode, uint32_t stereo_id)
 	writel(cfg, stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
+	printk("%s %d\n", __func__, __LINE__);
 }
 EXPORT_SYMBOL(ipq40xx_config_stereo_mode);
 
@@ -200,6 +205,7 @@ void ipq40xx_config_master(uint32_t enable, uint32_t stereo_id)
 	unsigned long flags;
 
 	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
+	printk("%s %d\n", __func__, __LINE__);
 	cfg = readl(stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	cfg &= ~(STEREOn_CONFIG_MASTER);
@@ -207,6 +213,7 @@ void ipq40xx_config_master(uint32_t enable, uint32_t stereo_id)
 		cfg |= STEREOn_CONFIG_MASTER;
 	writel(cfg, stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
+	printk("%s %d\n", __func__, __LINE__);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
 EXPORT_SYMBOL(ipq40xx_config_master);
@@ -222,12 +229,14 @@ void ipq40xx_config_mclk_sel(uint32_t stereo_id, uint32_t val)
 	unsigned long flags;
 
 	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
+	printk("%s %d\n", __func__, __LINE__);
 	cfg = readl(stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	cfg &= ~(STEREOn_CONFIG_MCK_SEL);
 	cfg |= val;
 	writel(cfg, stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
+	printk("%s %d\n", __func__, __LINE__);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 
 }
@@ -240,6 +249,7 @@ void ipq40xx_config_sample_cnt_clear_type(uint32_t stereo_id)
 	unsigned long flags;
 
 	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
+	printk("%s %d\n", __func__, __LINE__);
 	cfg = readl(stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	/* 0 - write an explicit zero data through software
@@ -250,6 +260,7 @@ void ipq40xx_config_sample_cnt_clear_type(uint32_t stereo_id)
 	cfg |= STEREOn_CONFIG_SAMPLE_CNT_CLEAR_TYPE; /* Write 1 */
 	writel(cfg, stereo_priv[stereo_id].stereo_base
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
+	printk("%s %d\n", __func__, __LINE__);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
 EXPORT_SYMBOL(ipq40xx_config_sample_cnt_clear_type);
@@ -266,6 +277,7 @@ static int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 	struct device_node *np = NULL;
 	uint32_t stereo_port_id = 0;
 
+	printk("%s %d\n", __func__, __LINE__);
 	np = of_node_get(pdev->dev.of_node);
 	if (!(of_property_read_u32(np, "stereo-index", &stereo_port_id))) {
 		if (stereo_port_id >= MAX_STEREO_ENTRIES) {
@@ -290,6 +302,7 @@ static int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 	spin_lock_init(&stereo_priv[stereo_port_id].stereo_lock);
 
 	of_node_put(pdev->dev.of_node);
+	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
 
