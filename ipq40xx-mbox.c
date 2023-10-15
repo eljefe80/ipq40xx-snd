@@ -220,7 +220,7 @@ int ipq40xx_mbox_dma_start(int channel_id)
 		break;
 	}
 
-	printk("checking irq: 0x%x",readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
+	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
@@ -276,7 +276,7 @@ int ipq40xx_mbox_dma_stop(int channel_id)
 
 	mbox_reg = mbox_rtime[index]->mbox_reg_base;
 	mbox_rtime[index]->mbox_started = 0;
-	printk("checking irq: 0x%x",readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
+	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 
 	switch (dir) {
 	case PLAYBACK:

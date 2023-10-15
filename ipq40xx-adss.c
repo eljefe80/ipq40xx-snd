@@ -452,6 +452,7 @@ static int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 	if (IS_ERR(audio_blk_rst))
 		return PTR_ERR(audio_blk_rst);
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
+	ipq40xx_audio_adss_init();
 	return 0;
 }
 
