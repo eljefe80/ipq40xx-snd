@@ -163,7 +163,7 @@ static inline uint32_t ipq40xx_convert_id_to_channel(uint32_t id)
 
 static inline uint32_t ipq40xx_convert_id_to_dir(uint32_t id)
 {
-	printk("Requested direction %d from id %d",((id)/2)), id);
+	printk("Requested direction %d from id %d",((id)/2), id);
 	return ((id)%2);
 }
 
