@@ -146,7 +146,7 @@ static int ipq40xx_audio_clk_set(struct clk *clk, struct device *dev,
 					__clk_get_name(clk));
 		return ret;
 	}
-
+	printk("Set clk rate %d, actual %d", val, clk_get_rate(clk));
 	return 0;
 }
 
