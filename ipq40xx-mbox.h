@@ -157,11 +157,13 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id);
 
 static inline uint32_t ipq40xx_convert_id_to_channel(uint32_t id)
 {
+	printk("Requested channel %d from id %d",((id)/2), id);
 	return ((id)/2);
 }
 
 static inline uint32_t ipq40xx_convert_id_to_dir(uint32_t id)
 {
+	printk("Requested direction %d from id %d",((id)/2)), id);
 	return ((id)%2);
 }
 
