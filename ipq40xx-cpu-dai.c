@@ -132,7 +132,7 @@ static int ipq40xx_audio_clk_set(struct clk *clk, struct device *dev,
 {
 	int ret;
 
-	printk("%s:%d\n", __func__, __LINE__);
+	printk("%s:%d:%s\n", __func__, __LINE__,  __clk_get_name(clk));
 	ret = clk_set_rate(clk, val);
 	if (ret != 0) {
 		dev_err(dev, "%s: Error in setting %s\n", __func__,
