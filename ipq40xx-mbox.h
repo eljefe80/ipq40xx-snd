@@ -238,8 +238,10 @@ static inline uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
 	uint32_t dir;
         volatile void __iomem *mbox_reg;
 
+	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
+
         mbox_reg = mbox_rtime[index]->mbox_reg_base;
 
 	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
