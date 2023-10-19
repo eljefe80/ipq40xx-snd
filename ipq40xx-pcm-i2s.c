@@ -52,7 +52,7 @@ static struct snd_pcm_hardware ipq40xx_pcm_hardware_playback = {
 	.buffer_bytes_max	=	IPQ40xx_I2S_BUFF_SIZE,
 	.period_bytes_max	=	IPQ40xx_I2S_BUFF_SIZE / 2,
 	.period_bytes_min	=	IPQ40xx_I2S_PERIOD_BYTES_MIN,
-	.periods_min		=	2, //IPQ40xx_I2S_NO_OF_PERIODS,
+	.periods_min		=	32, //IPQ40xx_I2S_NO_OF_PERIODS,
 	.periods_max		=	IPQ40xx_I2S_NO_OF_PERIODS,
 	.fifo_size		=	0,
 };
