@@ -540,7 +540,9 @@ int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *area,
 	_desc_p = (struct ipq40xx_mbox_desc *)desc_p;
 
 	baseaddr_const = baseaddr;
-
+	printk("Number of descriptors: %i", ndescs);
+	printk("Period bytes: %i", period_bytes);
+	printk("Buffer size: %i", bufsize);
 	for (i = 0; i < ndescs; i++) {
 
 		desc->OWN = own_bit;
