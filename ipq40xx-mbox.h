@@ -236,17 +236,22 @@ static inline uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
 	unsigned int i, size_played = 0;
 	uint32_t index;
 	uint32_t dir;
+        volatile void __iomem *mbox_reg;
 
+        mbox_reg = mbox_rtime[index]->mbox_reg_base;
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
+	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 	if (!mbox_rtime[index])
 		return size_played;
 
 	desc = mbox_rtime[index]->dir_priv[dir].dma_virt_head;
+	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 
 	for (i = 0; i < mbox_rtime[index]->dir_priv[dir].ndescs; i++) {
 		if (desc->OWN == 0) {
+			printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 			desc->OWN = 1;
 			desc->ei = 1;
 			size_played += desc->size;
@@ -254,6 +259,7 @@ static inline uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
 		desc += 1;
 	}
 
+	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 	return size_played;
 }
 
