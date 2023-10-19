@@ -242,12 +242,13 @@ static inline uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
+	if (!mbox_rtime[index])
+		return size_played;
+
         mbox_reg = mbox_rtime[index]->mbox_reg_base;
 	printk("%s %d index:%i, mbox_reg=%x\n", __func__, __LINE__, index, mbox_reg);
 
 	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
-	if (!mbox_rtime[index])
-		return size_played;
 
 	desc = mbox_rtime[index]->dir_priv[dir].dma_virt_head;
 	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
