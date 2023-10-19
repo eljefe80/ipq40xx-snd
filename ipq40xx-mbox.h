@@ -241,6 +241,7 @@ static inline uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
 	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
+	printk("%s %d index:%i\n", __func__, __LINE__, index);
 
         mbox_reg = mbox_rtime[index]->mbox_reg_base;
 
