@@ -81,7 +81,8 @@ enum {
 	ADSS_MBOX_NR_CHANNELS = 5,
 };
 
-extern static struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
+//extern
+static struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
 
 struct ipq40xx_mbox_desc {
 
@@ -240,9 +241,9 @@ static inline uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
 	printk("%s %d\n", __func__, __LINE__);
 	index = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
-	printk("%s %d index:%i\n", __func__, __LINE__, index);
 
         mbox_reg = mbox_rtime[index]->mbox_reg_base;
+	printk("%s %d index:%i, mbox_reg=%x\n", __func__, __LINE__, index, mbox_reg);
 
 	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 	if (!mbox_rtime[index])
