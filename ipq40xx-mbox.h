@@ -81,8 +81,7 @@ enum {
 	ADSS_MBOX_NR_CHANNELS = 5,
 };
 
-//extern 
-static struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
+extern static struct ipq40xx_mbox_rt_priv *mbox_rtime[ADSS_MBOX_NR_CHANNELS];
 
 struct ipq40xx_mbox_desc {
 
