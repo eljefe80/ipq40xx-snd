@@ -382,16 +382,16 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
 				substream->runtime->private_data;
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
+/*	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	uint32_t intf = dai->driver->id;
-
+*/
 	printk("%s %d\n", __func__, __LINE__);
 	switch (cmd) {
 	case SNDRV_PCM_TRIGGER_START:
 	case SNDRV_PCM_TRIGGER_RESUME:
 		/* Enable the I2S Stereo block for operation */
-		ipq40xx_stereo_config_enable(ENABLE,
-				get_stereo_id(substream, intf));
+/*		ipq40xx_stereo_config_enable(ENABLE,
+				get_stereo_id(substream, intf)); */
 		ret = ipq40xx_mbox_dma_start(pcm_rtpriv->channel);
 		if (ret) {
 			pr_err("%s: %d: Error in dma start\n",
@@ -412,9 +412,9 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	case SNDRV_PCM_TRIGGER_STOP:
 	case SNDRV_PCM_TRIGGER_SUSPEND:
 		/* Disable the I2S Stereo block */
-		ipq40xx_stereo_config_enable(DISABLE,
+/*		ipq40xx_stereo_config_enable(DISABLE,
 				get_stereo_id(substream, intf));
-	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+*/	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
 		ret = ipq40xx_mbox_dma_stop(pcm_rtpriv->channel);
 		if (ret) {
 			pr_err("%s: %d: Error in dma stop\n",
