@@ -207,6 +207,7 @@ int ipq40xx_mbox_dma_start(int channel_id)
 	mbox_reg = mbox_rtime[index]->mbox_reg_base;
 	mbox_rtime[index]->mbox_started = 1;
 
+	printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
 	switch (dir) {
 	case PLAYBACK:
 		writel(ADSS_MBOXn_DMA_RX_CONTROL_START,
