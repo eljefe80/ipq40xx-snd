@@ -177,6 +177,7 @@ int ipq40xx_mbox_fifo_reset(int channel_id)
 
 	switch (dir) {
 	case PLAYBACK:
+		printk("Resetting FIFO TX_INIT");
 		writel(MBOX_FIFO_RESET_TX_INIT,
 			 mbox_reg + ADSS_MBOXn_MBOX_FIFO_RESET_REG);
 		break;
