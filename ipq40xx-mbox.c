@@ -399,6 +399,7 @@ int ipq40xx_mbox_dma_prepare(int channel_id)
 	/* do not reset DMA registers if the other direction is active */
 	if (!ipq40xx_is_chn_already_inited(index, dir)) {
 
+		printk("%s %d\n", __func__, __LINE__);
 		val = readl(mbox_reg + ADSS_MBOXn_MBOX_DMA_POLICY_REG);
 		val |= MBOX_DMA_POLICY_SW_RESET;
 		writel(val, mbox_reg + ADSS_MBOXn_MBOX_DMA_POLICY_REG);
