@@ -42,7 +42,7 @@
 #define GLB_I2S_RST_CTRL_MBOX0		(1 << 0)
 #define GLB_I2S_RST_CTRL_I2S0		(1 << 1)
 #define GLB_I2S_RST_CTRL_MBOX3		(1 << 2)
-#define GLB_I2S_RST_CTRL_I2S3		(1 << 3
+#define GLB_I2S_RST_CTRL_I2S3		(1 << 3)
 #define GLB_I2S_RESET_VAL		0xF
 
 #define ADSS_GLB_CLK_I2S_CTRL_REG	0x18
