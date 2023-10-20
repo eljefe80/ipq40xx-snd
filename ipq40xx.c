@@ -213,28 +213,32 @@ static struct snd_soc_dai_link ipq40xx_snd_dai[] = {
 	},
 #endif
 };
-
+/*
 static const struct snd_soc_dapm_route ipq4019_audio_map[] = {
 	{"Amp", NULL, "DAC"},
         {"DAC", NULL, "AIF1RX"},
 };
+*/
+/*
 static const struct snd_soc_dapm_widget ipq4019_dapm_widgets[] = {
 	SND_SOC_DAPM_AIF_IN("AIF1RX", "IPQ4019 I2S", 0, SND_SOC_NOPM, 0, 0),
 //	SND_SOC_DAPM_AIF_IN("AIF1RX", "AIF1 Playback", 0, SND_SOC_NOPM, 0, 0),
         /* Output Lines */
-        SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
+/*        SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
         SND_SOC_DAPM_OUTPUT("Amp"),
 };
+*/
 static struct snd_soc_card snd_soc_card_qca = {
 	.name			= "ipq40xx_snd_card",
 //	.dai_link		= ipq40xx_snd_dai,
 //	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
 	.owner			= THIS_MODULE,
-	.num_dapm_routes	= ARRAY_SIZE(ipq4019_audio_map),
+/*	.num_dapm_routes	= ARRAY_SIZE(ipq4019_audio_map),
 	.dapm_routes		= ipq4019_audio_map,
 	.num_dapm_widgets	= ARRAY_SIZE(ipq4019_dapm_widgets),
 	.dapm_widgets		= ipq4019_dapm_widgets,
-	.fully_routed		= true,
+*/
+//	.fully_routed		= true,
 };
 
 static const struct of_device_id ipq40xx_audio_id_table[] = {
@@ -269,11 +273,11 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 //	.dai_link		= ipq40xx_snd_dai,
 //	.num_links		= ARRAY_SIZE(ipq40xx_snd_dai),
-	card->num_dapm_routes = ARRAY_SIZE(ipq4019_audio_map);
-	card->dapm_routes = ipq4019_audio_map;
-	card->num_dapm_widgets = ARRAY_SIZE(ipq4019_dapm_widgets);
-	card->dapm_widgets = ipq4019_dapm_widgets;
-	card->fully_routed = true;
+//	card->num_dapm_routes = ARRAY_SIZE(ipq4019_audio_map);
+//	card->dapm_routes = ipq4019_audio_map;
+//	card->num_dapm_widgets = ARRAY_SIZE(ipq4019_dapm_widgets);
+//	card->dapm_widgets = ipq4019_dapm_widgets;
+//	card->fully_routed = true;
 /*
  * If the sound card registration fails, then the audio TLMM change
  * is also reverted. Due to this, the pins are seen to toggle causing
