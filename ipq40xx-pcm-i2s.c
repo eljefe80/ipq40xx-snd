@@ -50,7 +50,7 @@ static struct snd_pcm_hardware ipq40xx_pcm_hardware_playback = {
 	.channels_min		=	CH_STEREO,
 	.channels_max		=	CH_STEREO,
 	.buffer_bytes_max	=	IPQ40xx_I2S_BUFF_SIZE,
-	.period_bytes_max	=	IPQ40xx_I2S_BUFF_SIZE / 2,
+	.period_bytes_max	=	IPQ40xx_I2S_BUFF_SIZE / 4,
 	.period_bytes_min	=	IPQ40xx_I2S_PERIOD_BYTES_MIN,
 	.periods_min		=	IPQ40xx_I2S_NO_OF_PERIODS,
 	.periods_max		=	IPQ40xx_I2S_NO_OF_PERIODS,
@@ -390,8 +390,8 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	case SNDRV_PCM_TRIGGER_START:
 	case SNDRV_PCM_TRIGGER_RESUME:
 		/* Enable the I2S Stereo block for operation */
-/*		ipq40xx_stereo_config_enable(ENABLE,
-				get_stereo_id(substream, intf)); */
+		ipq40xx_stereo_config_enable(ENABLE,
+				get_stereo_id(substream, intf));
 		ret = ipq40xx_mbox_dma_start(pcm_rtpriv->channel);
 		if (ret) {
 			pr_err("%s: %d: Error in dma start\n",
@@ -412,9 +412,9 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	case SNDRV_PCM_TRIGGER_STOP:
 	case SNDRV_PCM_TRIGGER_SUSPEND:
 		/* Disable the I2S Stereo block */
-/*		ipq40xx_stereo_config_enable(DISABLE,
+		ipq40xx_stereo_config_enable(DISABLE,
 				get_stereo_id(substream, intf));
-*/	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
 		ret = ipq40xx_mbox_dma_stop(pcm_rtpriv->channel);
 		if (ret) {
 			pr_err("%s: %d: Error in dma stop\n",

@@ -98,7 +98,7 @@ struct ipq40xx_mbox_desc {
 			NextPtr	: 28,   /* bit 27-00 */
 			rsvd3	:  4;   /* bit 31-28 */
 
-	unsigned int vuc_dword[37];
+	unsigned int vuc_dword[36];
 
 }; // __packed;
 
