@@ -50,7 +50,7 @@ static struct snd_pcm_hardware ipq40xx_pcm_hardware_playback = {
 	.channels_min		=	CH_STEREO,
 	.channels_max		=	CH_STEREO,
 	.buffer_bytes_max	=	IPQ40xx_I2S_BUFF_SIZE,
-	.period_bytes_max	=	IPQ40xx_I2S_BUFF_SIZE / 4,
+	.period_bytes_max	=	IPQ40xx_I2S_BUFF_SIZE / 2,
 	.period_bytes_min	=	IPQ40xx_I2S_PERIOD_BYTES_MIN,
 	.periods_min		=	IPQ40xx_I2S_NO_OF_PERIODS,
 	.periods_max		=	IPQ40xx_I2S_NO_OF_PERIODS,
@@ -496,7 +496,7 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 	substream->runtime->private_data = pcm_rtpriv;
 	pcm_rtpriv->mmap_flag = 0;
 	pcm_rtpriv->dma_started = 0;
-
+	ipq40xx_glb_pcm_rst(DISABLE);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		runtime->dma_bytes =
 			ipq40xx_pcm_hardware_playback.buffer_bytes_max;
