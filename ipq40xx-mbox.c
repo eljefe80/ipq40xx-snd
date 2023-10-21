@@ -35,7 +35,43 @@ enum {
 	CHN_STATUS_DISABLE = 0xFF,
 };
 
+static uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
+{
+        struct ipq40xx_mbox_desc *desc;
+        unsigned int i, size_played = 0;
+        uint32_t index;
+        uint32_t dir;
+        volatile void __iomem *mbox_reg;
 
+        printk("%s %d\n", __func__, __LINE__);
+        index = ipq40xx_convert_id_to_channel(channel_id);
+        dir = ipq40xx_convert_id_to_dir(channel_id);
+
+        if (!mbox_rtime[index])
+                return size_played;
+
+        mbox_reg = mbox_rtime[index]->mbox_reg_base;
+        printk("%s %d index:%i, mbox_reg=%x\n", __func__, __LINE__, index, mbox_reg);
+
+        printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
+
+        desc = mbox_rtime[index]->dir_priv[dir].dma_virt_head;
+        printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
+
+        for (i = 0; i < mbox_rtime[index]->dir_priv[dir].ndescs; i++) {
+                if (desc->OWN == 0) {
+                        printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
+                        desc->OWN = 1;
+                        desc->ei = 1;
+                        size_played += desc->size;
+                }
+                desc += 1;
+        }
+
+        printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
+        return size_played;
+}
+EXPORT_SYMBOL(ipq4019_mbox_get_elapsed_size);
 static struct ipq40xx_mbox_desc *get_next(
 				struct ipq40xx_mbox_rt_dir_priv *rtdir,
 				struct ipq40xx_mbox_desc *desc)
