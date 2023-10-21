@@ -230,7 +230,7 @@ static inline int ipq40xx_mbox_interrupt_ack(int channel_id, unsigned int mask)
 	return 0;
 }
 
-static inline uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id);
+uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id);
 
 static inline int ipq40xx_mbox_clear_own_bits(unsigned int channel_id)
 {
