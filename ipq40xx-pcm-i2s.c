@@ -241,11 +241,11 @@ static snd_pcm_uframes_t ipq40xx_pcm_i2s_pointer(struct snd_soc_component *compo
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 	snd_pcm_uframes_t ret;
 
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 	pcm_rtpriv = runtime->private_data;
 
 	ret = bytes_to_frames(runtime, pcm_rtpriv->curr_pos);
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 
