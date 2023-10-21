@@ -219,7 +219,7 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
 		(struct ipq40xx_pcm_rt_priv *)runtime->private_data;
 
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 	if (pcm_rtpriv->mmap_flag)
 		pcm_rtpriv->curr_pos =
 			ipq40xx_mbox_get_played_offset_set_own(
@@ -229,7 +229,7 @@ static irqreturn_t ipq40xx_pcm_irq(int intrsrc, void *data)
 			ipq40xx_mbox_get_played_offset(pcm_rtpriv->channel);
 
 	snd_pcm_period_elapsed(substream);
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 
 	return IRQ_HANDLED;
 }
@@ -385,7 +385,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	uint32_t intf = dai->driver->id;
 
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 	switch (cmd) {
 	case SNDRV_PCM_TRIGGER_START:
 	case SNDRV_PCM_TRIGGER_RESUME:
@@ -427,7 +427,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 		ret = -EINVAL;
 		break;
 	}
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 

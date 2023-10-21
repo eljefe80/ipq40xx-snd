@@ -155,7 +155,7 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 	unsigned int i, desc_own, size_played = 0;
 	u32 chan, dir;
 
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 	chan = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
@@ -191,7 +191,7 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 		rtdir->last_played_is_null++;
 	}
 
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 	return size_played;
 }
 
@@ -598,7 +598,7 @@ int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *area,
 
 			baseaddr = baseaddr_const;
 		}
-
+/*
 		printk("Descriptor %i %08x", i, &_desc_p[i]);
 		printk("Descriptor: desc->OWN:     %08x", desc->OWN);
 		printk("Descriptor: desc->ei:      %08x", desc->ei);
@@ -606,7 +606,7 @@ int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *area,
 		printk("Descriptor: desc->NextPtr: %08x", desc->NextPtr);
 		printk("Descriptor: desc->size:    %08x", desc->size);
 		printk("Descriptor: desc->length:  %08x", desc->length);
-
+*/
 		desc += 1;
 	}
 
@@ -651,7 +651,7 @@ static irqreturn_t ipq40xx_mbox_dma_irq(int irq, void *dev_id)
 	unsigned int status;
 	struct ipq40xx_mbox_rt_priv *curr_rtime =
 				(struct ipq40xx_mbox_rt_priv*)dev_id;
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 
 	status = readl(curr_rtime->mbox_reg_base +
 			ADSS_MBOXn_MBOX_INT_STATUS_REG);
@@ -690,7 +690,7 @@ static irqreturn_t ipq40xx_mbox_dma_irq(int irq, void *dev_id)
 		ret = IRQ_HANDLED;
 	}
 
-	printk("%s %d\n", __func__, __LINE__);
+//	printk("%s %d\n", __func__, __LINE__);
 	return ret;
 }
 
