@@ -445,8 +445,8 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	pcm_rtpriv = runtime->private_data;
 
 	ret = ipq40xx_mbox_form_ring(pcm_rtpriv->channel,
-			runtime->dma_buffer.addr,
-			runtime->dma_buffer.area,
+			runtime->dma_addr,
+			runtime->dma_area,
 /*			substream->dma_buffer.addr,
 			substream->dma_buffer.area,*/
 			params_period_bytes(hw_params),
@@ -466,7 +466,7 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	frames = period_size / (sample_size * channels);
 	pcm_rtpriv->period_size = params_period_bytes(hw_params);
 
-	snd_pcm_set_runtime_buffer(substream, &runtime->dma_buffer);
+	snd_pcm_set_runtime_buffer(substream, &substream->dma_buffer);
 
 	runtime->dma_bytes = params_buffer_bytes(hw_params);
 	printk("%s %d\n", __func__, __LINE__);
