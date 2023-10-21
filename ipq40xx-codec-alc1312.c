@@ -1157,9 +1157,9 @@ static int alc1312_probe(struct snd_soc_component *component)
 	printk("enter %s\n",__func__);
 	printk("<3> Keen %s %d %s\r\n",__FUNCTION__,__LINE__, __FILE__);
 	component->dapm.idle_bias_off = 1;
-
+/*
         component->write = hw_write;
-        component->read = hw_read;
+        component->read = hw_read;*/
         component->regmap = regmap_init_i2c(to_i2c_client(component->dev),
 						      &alc1312_regmap_config);
 /*	if (ret != 0) {
