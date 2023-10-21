@@ -71,7 +71,7 @@ static uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
         printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
         return size_played;
 }
-EXPORT_SYMBOL(ipq4019_mbox_get_elapsed_size);
+EXPORT_SYMBOL(ipq40xx_mbox_get_elapsed_size);
 static struct ipq40xx_mbox_desc *get_next(
 				struct ipq40xx_mbox_rt_dir_priv *rtdir,
 				struct ipq40xx_mbox_desc *desc)
