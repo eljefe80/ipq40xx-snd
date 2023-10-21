@@ -35,7 +35,7 @@ enum {
 	CHN_STATUS_DISABLE = 0xFF,
 };
 
-static uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
+uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
 {
         struct ipq40xx_mbox_desc *desc;
         unsigned int i, size_played = 0;
