@@ -548,7 +548,7 @@ static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *component,
 {
 	struct snd_card *card = prtd->card->snd_card;
 	struct snd_pcm *pcm = prtd->pcm;
-
+	size_t size;
 	int ret = 0;
 
 	printk("%s %d\n", __func__, __LINE__);
@@ -559,9 +559,12 @@ static int ipq40xx_asoc_pcm_i2s_new(struct snd_soc_component *component,
 		card->dev->dma_mask = &card->dev->coherent_dma_mask;
 
 	if (pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream) {
-		ret = ipq40xx_pcm_preallocate_dma_buffer(pcm,
+		size = ip40xx_dma_buffer_size(&ipq40xx_pcm_hardware_playback);
+		snd_pcm_set_managed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV,
+				       card->dev, size, size);
+/*		ret = ipq40xx_pcm_preallocate_dma_buffer(pcm,
 				SNDRV_PCM_STREAM_PLAYBACK);
-
+*/
 		if (ret) {
 			pr_err("%s: %d: Error allocating dma buf\n",
 						__func__, __LINE__);
