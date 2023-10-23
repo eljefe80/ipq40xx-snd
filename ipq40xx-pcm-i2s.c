@@ -498,7 +498,6 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 	substream->runtime->private_data = pcm_rtpriv;
 	pcm_rtpriv->mmap_flag = 0;
 	pcm_rtpriv->dma_started = 0;
-	ipq40xx_glb_pcm_rst(DISABLE);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		runtime->dma_bytes =
 			ipq40xx_pcm_hardware_playback.buffer_bytes_max;
