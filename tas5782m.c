@@ -649,7 +649,7 @@ static int tas5782m_parse_dts(struct tas5782m_priv *tas5782m,
 {
 	int ret = 0;
 	int reset_pin = -1;
-	reset_pin = of_get_named_gpio(np, "reset_pin", 0);
+	reset_pin = of_get_named_gpio(np, "reset-pin", 0);
 	if (reset_pin < 0) {
 		pr_err("%s fail to get reset pin from dts!\n", __func__);
 		ret = -1;
