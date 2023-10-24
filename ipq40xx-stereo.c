@@ -30,7 +30,7 @@
 #include <linux/spinlock.h>
 
 #include "ipq40xx-adss.h"
-#include "ipg40xx-stereo.h"
+#include "ipq40xx-stereo.h"
 
 struct stereo_priv_data {
 	void __iomem *stereo_base;
