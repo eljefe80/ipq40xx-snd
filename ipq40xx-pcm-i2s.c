@@ -23,6 +23,7 @@
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <linux/dma-mapping.h>
+#include <linux/gpio.h>
 #include <asm/dma.h>
 #include <sound/core.h>
 #include <sound/soc.h>
