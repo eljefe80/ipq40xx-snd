@@ -17,7 +17,7 @@
 #ifndef IPQ40xx_ADSS_H
 #define IPQ40xx_ADSS_H
 
-#include "ipq40xx-common"
+#include "ipq40xx-common.h"
 /* ADSS AUDIO Registers */
 
 #define ADSS_BASE 	0x7700000
