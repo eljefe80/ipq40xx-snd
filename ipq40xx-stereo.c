@@ -165,7 +165,7 @@ void ipq40xx_config_master(uint32_t enable, uint32_t stereo_id)
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
 //EXPORT_SYMBOL(ipq40xx_config_master);
-
+/*
 static const struct of_device_id ipq40xx_audio_stereo_id_table[] = {
 	{ .compatible = "qca,ipq40xx-stereo" },
 	{},
@@ -223,7 +223,7 @@ static struct platform_driver ipq40xx_audio_stereo_driver = {
 };
 
 module_platform_driver(ipq40xx_audio_stereo_driver);
-
+*/
 MODULE_ALIAS("platform:ipq40xx-stereo");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx AUDIO Stereo driver");
