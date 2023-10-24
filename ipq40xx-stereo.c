@@ -207,6 +207,7 @@ int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
+EXPORT_SYMBOL(ipq40xx_audio_stereo_probe);
 /*
 static int ipq40xx_audio_stereo_remove(struct platform_device *pdev)
 {
