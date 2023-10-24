@@ -72,7 +72,7 @@ void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_id)
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
-//EXPORT_SYMBOL(ipq40xx_stereo_config_mic_reset);
+EXPORT_SYMBOL(ipq40xx_stereo_config_mic_reset);
 
 /* Enable the I2S Stereo block for operation */
 void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_id)
