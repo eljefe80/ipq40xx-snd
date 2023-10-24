@@ -625,11 +625,12 @@ static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 {
 	int ret;
 	struct dev_pin_info *pins;
+	struct snd_soc_card *card = pdev->dev;
 	struct pinctrl_state *pin_state;
 
 	printk("%s %d %s\n", __func__, __LINE__,__FILE__);
 
-	pins = ((struct snd_soc_card) *pdev->dev)->pins;
+	pins = card->pins;
 	pin_state = pinctrl_lookup_state(pins->p, "audio");
 	ret = devm_snd_soc_register_component(&pdev->dev,
 			&ipq40xx_asoc_pcm_i2s_platform, NULL, 0);
