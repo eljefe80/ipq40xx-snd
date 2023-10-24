@@ -187,7 +187,7 @@ void ipq40xx_mbox_desc_own(u32 channel_id, int desc_no, int own);
 
 uint32_t ipq40xx_mbox_get_played_offset(u32 channel_id);
 uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id);
-
+static int ipq40xx_mbox_probe(struct platform_device *pdev);
 static inline uint32_t ipq40xx_convert_id_to_channel(uint32_t id)
 {
 //	printk("Requested channel %d from id %d",((id)/2), id);

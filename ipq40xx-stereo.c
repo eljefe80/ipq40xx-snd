@@ -181,7 +181,7 @@ int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 			return -EFAULT;
 		}
 
-		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
 		stereo_priv[stereo_port_id].stereo_base =
 			devm_ioremap_resource(&pdev->dev, res);
 		if (IS_ERR(stereo_priv[stereo_port_id].stereo_base)) {

@@ -38,6 +38,7 @@
 #include <linux/pinctrl/consumer.h>
 
 #include "ipq40xx-pcm.h"
+#include "ipq40xx-mbox.h"
 #include "ipq40xx-adss.h"
 
 static struct snd_pcm_hardware ipq40xx_pcm_hardware_playback = {
@@ -642,8 +643,8 @@ static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 								__func__);
 	pinctrl_select_state(pins->p, pin_state);
 
+	ipq40xx_mbox_probe(pdev);
 	ipq40xx_audio_stereo_probe(pdev);
-
 	printk("%s %d %s\n", __func__, __LINE__,__FILE__);
 	return ret;
 }

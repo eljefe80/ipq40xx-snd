@@ -706,6 +706,7 @@ init_err:
 	printk("%s %d\n", __func__, __LINE__);
 	return rc;
 }
+EXPORT_SYMBOL(ipq40xx_mbox_probe);
 
 static int ipq40xx_mbox_remove(struct platform_device *pdev)
 {
@@ -724,7 +725,7 @@ static int ipq40xx_mbox_remove(struct platform_device *pdev)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-
+/*
 static const struct of_device_id ipq40xx_mbox_table[] = {
 	{ .compatible = "qca,ipq40xx-mbox" },
 	{},
@@ -741,7 +742,7 @@ static struct platform_driver ipq40xx_mbox_driver = {
 };
 
 module_platform_driver(ipq40xx_mbox_driver);
-
+*/
 MODULE_ALIAS("platform:ipq40xx-mbox");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx MBOX DRIVER");
