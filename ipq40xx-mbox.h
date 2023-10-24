@@ -31,34 +31,70 @@
 #define ADSS_MBOX2_IRQ				(158 + 32)
 #define ADSS_MBOX3_IRQ				(159 + 32)
 
-#define CHANNEL_A_VDWORD_START 0
-#define CHANNEL_B_VDWORD_START 18
+#define ADSS_MBOX_STEREO_AUDIO_BASE			ADSS_BASE + 0x8000
 
-#define CHANNEL_A_VDWORD_1 (CHANNEL_A_VDWORD_START + 0)
-#define CHANNEL_A_VDWORD_2 (CHANNEL_A_VDWORD_START + 1)
-#define CHANNEL_A_VDWORD_3 (CHANNEL_A_VDWORD_START + 2)
-#define CHANNEL_A_VDWORD_4 (CHANNEL_A_VDWORD_START + 3)
-#define CHANNEL_A_VDWORD_5 (CHANNEL_A_VDWORD_START + 4)
-#define CHANNEL_A_VDWORD_6 (CHANNEL_A_VDWORD_START + 5)
+/* ADSS_MBOX_STEREO_AUDIO_BASE + 0x0 */
+#define ADSS_MBOX0_AUDIO_BASE 				0x0
+#define ADSS_MBOX1_AUDIO_BASE 				0x2000
+#define ADSS_MBOX2_AUDIO_BASE 				0x4000
+#define ADSS_MBOX3_AUDIO_BASE 				0x6000
 
-#define CHANNEL_B_VDWORD_1 (CHANNEL_B_VDWORD_START + 0)
-#define CHANNEL_B_VDWORD_2 (CHANNEL_B_VDWORD_START + 1)
-#define CHANNEL_B_VDWORD_3 (CHANNEL_B_VDWORD_START + 2)
-#define CHANNEL_B_VDWORD_4 (CHANNEL_B_VDWORD_START + 3)
-#define CHANNEL_B_VDWORD_5 (CHANNEL_B_VDWORD_START + 4)
-#define CHANNEL_B_VDWORD_6 (CHANNEL_B_VDWORD_START + 5)
+#define ADSS_MBOXn_MBOX_FIFO0_REG			0x0
+#define MBOX_FIFO_RESET_TX_INIT				(1 << 0)
+#define MBOX_FIFO_RESET_RX_INIT				(1 << 2)
 
-#define CHANNEL_A_CDWORD_START 12
-#define CHANNEL_B_CDWORD_START 30
+#define ADSS_MBOXn_MBOX_FIFO_STATUS0_REG		0x08
 
-#define CHANNEL_A_CDWORD_1 (CHANNEL_A_CDWORD_START + 0)
-#define CHANNEL_B_CDWORD_2 (CHANNEL_B_CDWORD_START + 0)
+#define ADSS_MBOXn_MBOX_DMA_POLICY_REG			0x10
+#define MBOX_DMA_POLICY_SW_RESET			(1 << 31)
+#define MBOX_DMA_POLICY_TX_INT_TYPE			(1 << 17)
+#define MBOX_DMA_POLICY_RX_INT_TYPE			(1 << 16)
+#define MBOX_DMA_POLICY_RXD_16BIT_SWAP			(1 << 10)
+#define MBOX_DMA_POLICY_RXD_END_SWAP			(1 << 8)
+#define ADSS_MBOX_DMA_POLICY_SRAM_AC(x)		(((x >> 28) & 0xf) << 12)
+#define ADSS_MBOX_DMA_POLICY_TX_FIFO_THRESHOLD(x)	(((x & 0xf) << 4))
 
-/* Acc to IEC 60958-3, bit 0.0 = 0 is consumer
- *		       bit 0.1 = 1is compressed playback
- *		       bit 3.0 = 1 is sampling freq No specified
- */
-#define SPDIF_CONSUMER_COMPRESD 0x01000006;
+#define ADSS_MBOXn_MBOXn_DMA_RX_DESCRIPTOR_BASE_REG	0x18
+
+#define ADSS_MBOXn_MBOXn_DMA_RX_CONTROL_REG		0x1C
+#define ADSS_MBOXn_DMA_RX_CONTROL_STOP			(1 << 0)
+#define ADSS_MBOXn_DMA_RX_CONTROL_START			(1 << 1)
+#define ADSS_MBOXn_DMA_RX_CONTROL_RESUME		(1 << 2)
+
+#define ADSS_MBOXn_MBOXn_DMA_TX_DESCRIPTOR_BASE_REG	0x20
+
+#define ADSS_MBOXn_MBOXn_DMA_TX_CONTROL_REG		0x24
+#define ADSS_MBOXn_DMA_TX_CONTROL_STOP			(1 << 0)
+#define ADSS_MBOXn_DMA_TX_CONTROL_START			(1 << 1)
+#define ADSS_MBOXn_DMA_TX_CONTROL_RESUME		(1 << 2)
+
+#define ADSS_MBOXn_MBOX_FRAME_REG			0x38
+
+#define ADSS_MBOXn_FIFO_TIMEOUT_REG			0x40
+
+#define ADSS_MBOXn_MBOX_INT_STATUS_REG			0x44
+#define MBOX_INT_STATUS_TX_DMA_COMPLETE			(1 << 6)
+#define MBOX_INT_STATUS_RX_DMA_COMPLETE			(1 << 10)
+
+#define ADSS_MBOXn_MBOX_INT_ENABLE_REG			0x4C
+#define MBOX_INT_ENABLE_RX_DMA_COMPLETE			(1 << 10)
+#define MBOX_INT_STATUS_RX_UNDERFLOW			(1 << 4)
+#define MBOX_INT_STATUS_RX_FIFO_UNDERFLOW		(1 << 12)
+#define MBOX_INT_ENABLE_TX_DMA_COMPLETE			(1 << 6)
+#define MBOX_INT_STATUS_TX_OVERFLOW			(1 << 5)
+#define MBOX_INT_STATUS_TX_FIFO_OVERFLOW		(1 << 13)
+
+#define ADSS_MBOXn_MBOX_FIFO_RESET_REG			0x58
+#define MBOX_FIFO_RESET_TX_INIT				(1 << 0)
+#define MBOX_FIFO_RESET_RX_INIT				(1 << 2)
+
+#define ADSS_MBOXn_MBOX_DEBUG_CHAIN0_REG		0x60
+
+#define ADSS_MBOXn_MBOX_DEBUG_CHAIN1_REG		0x64
+
+#define ADSS_MBOXn_MBOX_DEBUG_CHAIN0_SIGNALS_REG	0x68
+
+#define ADSS_MBOXn_MBOX_DEBUG_CHAIN1_SIGNALS_REG	0x6C
 
 /* When the mailbox operation is started, the mailbox would get one descriptor
  * for the current data transfer and prefetch one more descriptor. When less
@@ -140,8 +176,6 @@ struct ipq40xx_pcm_pltfm_priv {
 int ipq40xx_mbox_fifo_reset(int channel_id);
 int ipq40xx_mbox_dma_start(int channel_id);
 int ipq40xx_mbox_dma_stop(int channel_id);
-int ipq40xx_mbox_dma_reset_swap(int channel_id);
-int ipq40xx_mbox_dma_swap(int channel_id, snd_pcm_format_t format);
 int ipq40xx_mbox_dma_prepare(int channel_id);
 int ipq40xx_mbox_dma_resume(int channel_id);
 int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *base,
@@ -149,7 +183,6 @@ int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *base,
 int ipq40xx_mbox_dma_release(int channel);
 int ipq40xx_mbox_dma_init(struct device *dev, int channel_id,
 	irq_handler_t callback, void *private_data);
-void ipq40xx_mbox_vuc_setup(int channel_id);
 void ipq40xx_mbox_desc_own(u32 channel_id, int desc_no, int own);
 
 uint32_t ipq40xx_mbox_get_played_offset(u32 channel_id);
@@ -231,64 +264,6 @@ static inline int ipq40xx_mbox_interrupt_ack(int channel_id, unsigned int mask)
 }
 
 uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id);
-
-static inline int ipq40xx_mbox_clear_own_bits(unsigned int channel_id)
-{
-	struct ipq40xx_mbox_desc *desc;
-	unsigned int i;
-	uint32_t index;
-	uint32_t dir;
-
-	index = ipq40xx_convert_id_to_channel(channel_id);
-	dir = ipq40xx_convert_id_to_dir(channel_id);
-
-	if (!mbox_rtime[index])
-		return -ENOMEM;
-
-	desc = mbox_rtime[index]->dir_priv[dir].dma_virt_head;
-
-	for (i = 0; i < mbox_rtime[index]->dir_priv[dir].ndescs; i++) {
-		if (desc->OWN == 1)
-			desc->OWN = 0;
-
-		desc += 1;
-	}
-
-	return 0;
-}
-
-static inline struct ipq40xx_mbox_desc
-	*ipq40xx_mbox_get_last_played(unsigned int channel_id)
-{
-	struct ipq40xx_mbox_desc *desc, *prev;
-	unsigned int ndescs, i;
-	uint32_t index;
-	uint32_t dir;
-
-	index = ipq40xx_convert_id_to_channel(channel_id);
-	dir = ipq40xx_convert_id_to_dir(channel_id);
-
-	if (!mbox_rtime[index])
-		return NULL;
-
-	ndescs = mbox_rtime[index]->dir_priv[dir].ndescs;
-	/* Point to the last desc */
-	prev = &mbox_rtime[index]->dir_priv[dir].dma_virt_head[ndescs - 1];
-
-	/* Point to the first desc */
-	desc = &mbox_rtime[index]->dir_priv[dir].dma_virt_head[0];
-
-	for (i = 0; i < ndescs; i++) {
-		if (desc->OWN == 1 && prev->OWN == 0) {
-			return desc;
-		}
-		prev = desc;
-		desc += 1;
-	}
-
-	/* If we didn't find the last played buffer, return NULL */
-	return NULL;
-}
 
 /* If number of mbox descriptors are less than MBOX_MIN_DESC_NUM
  * there should be duplicate mbox descriptors in order to compliant
