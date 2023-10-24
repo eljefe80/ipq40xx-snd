@@ -50,6 +50,14 @@ enum stereo_ch {
 	STEREO3
 };
 
+enum bit_width {
+        __BIT_8 = 8,
+        __BIT_16 = 16,
+        __BIT_24 = 24,
+        __BIT_32 = 32,
+        __BIT_INVAL = -1
+};
+
 /* Supported Channels */
 #define RATE_16000_96000 \
 		(SNDRV_PCM_RATE_16000 | SNDRV_PCM_RATE_22050 |\
