@@ -14,6 +14,8 @@
  *
  */
 
+#include <linux/clk.h>
+#include <linux/delay.h>
 #include <linux/init.h>
 #include <linux/err.h>
 #include <linux/module.h>
@@ -21,6 +23,7 @@
 #include <linux/time.h>
 #include <linux/wait.h>
 #include <linux/platform_device.h>
+#include <linux/of_platform.h>
 #include <linux/slab.h>
 #include <linux/dma-mapping.h>
 #include <linux/gpio.h>
@@ -625,12 +628,11 @@ static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 {
 	int ret;
 	struct dev_pin_info *pins;
-	struct snd_soc_card *card = pdev->dev;
 	struct pinctrl_state *pin_state;
 
 	printk("%s %d %s\n", __func__, __LINE__,__FILE__);
 
-	pins = card->pins;
+	pins = pdev->dev->pins;
 	pin_state = pinctrl_lookup_state(pins->p, "audio");
 	ret = devm_snd_soc_register_component(&pdev->dev,
 			&ipq40xx_asoc_pcm_i2s_platform, NULL, 0);
