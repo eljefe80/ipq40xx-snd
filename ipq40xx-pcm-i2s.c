@@ -622,12 +622,21 @@ MODULE_DEVICE_TABLE(of, ipq40xx_pcm_i2s_id_table);
 static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 {
 	int ret;
+	struct dev_pin_info *pins;
+	struct pinctrl_state *pin_state;
+
 	printk("%s %d %s\n", __func__, __LINE__,__FILE__);
+
+	pins = pdev->dev->pins;
+	pin_state = pinctrl_lookup_state(pins->p, "audio");
 	ret = devm_snd_soc_register_component(&pdev->dev,
 			&ipq40xx_asoc_pcm_i2s_platform, NULL, 0);
+
 	if (ret)
 		dev_err(&pdev->dev, "%s: Failed to register i2s pcm device\n",
 								__func__);
+	pinctrl_select_state(pins->p, pin_state);
+
 	printk("%s %d %s\n", __func__, __LINE__,__FILE__);
 	return ret;
 }

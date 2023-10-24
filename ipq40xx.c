@@ -287,7 +287,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
  * to audio functionality only when the sound card registration is
  * successful.
  */
-	pin_state = pinctrl_lookup_state(pins->p, "audio");
+//	pin_state = pinctrl_lookup_state(pins->p, "audio");
 	if (IS_ERR(pin_state)) {
 		pr_err("audio pinctrl state not available\n");
 		return PTR_ERR(pin_state);
@@ -315,7 +315,7 @@ static int ipq40xx_audio_probe(struct platform_device *pdev)
 //	ipq40xx_audio_adss_init();
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 
-	pinctrl_select_state(pins->p, pin_state);
+//	pinctrl_select_state(pins->p, pin_state);
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
 
 	return ret;
