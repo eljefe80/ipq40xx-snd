@@ -34,14 +34,6 @@
 /* SPDIF clocks */
 #define AUDIO_SPDIFINFAST	49152000
 
-enum bit_width {
-	__BIT_8 = 8,
-	__BIT_16 = 16,
-	__BIT_24 = 24,
-	__BIT_32 = 32,
-	__BIT_INVAL = -1
-};
-
 /* Stereo APIs */
 void ipq40xx_stereo_config_reset(uint32_t reset, uint32_t stereo_offset);
 void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_offset);
