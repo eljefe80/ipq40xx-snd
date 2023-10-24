@@ -642,6 +642,8 @@ static int ipq40xx_pcm_i2s_driver_probe(struct platform_device *pdev)
 								__func__);
 	pinctrl_select_state(pins->p, pin_state);
 
+	ipq40xx_audio_stereo_probe(pdev);
+
 	printk("%s %d %s\n", __func__, __LINE__,__FILE__);
 	return ret;
 }

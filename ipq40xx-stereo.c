@@ -171,14 +171,15 @@ static const struct of_device_id ipq40xx_audio_stereo_id_table[] = {
 	{},
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_audio_stereo_id_table);
-
-static int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
+*/
+int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 {
 	struct resource *res;
 	struct device_node *np = NULL;
 	uint32_t stereo_port_id = 0;
 
 	printk("%s %d\n", __func__, __LINE__);
+
 	np = of_node_get(pdev->dev.of_node);
 	if (!(of_property_read_u32(np, "stereo-index", &stereo_port_id))) {
 		if (stereo_port_id >= MAX_STEREO_ENTRIES) {
@@ -206,7 +207,7 @@ static int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-
+/*
 static int ipq40xx_audio_stereo_remove(struct platform_device *pdev)
 {
 	return 0;
