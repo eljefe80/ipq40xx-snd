@@ -28,6 +28,21 @@ enum channels {
 	CH_7_1 = 8
 };
 
+enum ipq40xx_samp_freq {
+        FREQ_8000 = 8000,
+        FREQ_11025 = 11025,
+        FREQ_16000 = 16000,
+        FREQ_22050 = 22050,
+        FREQ_32000 = 32000,
+        FREQ_44100 = 44100,
+        FREQ_48000 = 48000,
+        FREQ_64000 = 64000,
+        FREQ_88200 = 88200,
+        FREQ_96000 = 96000,
+        FREQ_176400 = 176400,
+        FREQ_192000 = 192000,
+};
+
 enum stereo_ch {
 	STEREO0,
 	STEREO1,

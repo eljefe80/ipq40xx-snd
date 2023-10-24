@@ -412,7 +412,7 @@
 #define ADSS_MBOXn_MBOX_DEBUG_CHAIN1_SIGNALS_REG	0x6C
 
 
-
+#define MAX_STEREO_ENTRIES	4
 #define TDM_SYNC_NUM		2
 #define TDM_DELAY		0
 #define MCLK_MULTI		4
@@ -422,6 +422,9 @@
 #define IPQ40xx_I2S_PERIOD_BYTES_MIN	ALIGN(4032, L1_CACHE_BYTES)
 #define IPQ40xx_I2S_BUFF_SIZE		(IPQ40xx_I2S_PERIOD_BYTES_MIN * \
 						IPQ40xx_I2S_NO_OF_PERIODS)
+
+/* SPDIF clocks */
+#define AUDIO_SPDIFINFAST       49152000
 
 /* ADSS APIs */
 void ipq40xx_glb_audio_mode(int mode, int dir);
@@ -444,4 +447,8 @@ void ipq40xx_audio_adss_init(void);
 uint32_t get_mbox_id(struct snd_pcm_substream *substream, int intf);
 uint32_t get_stereo_id(struct snd_pcm_substream *substream, int intf);
 uint32_t ipq40xx_get_act_bit_width(uint32_t bit_width);
+
+void ipq40xx_stereo_config_reset(uint32_t reset, uint32_t stereo_offset);
+void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_offset);
+void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_offset);
 #endif

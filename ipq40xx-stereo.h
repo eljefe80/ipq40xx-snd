@@ -30,7 +30,7 @@
 #define STEREOn_CONFIG_SAMPLE_CNT_CLEAR_TYPE		(1 << 9)
 #define STEREOn_CONFIG_MASTER				(1 << 8)
 
-#define MAX_STEREO_ENTRIES	4
+
 /* SPDIF clocks */
 #define AUDIO_SPDIFINFAST	49152000
 
