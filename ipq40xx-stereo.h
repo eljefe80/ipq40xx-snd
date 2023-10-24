@@ -48,5 +48,4 @@ void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_offset);
 void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_offset);
 int ipq40xx_cfg_bit_width(uint32_t bit_width, uint32_t stereo_offset);
 void ipq40xx_config_master(uint32_t enable, uint32_t stereo_offset);
-int ipq40xx_audio_stereo_probe(struct platform_device *pdev);
 #endif
