@@ -55,12 +55,9 @@ struct clk *audio_spdif_src;
 struct clk *audio_spdif_div2;
 struct clk *audio_spdifinfast_src;
 
-//extern void alc1312_pdb_ctrl(unsigned char onoff);
-
 /* Get Stereo channel ID based on I2S/TDM/SPDIF intf and direction */
 uint32_t get_stereo_id(struct snd_pcm_substream *substream, int intf)
 {
-//	dev_dbg("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
 		return dai_priv[intf].stereo_tx;
 	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)

@@ -39,26 +39,6 @@ static spinlock_t i2s_ctrl_lock;
 static spinlock_t tdm_ctrl_lock;
 static spinlock_t glb_mode_lock;
 
-/* API to write ADSS registers */
-void ipq40xx_audio_adss_writel(uint32_t val, uint32_t offset)
-{
-	if (!adss_audio_local_base) {
-		pr_err("adss_audio_local_base not mapped\n");
-		return;
-	}
-	writel(val, adss_audio_local_base + offset);
-}
-EXPORT_SYMBOL(ipq40xx_audio_adss_writel);
-
-/* API to read ADSS regitsers */
-uint32_t ipq40xx_audio_adss_readl(uint32_t offset)
-{
-	if (adss_audio_local_base)
-		return readl(adss_audio_local_base + offset);
-	pr_err("adss_audio_local_base not mapped\n");
-	return 0;
-}
-EXPORT_SYMBOL(ipq40xx_audio_adss_readl);
 
 /* I2S Interface Enable */
 void ipq40xx_glb_i2s_interface_en(int enable)
@@ -75,7 +55,6 @@ void ipq40xx_glb_i2s_interface_en(int enable)
 	spin_unlock_irqrestore(&i2s_ctrl_lock, flags);
 	mdelay(5);
 }
-//EXPORT_SYMBOL(ipq40xx_glb_i2s_interface_en);
 
 /* Enable Stereo0/Stereo1/Stereo2 channel */
 void ipq40xx_glb_stereo_ch_en(int enable, int stereo_ch)
@@ -98,7 +77,6 @@ void ipq40xx_glb_stereo_ch_en(int enable, int stereo_ch)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_CHIP_CTRL_I2S_REG);
 	spin_unlock_irqrestore(&i2s_ctrl_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_stereo_ch_en);
 
 /* I2S Module Reset */
 void ipq40xx_glb_i2s_reset(uint32_t reset)
@@ -107,7 +85,6 @@ void ipq40xx_glb_i2s_reset(uint32_t reset)
 	mdelay(5);
 	writel(0x0, adss_audio_local_base + ADSS_GLB_I2S_RST_REG);
 }
-//EXPORT_SYMBOL(ipq40xx_glb_i2s_reset);
 
 /* Enable I2S/TDM and Playback/Capture Audio Mode */
 void ipq40xx_glb_audio_mode(int mode, int dir)
@@ -182,7 +159,6 @@ void ipq40xx_glb_audio_mode_B1K(void)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
 	spin_unlock_irqrestore(&glb_mode_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_audio_mode_B1K);
 
 /* Frame Sync Port Enable for I2S0 TX */
 void ipq40xx_glb_tx_framesync_port_en(uint32_t enable)
@@ -354,20 +330,6 @@ void ipq40xx_pcm_clk_cfg(void)
 
 }
 EXPORT_SYMBOL(ipq40xx_pcm_clk_cfg);
-
-/* PCM RAW ADSS_GLB_PCM_RST_REG register */
-void ipq40xx_glb_pcm_rst(uint32_t enable)
-{
-	uint32_t reg_val;
-
-	if (enable)
-		reg_val = GLB_PCM_RST_CTRL(1);
-	else
-		reg_val = GLB_PCM_RST_CTRL(0);
-
-	writel(reg_val, adss_audio_local_base + ADSS_GLB_PCM_RST_REG);
-}
-EXPORT_SYMBOL(ipq40xx_glb_pcm_rst);
 
 void ipq40xx_spdifin_ctrl_spdif_en(uint32_t enable)
 {

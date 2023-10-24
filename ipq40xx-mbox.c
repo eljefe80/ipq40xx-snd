@@ -155,7 +155,6 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 	unsigned int i, desc_own, size_played = 0;
 	u32 chan, dir;
 
-//	printk("%s %d\n", __func__, __LINE__);
 	chan = ipq40xx_convert_id_to_channel(channel_id);
 	dir = ipq40xx_convert_id_to_dir(channel_id);
 
@@ -191,7 +190,6 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 		rtdir->last_played_is_null++;
 	}
 
-//	printk("%s %d\n", __func__, __LINE__);
 	return size_played;
 }
 

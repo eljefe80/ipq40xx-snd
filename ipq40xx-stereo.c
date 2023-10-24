@@ -54,7 +54,7 @@ void ipq40xx_stereo_config_reset(uint32_t reset, uint32_t stereo_id)
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_stereo_config_reset);
+//EXPORT_SYMBOL(ipq40xx_stereo_config_reset);
 
 /* MIC buffers reset */
 void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_id)
@@ -72,7 +72,7 @@ void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_id)
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_stereo_config_mic_reset);
+//EXPORT_SYMBOL(ipq40xx_stereo_config_mic_reset);
 
 /* Enable the I2S Stereo block for operation */
 void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_id)
@@ -92,38 +92,6 @@ void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_id)
 	printk("%s %d\n", __func__, __LINE__);
 }
 EXPORT_SYMBOL(ipq40xx_stereo_config_enable);
-
-/* Enable the SPDIF Stereo block for operation */
-void ipq40xx_stereo_spdif_enable(uint32_t enable, uint32_t stereo_id)
-{
-	uint32_t cfg;
-
-	cfg = readl(stereo_priv[stereo_id].stereo_base
-			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-	cfg &= ~(STEREOn_CONFIG_SPDIF_ENABLE);
-	if (enable)
-		cfg |= STEREOn_CONFIG_SPDIF_ENABLE;
-	writel(cfg, stereo_priv[stereo_id].stereo_base
-			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-}
-EXPORT_SYMBOL(ipq40xx_stereo_spdif_enable);
-
-/* Enable/disable the swap within PCM sample */
-void ipq40xx_stereo_spdif_pcmswap(uint32_t enable, uint32_t stereo_id)
-{
-	uint32_t cfg;
-
-	cfg = readl(stereo_priv[stereo_id].stereo_base
-		+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-
-	cfg &= ~(STEREOn_CONFIG_PCM_SWAP);
-	if (enable)
-		cfg |= STEREOn_CONFIG_PCM_SWAP;
-
-	writel(cfg, stereo_priv[stereo_id].stereo_base
-		+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-}
-EXPORT_SYMBOL(ipq40xx_stereo_spdif_pcmswap);
 
 /* Configure
  * Data word size : Word size loaded into the PCM
@@ -176,27 +144,7 @@ int ipq40xx_cfg_bit_width(uint32_t bit_width, uint32_t stereo_id)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_cfg_bit_width);
-
-/* Configure stereo/mono mode */
-void ipq40xx_config_stereo_mode(uint32_t mode, uint32_t stereo_id)
-{
-	uint32_t cfg;
-	unsigned long flags;
-
-	printk("%s %d\n", __func__, __LINE__);
-	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
-	cfg = readl(stereo_priv[stereo_id].stereo_base
-			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-	cfg &= ~(STEREOn_CONFIG_STEREO_MONO_MASK);
-	if (mode == CH_STEREO)
-		cfg |= STEREOn_CONFIG_STEREO_MODE;
-	writel(cfg, stereo_priv[stereo_id].stereo_base
-			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
-	printk("%s %d\n", __func__, __LINE__);
-}
-EXPORT_SYMBOL(ipq40xx_config_stereo_mode);
+//EXPORT_SYMBOL(ipq40xx_cfg_bit_width);
 
 /* Configure master mode */
 void ipq40xx_config_master(uint32_t enable, uint32_t stereo_id)
@@ -216,54 +164,7 @@ void ipq40xx_config_master(uint32_t enable, uint32_t stereo_id)
 	printk("%s %d\n", __func__, __LINE__);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_config_master);
-
-/* Selects the raw clock source between
- * divided audio clock and input master clock
- * Val 0: Raw master clock is divided audio PLL clock
- * Val 1: Raw master clock is MCLK IN
- */
-void ipq40xx_config_mclk_sel(uint32_t stereo_id, uint32_t val)
-{
-	uint32_t cfg;
-	unsigned long flags;
-
-	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
-	printk("%s %d\n", __func__, __LINE__);
-	cfg = readl(stereo_priv[stereo_id].stereo_base
-			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-	cfg &= ~(STEREOn_CONFIG_MCK_SEL);
-	cfg |= val;
-	writel(cfg, stereo_priv[stereo_id].stereo_base
-			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-	printk("%s %d\n", __func__, __LINE__);
-	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
-
-}
-EXPORT_SYMBOL(ipq40xx_config_mclk_sel);
-
-/* Strategy to clear the sample counter TX and RX registers */
-void ipq40xx_config_sample_cnt_clear_type(uint32_t stereo_id)
-{
-	uint32_t cfg;
-	unsigned long flags;
-
-	spin_lock_irqsave(&stereo_priv[stereo_id].stereo_lock, flags);
-	printk("%s %d\n", __func__, __LINE__);
-	cfg = readl(stereo_priv[stereo_id].stereo_base
-			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-	/* 0 - write an explicit zero data through software
-	 *	to the TX and RX sample counter registers
-	 * 1 - software read of the TX and RX sample counter
-	 *	registers clears the counter registers
-	 */
-	cfg |= STEREOn_CONFIG_SAMPLE_CNT_CLEAR_TYPE; /* Write 1 */
-	writel(cfg, stereo_priv[stereo_id].stereo_base
-			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
-	printk("%s %d\n", __func__, __LINE__);
-	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
-}
-EXPORT_SYMBOL(ipq40xx_config_sample_cnt_clear_type);
+//EXPORT_SYMBOL(ipq40xx_config_master);
 
 static const struct of_device_id ipq40xx_audio_stereo_id_table[] = {
 	{ .compatible = "qca,ipq40xx-stereo" },
