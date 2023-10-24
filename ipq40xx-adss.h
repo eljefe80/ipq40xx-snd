@@ -17,13 +17,10 @@
 #ifndef IPQ40xx_ADSS_H
 #define IPQ40xx_ADSS_H
 
+#include "ipq40xx-common"
 /* ADSS AUDIO Registers */
 
 #define ADSS_BASE 	0x7700000
-#define ADSS_RANGE 	0x20000
-
-#define GCC_AUDIO		0x0181B000
-#define GCC_AUDIO_RANGE		0x10
 
 /* ADSS_AUDIO_LOCAL_REG Registers */
 
@@ -414,60 +411,8 @@
 
 #define ADSS_MBOXn_MBOX_DEBUG_CHAIN1_SIGNALS_REG	0x6C
 
-/* ADSS_STEREO0_AUDIO_STEREO_REG Registers */
 
-#define ADSS_STEREO0_AUDIO_BASE		0x9000
-#define ADSS_STEREO1_AUDIO_BASE		0xB000
-#define ADSS_STEREO2_AUDIO_BASE		0xD000
-#define ADSS_STEREO3_AUDIO_BASE		0xF000
 
-#define STEREO0_OFFSET			0x0
-#define STEREO1_OFFSET			0x2000
-#define STEREO2_OFFSET			0x4000
-#define STEREO3_OFFSET			0x6000
-
-#define ADSS_STEREOn_STEREO0_CONFIG_REG			0x0
-#define STEREOn_CONFIG_MIC_SWAP				(1 << 24)
-#define STEREOn_CONFIG_SPDIF_ENABLE			(1 << 23)
-#define STEREOn_CONFIG_ENABLE				(1 << 21)
-#define STEREOn_CONFIG_MIC_RESET			(1 << 20)
-#define STEREOn_CONFIG_RESET				(1 << 19)
-#define STEREOn_CONFIG_I2S_DELAY			(0 << 18)
-#define STEREOn_CONFIG_PCM_SWAP				(1 << 17)
-#define STEREOn_CONFIG_MIC_WORD_SIZE_32			(1 << 16)
-#define STEREOn_CONFIG_MIC_WORD_SIZE_16			(0 << 16)
-#define STEREOn_CONFIG_STEREO_MODE			(0 << 14)
-#define STEREOn_CONFIG_MONO_MODE			(1 << 14)
-#define STEREOn_CONFIG_STEREO_MONO_MASK			(3 << 14)
-#define STEREOn_CONFIG_DATA_WORD_SIZE(x)		(x << 12)
-#define STEREOn_CONFIG_DATA_WORD_SIZE_MASK		(3 << 12)
-#define STEREOn_CONFIG_I2S_WORD_SIZE_32			(1 << 11)
-#define STEREOn_CONFIG_I2S_WORD_SIZE_16			(0 << 11)
-#define STEREOn_CONFIG_MCK_SEL				(1 << 10)
-#define STEREOn_CONFIG_SAMPLE_CNT_CLEAR_TYPE		(1 << 9)
-#define STEREOn_CONFIG_MASTER				(1 << 8)
-
-#define AADSS_STEREOn_STEREO0_VOLUME_REG(n)		0x04
-
-#define AADSS_STEREOn_STEREO_MASTER_CLOCK_REG(n)	0x08
-
-#define AADSS_STEREOn_STEREO0_TX_SAMPLE_CNT_LSB_REG(n)	0x0C
-
-#define AADSS_STEREOn_STEREO0_TX_SAMPLE_CNT_MSB_REG(n)	0x10
-
-#define AADSS_STEREOn_STEREO0_RX_SAMPLE_CNT_LSB_REG(n)	0x14
-
-#define AADSS_STEREOn_STEREO0_RX_SAMPLE_CNT_MSB_REG(n)	0x18
-
-#define AADSS_STEREOn_STEREO0_UNDERRUN_CNT_REG(n)	0x1C
-
-#define AADSS_STEREOn_STEREO0_OVERRUN_CNT_REG(n)	0x20
-
-#define AADSS_STEREOn_STEREO0_TX_COMPLETE_CNT_REG(n)	0x24
-
-#define AADSS_STEREOn_STEREO0_RX_COMPLETE_CNT_REG(n)	0x28
-
-#define MAX_STEREO_ENTRIES	4
 #define TDM_SYNC_NUM		2
 #define TDM_DELAY		0
 #define MCLK_MULTI		4
@@ -477,87 +422,6 @@
 #define IPQ40xx_I2S_PERIOD_BYTES_MIN	ALIGN(4032, L1_CACHE_BYTES)
 #define IPQ40xx_I2S_BUFF_SIZE		(IPQ40xx_I2S_PERIOD_BYTES_MIN * \
 						IPQ40xx_I2S_NO_OF_PERIODS)
-#define IPQ40xx_I2S_CAPTURE_BUFF_SIZE	(IPQ40xx_I2S_PERIOD_BYTES_MIN * \
-						IPQ40xx_I2S_NO_OF_PERIODS)
-
-/* TDM Parameters */
-#define IPQ40xx_TDM_NO_OF_PERIODS	(260)
-#define IPQ40xx_TDM_PERIOD_BYTES_MIN	ALIGN(4032, L1_CACHE_BYTES)
-#define IPQ40xx_TDM_BUFF_SIZE		(IPQ40xx_TDM_PERIOD_BYTES_MIN * \
-						IPQ40xx_TDM_NO_OF_PERIODS)
-#define IPQ40xx_TDM_CAPTURE_BUFF_SIZE	(IPQ40xx_TDM_PERIOD_BYTES_MIN * \
-						IPQ40xx_TDM_NO_OF_PERIODS)
-
-
-//extern void __iomem *adss_audio_local_base;
-
-/* Enumerations */
-
-enum intf {
-	I2S,
-	TDM,
-	SPDIF,
-	I2S1,
-	I2S2,
-	MAX_INTF
-};
-
-enum dir {
-	PLAYBACK,
-	CAPTURE
-};
-
-enum cfg {
-	DISABLE,
-	ENABLE
-};
-
-/* Supported Channels */
-enum channels {
-	CH_STEREO = 2,
-	CH_3_1 = 4,
-	CH_5_1 = 6,
-	CH_7_1 = 8
-};
-
-enum ipq40xx_samp_freq {
-	FREQ_8000 = 8000,
-	FREQ_11025 = 11025,
-	FREQ_16000 = 16000,
-	FREQ_22050 = 22050,
-	FREQ_32000 = 32000,
-	FREQ_44100 = 44100,
-	FREQ_48000 = 48000,
-	FREQ_64000 = 64000,
-	FREQ_88200 = 88200,
-	FREQ_96000 = 96000,
-	FREQ_176400 = 176400,
-	FREQ_192000 = 192000,
-};
-
-#define RATE_16000_96000 \
-		(SNDRV_PCM_RATE_16000 | SNDRV_PCM_RATE_22050 |\
-		SNDRV_PCM_RATE_32000 | SNDRV_PCM_RATE_44100 |\
-		SNDRV_PCM_RATE_48000 | SNDRV_PCM_RATE_64000 |\
-		SNDRV_PCM_RATE_88200 | SNDRV_PCM_RATE_96000)
-
-enum stereo_ch {
-	STEREO0,
-	STEREO1,
-	STEREO2,
-	STEREO3
-};
-
-enum bit_width {
-	__BIT_8 = 8,
-	__BIT_16 = 16,
-	__BIT_24 = 24,
-	__BIT_32 = 32,
-	__BIT_INVAL = -1
-};
-
-/* SPDIF clocks */
-#define AUDIO_SPDIFINFAST	49152000
 
 /* ADSS APIs */
 void ipq40xx_glb_audio_mode(int mode, int dir);
@@ -575,13 +439,7 @@ void ipq40xx_glb_spdif_out_en(uint32_t enable);
 void ipq40xx_spdifin_cfg(void);
 void ipq40xx_glb_clk_enable_oe(uint32_t dir);
 void ipq40xx_audio_adss_init(void);
-/* Stereo APIs */
-void ipq40xx_stereo_config_reset(uint32_t reset, uint32_t stereo_offset);
-void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_offset);
-void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_offset);
-int ipq40xx_cfg_bit_width(uint32_t bit_width, uint32_t stereo_offset);
-void ipq40xx_config_master(uint32_t enable, uint32_t stereo_offset);
-int ipq40xx_audio_stereo_probe(struct platform_device *pdev);
+
 /* APIs in DAI driver */
 uint32_t get_mbox_id(struct snd_pcm_substream *substream, int intf);
 uint32_t get_stereo_id(struct snd_pcm_substream *substream, int intf);

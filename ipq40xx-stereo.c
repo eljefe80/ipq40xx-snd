@@ -164,14 +164,7 @@ void ipq40xx_config_master(uint32_t enable, uint32_t stereo_id)
 	printk("%s %d\n", __func__, __LINE__);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
-//EXPORT_SYMBOL(ipq40xx_config_master);
-/*
-static const struct of_device_id ipq40xx_audio_stereo_id_table[] = {
-	{ .compatible = "qca,ipq40xx-stereo" },
-	{},
-};
-MODULE_DEVICE_TABLE(of, ipq40xx_audio_stereo_id_table);
-*/
+
 int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 {
 	struct resource *res;
@@ -208,24 +201,7 @@ int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 	return 0;
 }
 EXPORT_SYMBOL(ipq40xx_audio_stereo_probe);
-/*
-static int ipq40xx_audio_stereo_remove(struct platform_device *pdev)
-{
-	return 0;
-}
 
-static struct platform_driver ipq40xx_audio_stereo_driver = {
-	.probe = ipq40xx_audio_stereo_probe,
-	.remove = ipq40xx_audio_stereo_remove,
-	.driver = {
-		.name = "ipq40xx-stereo",
-		.owner = THIS_MODULE,
-		.of_match_table = ipq40xx_audio_stereo_id_table,
-	},
-};
-
-module_platform_driver(ipq40xx_audio_stereo_driver);
-*/
 MODULE_ALIAS("platform:ipq40xx-stereo");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx AUDIO Stereo driver");

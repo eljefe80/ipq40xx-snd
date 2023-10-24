@@ -33,7 +33,6 @@
 #include <linux/of_gpio.h>
 
 #include "ipq40xx-mbox.h"
-#include "ipq40xx-adss.h"
 
 struct dai_priv_st {
 	int stereo_tx;

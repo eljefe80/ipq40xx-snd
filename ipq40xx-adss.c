@@ -31,6 +31,7 @@
 #include <linux/spinlock.h>
 
 #include "ipq40xx-adss.h"
+#include "ipq40xx-stereo.h"
 
 void __iomem *adss_audio_local_base;
 void __iomem *adss_audio_spdifin_base;
