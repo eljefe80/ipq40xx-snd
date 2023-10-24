@@ -31,6 +31,7 @@
 #include <sound/initval.h>
 #include <sound/control.h>
 #include <sound/pcm_params.h>
+#include <linux/pinctrl/consumer.h>
 
 #include "ipq40xx-pcm.h"
 #include "ipq40xx-adss.h"
