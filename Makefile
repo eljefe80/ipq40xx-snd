@@ -17,9 +17,9 @@ snd-soc-ipq40xx-adss-objs := ipq40xx-adss.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_PCM_I2S) += snd-soc-ipq40xx-pcm-i2s.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_CODEC_TAS5782M) += snd-soc-ipq40xx-codec-tas5782m.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_CPU_DAI) += snd-soc-ipq40xx-cpu-dai.o
-obj-$(CONFIG_SND_IPQ40XX_SOC_MBOX) += snd-soc-ipq40xx-mbox.o
+#obj-$(CONFIG_SND_IPQ40XX_SOC_MBOX) += snd-soc-ipq40xx-mbox.o
 obj-$(CONFIG_SND_IPQ40XX_SOC_ADSS) += snd-soc-ipq40xx-adss.o
-obj-$(CONFIG_SND_IPQ40XX_SOC_STEREO) += snd-soc-ipq40xx-stereo.o
+#obj-$(CONFIG_SND_IPQ40XX_SOC_STEREO) += snd-soc-ipq40xx-stereo.o
 
 
 modules:
