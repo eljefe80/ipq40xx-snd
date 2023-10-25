@@ -534,7 +534,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	dai_priv[intf].pdev = pdev;
 
 	of_node_put(pdev->dev.of_node);
-	ipq40xx_audio_adss_probe(pdev);
+	//ipq40xx_audio_adss_probe(pdev);
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	return 0;
