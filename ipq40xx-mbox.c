@@ -623,7 +623,7 @@ int ipq40xx_mbox_dma_init(struct device *dev, int channel_id,
 }
 EXPORT_SYMBOL(ipq40xx_mbox_dma_init);
 
-static int ipq40xx_mbox_probe(struct platform_device *pdev)
+int ipq40xx_mbox_probe(struct platform_device *pdev)
 {
 	struct device_node *np = NULL;
 	int irq;
