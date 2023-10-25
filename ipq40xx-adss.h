@@ -339,7 +339,7 @@ void ipq40xx_glb_tdm_ctrl_sync_num(uint32_t val, uint32_t dir);
 void ipq40xx_glb_tdm_ctrl_delay(uint32_t delay, uint32_t dir);
 void ipq40xx_spdifin_cfg(void);
 void ipq40xx_glb_clk_enable_oe(uint32_t dir);
-int ipq40xx_audio_adss_probe(struct platform_device *pdev);
+//int ipq40xx_audio_adss_probe(struct platform_device *pdev);
 
 /* APIs in DAI driver */
 uint32_t get_mbox_id(struct snd_pcm_substream *substream, int intf);
@@ -349,5 +349,5 @@ uint32_t ipq40xx_get_act_bit_width(uint32_t bit_width);
 void ipq40xx_stereo_config_reset(uint32_t reset, uint32_t stereo_offset);
 void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_offset);
 void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_offset);
-//int ipq40xx_audio_stereo_probe(struct platform_device *pdev);
+int ipq40xx_audio_stereo_probe(struct platform_device *pdev);
 #endif
