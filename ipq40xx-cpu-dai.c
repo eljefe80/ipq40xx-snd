@@ -270,7 +270,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	ipq40xx_glb_clk_enable_oe(substream->stream);
-
+/*
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	ipq40xx_config_master(ENABLE, stereo_id);
 
@@ -307,7 +307,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 	ipq40xx_stereo_config_mic_reset(DISABLE, stereo_id);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	ipq40xx_stereo_config_enable(ENABLE, stereo_id);
-
+*/
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		if (!(dai_priv[intf].is_txmclk_fixed)) {
