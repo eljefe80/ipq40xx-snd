@@ -314,7 +314,7 @@ int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 	ipq40xx_audio_adss_init();
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_audio_adss_probe);
+//EXPORT_SYMBOL(ipq40xx_audio_adss_probe);
 static int ipq40xx_audio_adss_remove(struct platform_device *pdev)
 {
 	ipq40xx_glb_i2s_interface_en(DISABLE);
