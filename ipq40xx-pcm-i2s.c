@@ -446,7 +446,9 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 				substream->runtime->private_data;
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
+	uint32_t stereo_id = get_stereo_id(substream, intf);
 	uint32_t intf = dai->driver->id;
+	uint32_t mbox_id = get_mbox_id(substream, intf);
 	int ret;
 	unsigned int period_size, sample_size, sample_rate, frames, channels;
 
