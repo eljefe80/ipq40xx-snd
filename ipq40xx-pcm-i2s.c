@@ -40,6 +40,7 @@
 #include "ipq40xx-pcm.h"
 #include "ipq40xx-mbox.h"
 #include "ipq40xx-adss.h"
+#include "ipq40xx-stereo.h"
 
 static struct snd_pcm_hardware ipq40xx_pcm_hardware_playback = {
 	.info			=	SNDRV_PCM_INFO_MMAP |
