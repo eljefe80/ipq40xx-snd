@@ -291,14 +291,14 @@ void ipq40xx_audio_adss_init(void)
 	ipq40xx_glb_audio_mode_B1K();
 }
 EXPORT_SYMBOL(ipq40xx_audio_adss_init);
-/*
+
 static const struct of_device_id ipq40xx_audio_adss_id_table[] = {
 	{ .compatible = "qca,ipq40xx-audio-adss" },
 	{},
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_audio_adss_id_table);
-*/
-int ipq40xx_audio_adss_probe(struct platform_device *pdev)
+
+static int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 {
 	struct resource *res;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
