@@ -1,5 +1,8 @@
 #ifndef IPQ40xx_COMMON_H
 #define IPQ40xx_COMMON_H
+
+#define MAX_STEREO_ENTRIES	4
+
 /* Enumerations */
 
 enum dir {

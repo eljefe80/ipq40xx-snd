@@ -313,7 +313,7 @@
 
 #define ADSS_SPDIFIN_SELFIFO_REG			(0x10)
 
-#define MAX_STEREO_ENTRIES	4
+
 #define TDM_SYNC_NUM		2
 #define TDM_DELAY		0
 #define MCLK_MULTI		4
