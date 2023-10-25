@@ -31,7 +31,6 @@
 #include <linux/spinlock.h>
 
 #include "ipq40xx-adss.h"
-#include "ipq40xx-stereo.h"
 
 void __iomem *adss_audio_local_base;
 struct reset_control *audio_blk_rst;
@@ -110,7 +109,6 @@ void ipq40xx_glb_audio_mode(int mode, int dir)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
 	spin_unlock_irqrestore(&glb_mode_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_audio_mode);
 
 /* I2S0 TX Data Port Enable */
 /* Todo : Check if bits 6:4 configures only
@@ -128,7 +126,6 @@ void ipq40xx_glb_tx_data_port_en(uint32_t enable)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
 	spin_unlock_irqrestore(&glb_mode_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_tx_data_port_en);
 
 /* I2S3 RX Data Port Enable */
 void ipq40xx_glb_rx_data_port_en(uint32_t enable)
@@ -144,7 +141,6 @@ void ipq40xx_glb_rx_data_port_en(uint32_t enable)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
 	spin_unlock_irqrestore(&glb_mode_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_rx_data_port_en);
 
 /* Cross 1K Boundary */
 void ipq40xx_glb_audio_mode_B1K(void)
@@ -174,7 +170,6 @@ void ipq40xx_glb_tx_framesync_port_en(uint32_t enable)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
 	spin_unlock_irqrestore(&glb_mode_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_tx_framesync_port_en);
 
 /* Frame Sync Port Enable for I2S3 RX */
 void ipq40xx_glb_rx_framesync_port_en(uint32_t enable)
@@ -190,7 +185,6 @@ void ipq40xx_glb_rx_framesync_port_en(uint32_t enable)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
 	spin_unlock_irqrestore(&glb_mode_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_rx_framesync_port_en);
 
 void ipq40xx_glb_clk_enable_oe(uint32_t dir)
 {
@@ -207,7 +201,6 @@ void ipq40xx_glb_clk_enable_oe(uint32_t dir)
 	}
 	writel(cfg, adss_audio_local_base + ADSS_GLB_CLK_I2S_CTRL_REG);
 }
-EXPORT_SYMBOL(ipq40xx_glb_clk_enable_oe);
 
 /* Channel Number Per Frame for Transmitter/Receiver
  * Real value = val + 1
@@ -230,7 +223,6 @@ void ipq40xx_glb_tdm_ctrl_ch_num(uint32_t val, uint32_t dir)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_TDM_CTRL_REG);
 	spin_unlock_irqrestore(&tdm_ctrl_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_tdm_ctrl_ch_num);
 
 /* FSYNC Hi Duration for Transmitter/Receiver */
 void ipq40xx_glb_tdm_ctrl_sync_num(uint32_t val, uint32_t dir)
@@ -251,7 +243,6 @@ void ipq40xx_glb_tdm_ctrl_sync_num(uint32_t val, uint32_t dir)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_TDM_CTRL_REG);
 	spin_unlock_irqrestore(&tdm_ctrl_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_tdm_ctrl_sync_num);
 
 /* Serial Data Delay for transmitter/receiver */
 void ipq40xx_glb_tdm_ctrl_delay(uint32_t delay, uint32_t dir)
@@ -274,7 +265,6 @@ void ipq40xx_glb_tdm_ctrl_delay(uint32_t delay, uint32_t dir)
 	writel(cfg, adss_audio_local_base + ADSS_GLB_TDM_CTRL_REG);
 	spin_unlock_irqrestore(&tdm_ctrl_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_glb_tdm_ctrl_delay);
 
 void ipq40xx_audio_adss_init(void)
 {
@@ -290,7 +280,6 @@ void ipq40xx_audio_adss_init(void)
 
 	ipq40xx_glb_audio_mode_B1K();
 }
-EXPORT_SYMBOL(ipq40xx_audio_adss_init);
 
 static const struct of_device_id ipq40xx_audio_adss_id_table[] = {
 	{ .compatible = "qca,ipq40xx-audio-adss" },
@@ -314,7 +303,6 @@ int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 	ipq40xx_audio_adss_init();
 	return 0;
 }
-//EXPORT_SYMBOL(ipq40xx_audio_adss_probe);
 static int ipq40xx_audio_adss_remove(struct platform_device *pdev)
 {
 	ipq40xx_glb_i2s_interface_en(DISABLE);
