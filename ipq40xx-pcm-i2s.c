@@ -446,9 +446,9 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 				substream->runtime->private_data;
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
-	uint32_t stereo_id = get_stereo_id(substream, intf);
 	uint32_t intf = dai->driver->id;
 	uint32_t mbox_id = get_mbox_id(substream, intf);
+	uint32_t stereo_id = get_stereo_id(substream, intf);
 	int ret;
 	unsigned int period_size, sample_size, sample_rate, frames, channels;
 
@@ -527,11 +527,6 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
 
-	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
-	uint32_t intf = dai->driver->id;
-	uint32_t stereo_id = get_stereo_id(substream, intf);
-
 	printk("%s %d\n", __func__, __LINE__);
 
 	pcm_rtpriv = kmalloc(sizeof(struct ipq40xx_pcm_rt_priv), GFP_KERNEL);
@@ -576,43 +571,6 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 		pr_err("%s: snd_pcm_hw_constraint_integer failed\n", __func__);
 		goto error;
 	}
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_config_master(ENABLE, stereo_id);
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ret = ipq40xx_cfg_bit_width(bit_width, stereo_id);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	if (ret) {
-		pr_err("%s: BitWidth %d not supported\n",
-			__FUNCTION__, bit_width);
-		return ret;
-	}
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_enable(DISABLE, stereo_id);
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_reset(ENABLE, stereo_id);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_mic_reset(ENABLE, stereo_id);
-
-	mdelay(5);
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ret = ipq40xx_mbox_fifo_reset(mbox_id);
-	if (ret) {
-		pr_err("%s: %d: Error in dma fifo reset\n",
-					__func__, __LINE__);
-		return ret;
-	}
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_reset(DISABLE, stereo_id);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_mic_reset(DISABLE, stereo_id);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_enable(ENABLE, stereo_id);
-	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 error:
 	kfree(pcm_rtpriv);
