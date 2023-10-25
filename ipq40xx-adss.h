@@ -337,8 +337,6 @@ void ipq40xx_glb_rx_framesync_port_en(uint32_t enable);
 void ipq40xx_glb_tdm_ctrl_ch_num(uint32_t val, uint32_t dir);
 void ipq40xx_glb_tdm_ctrl_sync_num(uint32_t val, uint32_t dir);
 void ipq40xx_glb_tdm_ctrl_delay(uint32_t delay, uint32_t dir);
-void ipq40xx_spdifin_ctrl_spdif_en(uint32_t enable);
-void ipq40xx_glb_spdif_out_en(uint32_t enable);
 void ipq40xx_spdifin_cfg(void);
 void ipq40xx_glb_clk_enable_oe(uint32_t dir);
 int ipq40xx_audio_adss_probe(struct platform_device *pdev);
