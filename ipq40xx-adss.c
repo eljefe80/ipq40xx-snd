@@ -298,7 +298,7 @@ static const struct of_device_id ipq40xx_audio_adss_id_table[] = {
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_audio_adss_id_table);
 
-static int ipq40xx_audio_adss_probe(struct platform_device *pdev)
+int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 {
 	struct resource *res;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
