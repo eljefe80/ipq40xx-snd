@@ -453,29 +453,7 @@ static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
 		.ops = &ipq40xx_audio_ops,
 		.id = I2S2,
 		.name = "qca-i2s2-dai"
-	},
-	{
-		.playback = {
-			.rates		= RATE_16000_96000,
-			.formats        = SNDRV_PCM_FMTBIT_S16 |
-					SNDRV_PCM_FMTBIT_S24_3LE,
-			.channels_min   = CH_STEREO,
-			.channels_max   = CH_STEREO,
-			.rate_min       = FREQ_16000,
-			.rate_max       = FREQ_96000,
-		},
-		.capture = {
-			.rates		= RATE_16000_96000,
-			.formats        = SNDRV_PCM_FMTBIT_S16 |
-					SNDRV_PCM_FMTBIT_S24_3LE,
-			.channels_min   = CH_STEREO,
-			.channels_max   = CH_STEREO,
-			.rate_min       = FREQ_16000,
-			.rate_max       = FREQ_96000,
-		},
-		.ops = &ipq40xx_spdif_ops,
-		.name = "qca-spdif-dai"
-	},
+	}
 };
 static const struct snd_soc_component_driver ipq40xx_i2s_component = {
 	.name           = "qca-cpu-dai",
