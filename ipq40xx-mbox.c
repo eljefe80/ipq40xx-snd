@@ -71,7 +71,7 @@ uint32_t ipq40xx_mbox_get_elapsed_size(uint32_t channel_id)
         printk("checking irq: 0x%x", readl(mbox_reg + ADSS_MBOXn_MBOX_INT_STATUS_REG));
         return size_played;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_get_elapsed_size);
+
 static struct ipq40xx_mbox_desc *get_next(
 				struct ipq40xx_mbox_rt_dir_priv *rtdir,
 				struct ipq40xx_mbox_desc *desc)
@@ -110,7 +110,6 @@ void ipq40xx_mbox_desc_own(u32 channel_id, int desc_no, int own)
 	desc->ei = 1;
 	printk("%s %d\n", __func__, __LINE__);
 }
-EXPORT_SYMBOL(ipq40xx_mbox_desc_own);
 
 uint32_t ipq40xx_mbox_get_played_offset(u32 channel_id)
 {
@@ -146,7 +145,6 @@ uint32_t ipq40xx_mbox_get_played_offset(u32 channel_id)
 	printk("%s %d\n", __func__, __LINE__);
 	return size_played * rtdir->read;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_get_played_offset);
 
 uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 {
@@ -193,8 +191,6 @@ uint32_t ipq40xx_mbox_get_played_offset_set_own(u32 channel_id)
 	return size_played;
 }
 
-EXPORT_SYMBOL(ipq40xx_mbox_get_played_offset_set_own);
-
 int ipq40xx_mbox_fifo_reset(int channel_id)
 {
 	volatile void __iomem *mbox_reg;
@@ -224,7 +220,6 @@ int ipq40xx_mbox_fifo_reset(int channel_id)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_fifo_reset);
 
 int ipq40xx_mbox_dma_start(int channel_id)
 {
@@ -260,7 +255,6 @@ int ipq40xx_mbox_dma_start(int channel_id)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_dma_start);
 
 int ipq40xx_mbox_dma_resume(int channel_id)
 {
@@ -295,7 +289,6 @@ int ipq40xx_mbox_dma_resume(int channel_id)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_dma_resume);
 
 int ipq40xx_mbox_dma_stop(int channel_id)
 {
@@ -340,7 +333,6 @@ int ipq40xx_mbox_dma_stop(int channel_id)
 	return 0;
 
 }
-EXPORT_SYMBOL(ipq40xx_mbox_dma_stop);
 
 static inline bool ipq40xx_is_chn_already_inited(uint32_t index, uint32_t dir)
 {
@@ -434,7 +426,6 @@ int ipq40xx_mbox_dma_prepare(int channel_id)
 	printk("%s %d\n", __func__, __LINE__);
 	return err;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_dma_prepare);
 
 int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *area,
 				int period_bytes, int bufsize, int own_bit)
@@ -510,7 +501,6 @@ int ipq40xx_mbox_form_ring(int channel_id, dma_addr_t baseaddr, u8 *area,
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_form_ring);
 
 int ipq40xx_mbox_dma_release(int channel_id)
 {
@@ -540,7 +530,6 @@ int ipq40xx_mbox_dma_release(int channel_id)
 	printk("%s %d\n", __func__, __LINE__);
 	return -ENXIO;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_dma_release);
 
 static irqreturn_t ipq40xx_mbox_dma_irq(int irq, void *dev_id)
 {
@@ -621,7 +610,6 @@ int ipq40xx_mbox_dma_init(struct device *dev, int channel_id,
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_dma_init);
 
 int ipq40xx_mbox_probe(struct platform_device *pdev)
 {
@@ -706,7 +694,6 @@ init_err:
 	printk("%s %d\n", __func__, __LINE__);
 	return rc;
 }
-EXPORT_SYMBOL(ipq40xx_mbox_probe);
 
 static int ipq40xx_mbox_remove(struct platform_device *pdev)
 {
@@ -725,24 +712,7 @@ static int ipq40xx_mbox_remove(struct platform_device *pdev)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-/*
-static const struct of_device_id ipq40xx_mbox_table[] = {
-	{ .compatible = "qca,ipq40xx-mbox" },
-	{},
-};
 
-static struct platform_driver ipq40xx_mbox_driver = {
-	.probe = ipq40xx_mbox_probe,
-	.remove = ipq40xx_mbox_remove,
-	.driver = {
-		.name = "ipq40xx-mbox",
-		.owner = THIS_MODULE,
-		.of_match_table = ipq40xx_mbox_table,
-	},
-};
-
-module_platform_driver(ipq40xx_mbox_driver);
-*/
 MODULE_ALIAS("platform:ipq40xx-mbox");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx MBOX DRIVER");
