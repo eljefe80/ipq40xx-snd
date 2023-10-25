@@ -30,10 +30,6 @@
 #define STEREOn_CONFIG_SAMPLE_CNT_CLEAR_TYPE		(1 << 9)
 #define STEREOn_CONFIG_MASTER				(1 << 8)
 
-
-/* SPDIF clocks */
-#define AUDIO_SPDIFINFAST	49152000
-
 /* Stereo APIs */
 void ipq40xx_stereo_config_reset(uint32_t reset, uint32_t stereo_offset);
 void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_offset);

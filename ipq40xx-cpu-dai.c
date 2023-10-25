@@ -52,9 +52,6 @@ struct clk *audio_tx_bclk;
 struct clk *audio_tx_mclk;
 struct clk *audio_rx_bclk;
 struct clk *audio_rx_mclk;
-struct clk *audio_spdif_src;
-struct clk *audio_spdif_div2;
-struct clk *audio_spdifinfast_src;
 
 /* Get Stereo channel ID based on I2S/TDM/SPDIF intf and direction */
 uint32_t get_stereo_id(struct snd_pcm_substream *substream, int intf)
