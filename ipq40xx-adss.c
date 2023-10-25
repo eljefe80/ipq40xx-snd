@@ -321,6 +321,7 @@ static int ipq40xx_audio_adss_remove(struct platform_device *pdev)
 	return 0;
 }
 
+/*
 static struct platform_driver ipq40xx_audio_adss_driver = {
 	.probe = ipq40xx_audio_adss_probe,
 	.remove = ipq40xx_audio_adss_remove,
@@ -332,7 +333,7 @@ static struct platform_driver ipq40xx_audio_adss_driver = {
 };
 
 module_platform_driver(ipq40xx_audio_adss_driver);
-
+*/
 MODULE_ALIAS("platform:ipq40xx-adss");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx AUDIO ADSS driver");
