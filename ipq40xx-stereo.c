@@ -29,7 +29,6 @@
 #include <linux/delay.h>
 #include <linux/spinlock.h>
 
-#include "ipq40xx-adss.h"
 #include "ipq40xx-stereo.h"
 
 struct stereo_priv_data {
@@ -55,7 +54,6 @@ void ipq40xx_stereo_config_reset(uint32_t reset, uint32_t stereo_id)
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_stereo_config_reset);
 
 /* MIC buffers reset */
 void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_id)
@@ -73,7 +71,6 @@ void ipq40xx_stereo_config_mic_reset(uint32_t reset, uint32_t stereo_id)
 			+ ADSS_STEREOn_STEREO0_CONFIG_REG);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_stereo_config_mic_reset);
 
 /* Enable the I2S Stereo block for operation */
 void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_id)
@@ -92,7 +89,6 @@ void ipq40xx_stereo_config_enable(uint32_t enable, uint32_t stereo_id)
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 	printk("%s %d\n", __func__, __LINE__);
 }
-EXPORT_SYMBOL(ipq40xx_stereo_config_enable);
 
 /* Configure
  * Data word size : Word size loaded into the PCM
@@ -145,7 +141,6 @@ int ipq40xx_cfg_bit_width(uint32_t bit_width, uint32_t stereo_id)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_cfg_bit_width);
 
 /* Configure master mode */
 void ipq40xx_config_master(uint32_t enable, uint32_t stereo_id)
@@ -165,7 +160,7 @@ void ipq40xx_config_master(uint32_t enable, uint32_t stereo_id)
 	printk("%s %d\n", __func__, __LINE__);
 	spin_unlock_irqrestore(&stereo_priv[stereo_id].stereo_lock, flags);
 }
-EXPORT_SYMBOL(ipq40xx_config_master);
+
 int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 {
 	struct resource *res;
@@ -201,7 +196,6 @@ int ipq40xx_audio_stereo_probe(struct platform_device *pdev)
 	printk("%s %d\n", __func__, __LINE__);
 	return 0;
 }
-EXPORT_SYMBOL(ipq40xx_audio_stereo_probe);
 
 MODULE_ALIAS("platform:ipq40xx-stereo");
 MODULE_LICENSE("Dual BSD/GPL");
