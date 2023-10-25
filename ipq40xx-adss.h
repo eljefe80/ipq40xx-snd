@@ -339,7 +339,7 @@ void ipq40xx_glb_tdm_ctrl_sync_num(uint32_t val, uint32_t dir);
 void ipq40xx_glb_tdm_ctrl_delay(uint32_t delay, uint32_t dir);
 void ipq40xx_spdifin_cfg(void);
 void ipq40xx_glb_clk_enable_oe(uint32_t dir);
-//int ipq40xx_audio_adss_probe(struct platform_device *pdev);
+int ipq40xx_audio_adss_probe(struct platform_device *pdev);
 
 /* APIs in DAI driver */
 uint32_t get_mbox_id(struct snd_pcm_substream *substream, int intf);
