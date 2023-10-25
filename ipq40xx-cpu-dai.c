@@ -34,6 +34,7 @@
 
 #include "ipq40xx-mbox.h"
 #include "ipq40xx-stereo.h"
+#include "ipq40xx-adss.h"
 
 struct dai_priv_st {
 	int stereo_tx;
@@ -722,6 +723,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	dai_priv[intf].pdev = pdev;
 
 	of_node_put(pdev->dev.of_node);
+	ipq40xx_audio_adss_probe(pdev);
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	return 0;

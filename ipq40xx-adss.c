@@ -34,7 +34,6 @@
 #include "ipq40xx-stereo.h"
 
 void __iomem *adss_audio_local_base;
-void __iomem *adss_audio_spdifin_base;
 struct reset_control *audio_blk_rst;
 static spinlock_t i2s_ctrl_lock;
 static spinlock_t tdm_ctrl_lock;
@@ -277,104 +276,6 @@ void ipq40xx_glb_tdm_ctrl_delay(uint32_t delay, uint32_t dir)
 }
 EXPORT_SYMBOL(ipq40xx_glb_tdm_ctrl_delay);
 
-/* PCM RAW clock configuration */
-void ipq40xx_pcm_clk_cfg(void)
-{
-	uint32_t reg_val;
-
-	/* set ADSS_AUDIO_PLL_CONFIG1_REG as required */
-	reg_val = readl(adss_audio_local_base + ADSS_AUDIO_PLL_CONFIG1_REG);
-	reg_val |= AUDIO_PLL_CONFIG1_SRESET_L(1);
-	writel(reg_val, adss_audio_local_base + ADSS_AUDIO_PLL_CONFIG1_REG);
-
-	/* set ADSS_AUDIO_PLL_CONFIG_REG as required */
-	reg_val = readl(adss_audio_local_base + ADSS_AUDIO_PLL_CONFIG_REG);
-	reg_val &= ~AUDIO_PLL_CONFIG_REFDIV_MASK;
-	reg_val |= AUDIO_PLL_CONFIG_REFDIV(5);
-	writel(reg_val, adss_audio_local_base + ADSS_AUDIO_PLL_CONFIG_REG);
-
-	/* set ADSS_AUDIO_PLL_CONFIG_REG as required */
-	reg_val = readl(adss_audio_local_base + ADSS_AUDIO_PLL_CONFIG_REG);
-	reg_val &= ~AUDIO_PLL_CONFIG_POSTPLLDIV_MASK;
-	reg_val |= AUDIO_PLL_CONFIG_POSTPLLDIV(1);
-	writel(reg_val, adss_audio_local_base + ADSS_AUDIO_PLL_CONFIG_REG);
-
-	reg_val = readl(adss_audio_local_base + ADSS_AUDIO_PLL_CONFIG_REG);
-	reg_val &= ~AUDIO_PLL_CONFIG_PLLPWD;
-	writel(reg_val, adss_audio_local_base + ADSS_AUDIO_PLL_CONFIG_REG);
-
-	/*set ADSS_AUDIO_PLL_MODULATION_REG as required */
-	reg_val = readl(adss_audio_local_base + ADSS_AUDIO_PLL_MODULATION_REG);
-	reg_val &= ~AUDIO_PLL_MODULATION_TGT_DIV_MASK;
-	reg_val |= AUDIO_PLL_MODULATION_TGT_DIV_FRAC(0x9BA5);
-	reg_val |= AUDIO_PLL_MODULATION_TGT_DIV_INT(49);
-	writel(reg_val, adss_audio_local_base + ADSS_AUDIO_PLL_MODULATION_REG);
-
-	/* set ADSS_AUDIO_PCM_CFG_RCGR_REG as required */
-	reg_val = readl(adss_audio_local_base + ADSS_AUDIO_PCM_CFG_RCGR_REG);
-	reg_val |= AUDIO_PCM_CFG_RCGR_SRC_SEL(1)
-			| AUDIO_PCM_CFG_RGCR_SRC_DIV(3);
-	writel(reg_val, adss_audio_local_base + ADSS_AUDIO_PCM_CFG_RCGR_REG);
-
-	/* set ADSS_AUDIO_PCM_MISC_REG  as required */
-	reg_val = AUDIO_PCM_MISC_AUTO_SCALE_DIV(11);
-	writel(reg_val, adss_audio_local_base + ADSS_AUDIO_PCM_MISC_REG);
-
-	/* set ADSS_AUDIO_PCM_CMD_RCGR_REG as required */
-	reg_val = 3;
-	writel(reg_val, adss_audio_local_base + ADSS_AUDIO_PCM_CMD_RCGR_REG);
-
-	/* write ADSS_PCM_OFFSET_REG */
-	reg_val = readl(adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
-	reg_val |= GLB_AUDIO_MODE_B1K;
-	writel(reg_val, adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
-
-}
-EXPORT_SYMBOL(ipq40xx_pcm_clk_cfg);
-
-void ipq40xx_spdifin_ctrl_spdif_en(uint32_t enable)
-{
-	uint32_t reg_val;
-
-	reg_val = readl(adss_audio_spdifin_base + ADSS_SPDIFIN_SPDIF_CTRL_REG);
-
-	if (enable)
-		reg_val |= SPDIF_CTRL_SPDIF_ENABLE;
-	else
-		reg_val &= ~SPDIF_CTRL_SPDIF_ENABLE;
-
-	writel(reg_val, adss_audio_spdifin_base + ADSS_SPDIFIN_SPDIF_CTRL_REG);
-
-}
-EXPORT_SYMBOL(ipq40xx_spdifin_ctrl_spdif_en);
-
-void ipq40xx_spdifin_cfg(void)
-{
-	uint32_t reg_val;
-
-	reg_val = readl(adss_audio_spdifin_base + ADSS_SPDIFIN_SPDIF_CTRL_REG);
-	reg_val &= ~(SPDIF_CTRL_CHANNEL_MODE
-			| SPDIF_CTRL_VALIDITYCHECK
-			| SPDIF_CTRL_PARITYCHECK);
-	reg_val |= (SPDIF_CTRL_USE_FIFO_IF
-			| SPDIF_CTRL_SFR_ENABLE
-			| SPDIF_CTRL_FIFO_ENABLE);
-	writel(reg_val, adss_audio_spdifin_base + ADSS_SPDIFIN_SPDIF_CTRL_REG);
-}
-EXPORT_SYMBOL(ipq40xx_spdifin_cfg);
-
-void ipq40xx_glb_spdif_out_en(uint32_t enable)
-{
-	int32_t cfg;
-
-	cfg = readl(adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
-	cfg &= ~(GLB_AUDIO_MODE_SPDIF_OUT_OE);
-	if (enable)
-		cfg |= GLB_AUDIO_MODE_SPDIF_OUT_OE;
-	writel(cfg, adss_audio_local_base + ADSS_GLB_AUDIO_MODE_REG);
-}
-EXPORT_SYMBOL(ipq40xx_glb_spdif_out_en);
-
 void ipq40xx_audio_adss_init(void)
 {
 	spin_lock_init(&i2s_ctrl_lock);
@@ -390,14 +291,14 @@ void ipq40xx_audio_adss_init(void)
 	ipq40xx_glb_audio_mode_B1K();
 }
 EXPORT_SYMBOL(ipq40xx_audio_adss_init);
-
+/*
 static const struct of_device_id ipq40xx_audio_adss_id_table[] = {
 	{ .compatible = "qca,ipq40xx-audio-adss" },
 	{},
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_audio_adss_id_table);
-
-static int ipq40xx_audio_adss_probe(struct platform_device *pdev)
+*/
+int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 {
 	struct resource *res;
 	printk("<3> Keen %s %d \r\n",__FUNCTION__,__LINE__);
@@ -406,11 +307,6 @@ static int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 	if (IS_ERR(adss_audio_local_base))
 		return PTR_ERR(adss_audio_local_base);
 
-	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-	adss_audio_spdifin_base = devm_ioremap_resource(&pdev->dev, res);
-	if (IS_ERR(adss_audio_spdifin_base))
-		return PTR_ERR(adss_audio_spdifin_base);
-
 	audio_blk_rst = devm_reset_control_get(&pdev->dev, "blk_rst");
 	if (IS_ERR(audio_blk_rst))
 		return PTR_ERR(audio_blk_rst);
@@ -418,13 +314,13 @@ static int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 	ipq40xx_audio_adss_init();
 	return 0;
 }
-
+EXPORT_SYMBOL(ipq40xx_audio_adss_probe);
 static int ipq40xx_audio_adss_remove(struct platform_device *pdev)
 {
 	ipq40xx_glb_i2s_interface_en(DISABLE);
 	return 0;
 }
-
+/*
 static struct platform_driver ipq40xx_audio_adss_driver = {
 	.probe = ipq40xx_audio_adss_probe,
 	.remove = ipq40xx_audio_adss_remove,
@@ -436,7 +332,7 @@ static struct platform_driver ipq40xx_audio_adss_driver = {
 };
 
 module_platform_driver(ipq40xx_audio_adss_driver);
-
+*/
 MODULE_ALIAS("platform:ipq40xx-adss");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx AUDIO ADSS driver");
