@@ -270,44 +270,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	ipq40xx_glb_clk_enable_oe(substream->stream);
-/*
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_config_master(ENABLE, stereo_id);
 
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ret = ipq40xx_cfg_bit_width(bit_width, stereo_id);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	if (ret) {
-		pr_err("%s: BitWidth %d not supported\n",
-			__FUNCTION__, bit_width);
-		return ret;
-	}
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_enable(DISABLE, stereo_id);
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_reset(ENABLE, stereo_id);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_mic_reset(ENABLE, stereo_id);
-
-	mdelay(5);
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ret = ipq40xx_mbox_fifo_reset(mbox_id);
-	if (ret) {
-		pr_err("%s: %d: Error in dma fifo reset\n",
-					__func__, __LINE__);
-		return ret;
-	}
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_reset(DISABLE, stereo_id);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_mic_reset(DISABLE, stereo_id);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ipq40xx_stereo_config_enable(ENABLE, stereo_id);
-*/
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		if (!(dai_priv[intf].is_txmclk_fixed)) {
@@ -534,7 +497,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	dai_priv[intf].pdev = pdev;
 
 	of_node_put(pdev->dev.of_node);
-	//ipq40xx_audio_adss_probe(pdev);
+	ipq40xx_audio_adss_probe(pdev);
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	return 0;
