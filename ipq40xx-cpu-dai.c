@@ -530,7 +530,6 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 					&dai_priv[i].is_txmclk_fixed))
 		pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
 */
-			snd_soc_dai_set_drvdata(dai, );
 			dai_priv[i].pdev = pdev;
 
 	}
