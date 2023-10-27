@@ -47,7 +47,8 @@ struct clk *audio_rx_mclk;
 
 
 /* Get Stereo channel ID based on I2S/TDM/SPDIF intf and direction */
-uint32_t get_stereo_id(struct dai_priv_st **priv, int intf)
+uint32_t get_stereo_id(struct dai_priv_st **priv,
+				struct snd_pcm_substream *substream, int intf)
 {
 
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
@@ -60,7 +61,8 @@ uint32_t get_stereo_id(struct dai_priv_st **priv, int intf)
 EXPORT_SYMBOL(get_stereo_id);
 
 /* Get MBOX channel ID based on I2S/TDM/SPDIF intf and direction */
-uint32_t get_mbox_id(struct dai_priv_st **priv, int intf)
+uint32_t get_mbox_id(struct dai_priv_st **priv,
+				struct snd_pcm_substream *substream, int intf)
 {
 //	dev_dbg("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
@@ -226,8 +228,8 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 {
 	struct dai_priv_st **priv = snd_soc_component_get_drvdata(dai->component);
 	uint32_t intf = intf_to_index(dai->driver->id);
-	uint32_t stereo_id = get_stereo_id(substream, intf);
-	uint32_t mbox_id = get_mbox_id(substream, intf);
+	uint32_t stereo_id = get_stereo_id(priv, substream, intf);
+	uint32_t mbox_id = get_mbox_id(priv, substream, intf);
 	uint32_t bit_width, channels, rate;
 	uint32_t bit_act;
 	int ret;
