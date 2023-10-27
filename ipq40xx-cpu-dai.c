@@ -313,7 +313,7 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 static int ipq40xx_audio_probe(struct snd_soc_dai* dai){
 	int intf = -1;
 	for(int i=0; i<MAX_INTF; i++)
-		if (dai_priv[i]->interface == dai->driver->id)
+		if (dai_priv[i].interface == dai->driver->id)
 			intf = i;
 	if (intf == -1);
 		return -EINVAL;
