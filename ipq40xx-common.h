@@ -82,7 +82,7 @@ enum bit_width {
 
 static inline uint32_t intf_to_index(struct dai_priv_st **priv, int intf){
 	for (int i = 0; i < MAX_INTF; i++)
-		if (priv[i].interface == intf)
+		if (priv[i]->interface == intf)
 			return i;
 	return -EINVAL;
 }
