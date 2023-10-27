@@ -84,6 +84,31 @@ static struct snd_pcm_hardware ipq40xx_pcm_hardware_capture = {
 	.fifo_size		=	0,
 };
 
+/* Get Stereo channel ID based on I2S/TDM/SPDIF intf and direction */
+uint32_t get_stereo_id(struct dai_priv_st *priv,
+				struct snd_pcm_substream *substream)
+{
+
+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+		return priv->stereo_tx;
+	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
+		return priv->stereo_rx;
+	else
+		return -EINVAL;
+}
+
+/* Get MBOX channel ID based on I2S/TDM/SPDIF intf and direction */
+uint32_t get_mbox_id(struct dai_priv_st **priv,
+				struct snd_pcm_substream *substream)
+{
+//	dev_dbg("%s:%d\n", __func__, __LINE__);
+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+		return priv->mbox_tx;
+	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
+		return priv->mbox_rx;
+	else
+		return -EINVAL;
+}
 
 static size_t ip40xx_dma_buffer_size(struct snd_pcm_hardware *pcm_hw)
 {
@@ -392,8 +417,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 				substream->runtime->private_data;
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
-	struct dai_priv_st **priv = snd_soc_dai_get_drvdata(dai);
-	uint32_t intf = intf_to_index(priv, dai->driver->id);
+	struct dai_priv_st *priv = snd_soc_dai_get_drvdata(dai);
 
 //	printk("%s %d\n", __func__, __LINE__);
 	switch (cmd) {
@@ -401,7 +425,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	case SNDRV_PCM_TRIGGER_RESUME:
 		/* Enable the I2S Stereo block for operation */
 		ipq40xx_stereo_config_enable(ENABLE,
-				get_stereo_id(priv, substream, intf));
+				get_stereo_id(priv, substream));
 		ret = ipq40xx_mbox_dma_start(pcm_rtpriv->channel);
 		if (ret) {
 			pr_err("%s: %d: Error in dma start\n",
@@ -423,7 +447,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	case SNDRV_PCM_TRIGGER_SUSPEND:
 		/* Disable the I2S Stereo block */
 		ipq40xx_stereo_config_enable(DISABLE,
-				get_stereo_id(priv, substream, intf));
+				get_stereo_id(priv, substream));
 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
 		ret = ipq40xx_mbox_dma_stop(pcm_rtpriv->channel);
 		if (ret) {
@@ -452,11 +476,9 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	uint32_t bit_width, rate;
-	struct dai_priv_st **priv = snd_soc_dai_get_drvdata(dai);
-	uint32_t intf = intf_to_index(priv, dai->driver->id);
-	uint32_t mbox_id = get_mbox_id(priv, substream, intf);
-	uint32_t stereo_id = get_stereo_id(priv, substream, intf);
+	struct dai_priv_st *priv = snd_soc_dai_get_drvdata(dai);
 	int ret;
+	int stereo_id = get_stereo_id(priv, substream)
 	unsigned int period_size, sample_size, sample_rate, frames, channels;
 	pr_debug("%s %d\n", __func__, __LINE__);
 
@@ -488,7 +510,7 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	mdelay(5);
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ret = ipq40xx_mbox_fifo_reset(mbox_id);
+	ret = ipq40xx_mbox_fifo_reset(get_mbox_id(priv, substream));
 	if (ret) {
 		pr_err("%s: %d: Error in dma fifo reset\n",
 					__func__, __LINE__);
@@ -541,9 +563,8 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 	printk("Keen %s %d\r\n",__func__,__LINE__);
     struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-	struct dai_priv_st **priv = snd_soc_dai_get_drvdata(dai);
+	struct dai_priv_st *priv = snd_soc_dai_get_drvdata(dai);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-    uint32_t intf = intf_to_index(priv, dai->driver->id);
 	printk("%s %d\n", __func__, __LINE__);
 
 	pcm_rtpriv = kmalloc(sizeof(struct ipq40xx_pcm_rt_priv), GFP_KERNEL);
@@ -555,7 +576,7 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 			__FUNCTION__, sizeof(*pcm_rtpriv), (u32) pcm_rtpriv);
 	pcm_rtpriv->last_played = NULL;
 	pcm_rtpriv->dev = substream->pcm->card->dev;
-	pcm_rtpriv->channel = get_mbox_id(priv, substream, intf);
+	pcm_rtpriv->channel = get_mbox_id(priv, substream);
 	substream->runtime->private_data = pcm_rtpriv;
 	pcm_rtpriv->mmap_flag = 0;
 	pcm_rtpriv->dma_started = 0;

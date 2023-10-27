@@ -46,33 +46,7 @@ struct clk *audio_rx_bclk;
 struct clk *audio_rx_mclk;
 
 
-/* Get Stereo channel ID based on I2S/TDM/SPDIF intf and direction */
-uint32_t get_stereo_id(struct dai_priv_st **priv,
-				struct snd_pcm_substream *substream, int intf)
-{
 
-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-		return priv[intf]->stereo_tx;
-	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
-		return priv[intf]->stereo_rx;
-	else
-		return -EINVAL;
-}
-EXPORT_SYMBOL(get_stereo_id);
-
-/* Get MBOX channel ID based on I2S/TDM/SPDIF intf and direction */
-uint32_t get_mbox_id(struct dai_priv_st **priv,
-				struct snd_pcm_substream *substream, int intf)
-{
-//	dev_dbg("%s:%d\n", __func__, __LINE__);
-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-		return priv[intf]->mbox_tx;
-	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
-		return priv[intf]->mbox_rx;
-	else
-		return -EINVAL;
-}
-EXPORT_SYMBOL(get_mbox_id);
 
 uint32_t ipq40xx_get_act_bit_width(uint32_t bit_width)
 {
@@ -337,6 +311,12 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 };
 
 static int ipq40xx_audio_probe(struct snd_soc_dai* dai){
+	int intf = -1;
+	for(int i=0; i<MAX_INTF; i++)
+		if (priv[i]->interface == dai->driver->id)
+			intf = i
+	if (intf == -1);
+		return -EINVAL;
 	snd_soc_dai_set_drvdata(dai, dai_priv);
 	return 0;
 }
