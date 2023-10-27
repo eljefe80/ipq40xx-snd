@@ -37,9 +37,9 @@
 #include "ipq40xx-adss.h"
 
 
-/*
-struct dai_priv_st dai_priv[MAX_INTF];
-*/
+
+struct dai_priv_st *dai_priv;
+
 struct clk *audio_tx_bclk;
 struct clk *audio_tx_mclk;
 struct clk *audio_rx_bclk;
@@ -229,8 +229,6 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	struct dai_priv_st **priv = snd_soc_component_get_drvdata(dai->component);
 	uint32_t intf = intf_to_index(priv, dai->driver->id);
-	uint32_t stereo_id = get_stereo_id(priv, substream, intf);
-	uint32_t mbox_id = get_mbox_id(priv, substream, intf);
 	uint32_t bit_width, channels, rate;
 	uint32_t bit_act;
 	int ret;
@@ -338,8 +336,13 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 	.set_fmt	= ipq40xx_audio_set_fmt,
 };
 
+static int ipq40xx_audio_probe(struct snd_soc_dai){
+	snd_soc_dai_set_drvdata(dai, dai_priv);
+}
+
 static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
 	{
+		.probe = ipq40xx_audio_probe,
 		.playback = {
 			.stream_name = "Playback",
 			.rates		= RATE_16000_96000,
@@ -364,6 +367,7 @@ static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
 		.name = "qca-i2s-dai"
 	},
 	{
+		.probe = ipq40xx_audio_probe,
 		.playback = {
 			.rates		= RATE_16000_96000,
 			.formats	= SNDRV_PCM_FMTBIT_S16 |
@@ -387,6 +391,7 @@ static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
 		.name = "qca-tdm-dai"
 	},
 	{
+		.probe = ipq40xx_audio_probe,
 		.playback = {
 			.rates		= RATE_16000_96000,
 			.formats	= SNDRV_PCM_FMTBIT_S16 |
@@ -401,6 +406,7 @@ static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
 		.name = "qca-i2s1-dai"
 	},
 	{
+		.probe = ipq40xx_audio_probe,
 		.playback = {
 			.rates		= RATE_16000_96000,
 			.formats	= SNDRV_PCM_FMTBIT_S16 |
@@ -436,7 +442,6 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 {
 	const struct of_device_id *match;
 	struct device_node *np = NULL;
-	struct dai_priv_st* priv;
 	int ret, tmp, num_plats, i, offset;
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
@@ -463,57 +468,57 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	num_plats = tmp / (sizeof(u32) * 5);
 	printk("Size of platforms: %i, num_plats %i", tmp, num_plats);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-	priv = kmalloc_array(num_plats, sizeof(struct dai_priv_st), GFP_KERNEL);
+	dai_priv = kmalloc_array(num_plats, sizeof(struct dai_priv_st), GFP_KERNEL);
 	if (!priv){
 		return -ENOMEM;
 	}
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-	platform_set_drvdata(pdev, priv);
+	platform_set_drvdata(pdev, dai_priv);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	for (i = 0; i < num_plats; i++) {
 		offset = i * 5;
-		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
+		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, dai_priv);
 		if (of_property_read_u32_index(np, "platforms", offset, &tmp))
 			goto error_node;
-		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
-		priv[i].interface = tmp;
-		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
+		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, dai_priv);
+		dai_priv[i].interface = tmp;
+		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, dai_priv);
 		if (of_property_read_u32_index(np, "platforms", offset + 1, &tmp))
 			goto error_node;
-		priv[i].mbox_tx = tmp;
+		dai_priv[i].mbox_tx = tmp;
 		if (of_property_read_u32_index(np, "platforms", offset + 2, &tmp))
 			goto error_node;
-		priv[i].stereo_tx = tmp;
+		dai_priv[i].stereo_tx = tmp;
 		if (of_property_read_u32_index(np, "platforms", offset + 3, &tmp))
 			goto error_node;
-		priv[i].mbox_rx = tmp;
+		dai_priv[i].mbox_rx = tmp;
 		if (of_property_read_u32_index(np, "platforms", offset + 4, &tmp))
 			goto error_node;
-		priv[i].stereo_rx = tmp;
+		dai_priv[i].stereo_rx = tmp;
 		/* TX is enabled only when both DMA and Stereo TX channel
 		* is specified in the DTSi
 		*/
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-		if ((priv[i].mbox_tx >= 0)
-			|| (priv[i].stereo_tx >= 0)) {
-			priv[i].tx_enabled = ENABLE;
+		if ((dai_priv[i].mbox_tx >= 0)
+			|| (dai_priv[i].stereo_tx >= 0)) {
+			dai_priv[i].tx_enabled = ENABLE;
 		}
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 		/* RX is enabled only when both DMA and Stereo RX channel
 		* is specified in the DTSi, except in case of SPDIF RX
 		*/
 
-		if ((priv[i].mbox_rx < 0)) {
-			if (priv[i].interface == SPDIF) {
-				priv[i].rx_enabled = ENABLE;
-				priv[i].stereo_rx = MAX_STEREO_ENTRIES;
-			} else if (priv[i].stereo_rx >= 1) {
-				priv[i].rx_enabled = ENABLE;
+		if ((dai_priv[i].mbox_rx < 0)) {
+			if (dai_priv[i].interface == SPDIF) {
+				dai_priv[i].rx_enabled = ENABLE;
+				dai_priv[i].stereo_rx = MAX_STEREO_ENTRIES;
+			} else if (dai_priv[i].stereo_rx >= 1) {
+				dai_priv[i].rx_enabled = ENABLE;
 			}
 		}
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 		/* Either TX or Rx should have been enabled for a DMA/Stereo Channel */
-		if (!(priv[i].tx_enabled || priv[i].rx_enabled)) {
+		if (!(dai_priv[i].tx_enabled || dai_priv[i].rx_enabled)) {
 			pr_err("%s: error reading critical device"
 					" node properties\n", np->name);
 			ret = -EFAULT;
@@ -522,11 +527,11 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 		}
 /*
 	if (of_property_read_u32(np, "ipq,txmclk-fixed",
-					&priv[i].is_txmclk_fixed))
+					&dai_priv[i].is_txmclk_fixed))
 		pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
 */
 			snd_soc_dai_set_drvdata(dai, );
-			priv[i].pdev = pdev;
+			dai_priv[i].pdev = pdev;
 
 	}
 
