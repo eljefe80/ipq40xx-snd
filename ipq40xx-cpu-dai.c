@@ -314,7 +314,7 @@ static int ipq40xx_audio_probe(struct snd_soc_dai* dai){
 	int intf = -1;
 	for(int i=0; i<MAX_INTF; i++)
 		if (priv[i]->interface == dai->driver->id)
-			intf = i
+			intf = i;
 	if (intf == -1);
 		return -EINVAL;
 	snd_soc_dai_set_drvdata(dai, dai_priv);
