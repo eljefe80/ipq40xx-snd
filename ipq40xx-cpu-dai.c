@@ -460,6 +460,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	/* There should be 5 values for each Platform */
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	num_plats = tmp / (sizeof(u32) * 5);
+	printk("Size of platforms: %i, num_plats %i", tmp, num_plats);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	priv = kmalloc(num_plats * sizeof(struct dai_priv_st), GFP_KERNEL);
 	if (!priv){
