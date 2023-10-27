@@ -435,6 +435,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	const struct of_device_id *match;
 	struct device_node *np = NULL;
 	struct dai_priv_st** priv;
+	struct dai_priv_st* p;
 	int ret, tmp, num_plats, i, offset;
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
@@ -470,11 +471,12 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	for (i = 0; i < num_plats; i++) {
 		offset = i * 5;
+		p = priv[i];
 		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
 		if (of_property_read_u32_index(np, "platforms", offset, &tmp))
 			goto error_node;
 		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
-		priv[i].interface = tmp;
+		p->interface = tmp;
 		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
 		if (of_property_read_u32_index(np, "platforms", offset + 1, &tmp))
 			goto error_node;
