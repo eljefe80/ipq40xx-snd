@@ -538,8 +538,11 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
     struct snd_soc_pcm_runtime *rtd = substream->private_data;
+	printk("Keen %s %d\r\n",__func__,__LINE__);
     struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	struct dai_priv_st **priv = snd_soc_dai_get_drvdata(dai);
+	printk("Keen %s %d\r\n",__func__,__LINE__);
     uint32_t intf = intf_to_index(priv, dai->driver->id);
 	printk("%s %d\n", __func__, __LINE__);
 
