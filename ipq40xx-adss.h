@@ -229,10 +229,10 @@ void ipq40xx_glb_clk_enable_oe(uint32_t dir);
 int ipq40xx_audio_adss_probe(struct platform_device *pdev);
 
 /* APIs in DAI driver */
-uint32_t get_mbox_id(struct dai_priv_st **priv,
-				struct snd_pcm_substream *substream, int intf);
-uint32_t get_stereo_id(struct dai_priv_st **priv,
-				struct snd_pcm_substream *substream, int intf);
+uint32_t get_mbox_id(struct dai_priv_st *priv,
+				struct snd_pcm_substream *substream);
+uint32_t get_stereo_id(struct dai_priv_st *priv,
+				struct snd_pcm_substream *substream);
 uint32_t ipq40xx_get_act_bit_width(uint32_t bit_width);
 
 void ipq40xx_stereo_config_reset(uint32_t reset, uint32_t stereo_offset);
