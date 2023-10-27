@@ -207,7 +207,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 	uint32_t bit_act;
 	int ret;
 	uint32_t mclk, bclk;
-	struct device *dev = &(priv[intf]->pdev->dev);
+	struct device *dev = &(priv[intf].pdev->dev);
 
 	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 	bit_width = params_format(params);
@@ -242,7 +242,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-		if (!(priv[intf]->is_txmclk_fixed)) {
+		if (!(priv[intf].is_txmclk_fixed)) {
 			ret = ipq40xx_audio_clk_set(audio_tx_mclk, dev, mclk);
 			if (ret)
 				return ret;
