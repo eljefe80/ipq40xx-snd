@@ -470,7 +470,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	for (i = 0; i < num_plats; i++) {
 		offset = i * 5;
-		printk("Checking offset: %i, location: %i", offset, i);
+		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
 		if (of_property_read_u32_index(np, "platforms", offset, &(priv[i]->interface)))
 			goto error_node;
 
