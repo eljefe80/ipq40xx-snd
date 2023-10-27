@@ -39,6 +39,7 @@
 
 
 struct dai_priv_st *dai_priv;
+int dai_priv_size;
 
 struct clk *audio_tx_bclk;
 struct clk *audio_tx_mclk;
@@ -312,9 +313,15 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 
 static int ipq40xx_audio_probe(struct snd_soc_dai* dai){
 	int intf = -1;
-	for(int i=0; i<MAX_INTF; i++)
+	for(int i=0; i<dai_priv_size; i++){
+		printk("Looking at dai_priv interface: %i, id: %i", dai_priv[i].interface, dai->driver->id);
+
 		if (dai_priv[i].interface == dai->driver->id)
+		{
+			printk("Looking at dai_priv interface: %i, id: %i", dai_priv[i].interface, dai->driver->id);
 			intf = i;
+		}
+	}
 	if (intf == -1);
 		return -EINVAL;
 	snd_soc_dai_set_drvdata(dai, dai_priv);
@@ -449,6 +456,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	num_plats = tmp / (sizeof(u32) * 5);
 	printk("Size of platforms: %i, num_plats %i", tmp, num_plats);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
+	dai_priv_size = num_plats;
 	dai_priv = kmalloc_array(num_plats, sizeof(struct dai_priv_st), GFP_KERNEL);
 	if (!dai_priv){
 		return -ENOMEM;
