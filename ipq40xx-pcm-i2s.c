@@ -400,7 +400,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	case SNDRV_PCM_TRIGGER_RESUME:
 		/* Enable the I2S Stereo block for operation */
 		ipq40xx_stereo_config_enable(ENABLE,
-				get_stereo_id(substream, intf));
+				get_stereo_id(priv, intf));
 		ret = ipq40xx_mbox_dma_start(pcm_rtpriv->channel);
 		if (ret) {
 			pr_err("%s: %d: Error in dma start\n",
@@ -422,7 +422,7 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 	case SNDRV_PCM_TRIGGER_SUSPEND:
 		/* Disable the I2S Stereo block */
 		ipq40xx_stereo_config_enable(DISABLE,
-				get_stereo_id(substream, intf));
+				get_stereo_id(priv, intf));
 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
 		ret = ipq40xx_mbox_dma_stop(pcm_rtpriv->channel);
 		if (ret) {
@@ -453,8 +453,8 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	uint32_t intf = intf_to_index(dai->driver->id);
 	struct dai_priv_st **priv = snd_soc_dai_get_drvdata(dai);
 	uint32_t intf = intf_to_index(priv, dai->driver->id);
-	uint32_t mbox_id = get_mbox_id(substream, intf);
-	uint32_t stereo_id = get_stereo_id(substream, intf);
+	uint32_t mbox_id = get_mbox_id(priv, intf);
+	uint32_t stereo_id = get_stereo_id(priv, intf);
 	int ret;
 	unsigned int period_size, sample_size, sample_rate, frames, channels;
 	pr_debug("%s %d\n", __func__, __LINE__);
@@ -549,7 +549,7 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 			__FUNCTION__, sizeof(*pcm_rtpriv), (u32) pcm_rtpriv);
 	pcm_rtpriv->last_played = NULL;
 	pcm_rtpriv->dev = substream->pcm->card->dev;
-	pcm_rtpriv->channel = get_mbox_id(substream, intf);
+	pcm_rtpriv->channel = get_mbox_id(priv, intf);
 	substream->runtime->private_data = pcm_rtpriv;
 	pcm_rtpriv->mmap_flag = 0;
 	pcm_rtpriv->dma_started = 0;
