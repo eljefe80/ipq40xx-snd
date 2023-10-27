@@ -313,18 +313,12 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 
 static int ipq40xx_audio_probe(struct snd_soc_dai* dai){
 	int intf = -1;
-	for(int i=0; i<dai_priv_size; i++){
-		printk("Looking at dai_priv interface: %i, id: %i", dai_priv[i].interface, dai->driver->id);
-
+	for(int i=0; i<dai_priv_size; i++)
 		if (dai_priv[i].interface == dai->driver->id)
-		{
-			printk("Found dai_priv interface: %i, id: %i", dai_priv[i].interface, dai->driver->id);
 			intf = i;
-		}
-	}
-	if (intf == -1);
+
+	if (intf == -1)
 		return -EINVAL;
-	printk("Got here")
 	snd_soc_dai_set_drvdata(dai, dai_priv);
 	return 0;
 }
