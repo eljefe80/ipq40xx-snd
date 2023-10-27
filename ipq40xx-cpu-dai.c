@@ -462,21 +462,21 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	priv = kmalloc(num_plats * sizeof(struct dai_priv_st), GFP_KERNEL);
 	platform_set_drvdata(pdev, priv);
 
-	for (i = 0; i < num_plats; i++;) {
+	for (i = 0; i < num_plats; i++) {
 		offset = i * 5;
-		if (of_property_read_u32_index(np, "platforms", offset, &priv[i]->interface))
+		if (of_property_read_u32_index(np, "platforms", offset, &(priv[i]->interface)))
 			goto error_node;
 
-		if (of_property_read_u32_index(np, "platforms", offset + 1, &priv[i]->mbox_tx))
+		if (of_property_read_u32_index(np, "platforms", offset + 1, &(priv[i]->mbox_tx)))
 			goto error_node;
 
-		if (of_property_read_u32_index(np, "platforms", offset + 2, &priv[i]->stereo_tx))
+		if (of_property_read_u32_index(np, "platforms", offset + 2, &(priv[i].stereo_tx)))
 			goto error_node;
 
-		if (of_property_read_u32_index(np, "platforms", offset + 3, &priv[i]->mbox_rx))
+		if (of_property_read_u32_index(np, "platforms", offset + 3, &(priv[i].mbox_rx)))
 			goto error_node;
 
-		if (of_property_read_u32_index(np, "platforms", offset + 3, &priv[i]->stereo_rx))
+		if (of_property_read_u32_index(np, "platforms", offset + 3, &(priv[i]->stereo_rx)))
 			goto error_node;
 
 		/* TX is enabled only when both DMA and Stereo TX channel
