@@ -444,7 +444,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 		ret = -ENODEV;
 		goto error;
 	}
-
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	ret = snd_soc_register_component(&pdev->dev, &ipq40xx_i2s_component,
 			 ipq40xx_cpu_dais, ARRAY_SIZE(ipq40xx_cpu_dais));
 	if (ret) {
@@ -452,16 +452,19 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 			"%s: error registering soc dais\n", __func__);
 		return ret;
 	}
-
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	np = of_node_get(pdev->dev.of_node);
-
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	if (!of_get_property(np, "platforms", &tmp))
 		goto error_node;
 	/* There should be 5 values for each Platform */
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	num_plats = tmp / (sizeof(u32) * 5);
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	priv = kmalloc(num_plats * sizeof(struct dai_priv_st), GFP_KERNEL);
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	platform_set_drvdata(pdev, priv);
-
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	for (i = 0; i < num_plats; i++) {
 		offset = i * 5;
 		if (of_property_read_u32_index(np, "platforms", offset, &(priv[i]->interface)))
@@ -482,12 +485,12 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 		/* TX is enabled only when both DMA and Stereo TX channel
 		* is specified in the DTSi
 		*/
-
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 		if ((priv[i]->mbox_tx >= 0)
 			|| (priv[i]->stereo_tx >= 0)) {
 			priv[i]->tx_enabled = ENABLE;
 		}
-
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 		/* RX is enabled only when both DMA and Stereo RX channel
 		* is specified in the DTSi, except in case of SPDIF RX
 		*/
@@ -500,23 +503,25 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 				priv[i]->rx_enabled = ENABLE;
 			}
 		}
-
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 		/* Either TX or Rx should have been enabled for a DMA/Stereo Channel */
 		if (!(priv[i]->tx_enabled || priv[i]->rx_enabled)) {
 			pr_err("%s: error reading critical device"
 					" node properties\n", np->name);
 			ret = -EFAULT;
 			goto error_node;
+
+		}
 /*
 	if (of_property_read_u32(np, "ipq,txmclk-fixed",
 					&priv[i].is_txmclk_fixed))
 		pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
 */
-	}
 			priv[i]->pdev = pdev;
 
-		}
+	}
 
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	of_node_put(pdev->dev.of_node);
 	ipq40xx_audio_adss_probe(pdev);
 
