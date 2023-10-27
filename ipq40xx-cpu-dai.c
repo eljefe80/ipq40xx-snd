@@ -471,21 +471,21 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	for (i = 0; i < num_plats; i++) {
 		offset = i * 5;
 		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
-		if (of_property_read_u32_index(np, "platforms", offset, &(priv[i]->interface)))
+		if (of_property_read_u32_index(np, "platforms", offset, &tmp))
 			goto error_node;
-
-		if (of_property_read_u32_index(np, "platforms", offset + 1, &(priv[i]->mbox_tx)))
+		priv[i]->interface = tmp;
+		if (of_property_read_u32_index(np, "platforms", offset + 1, &tmp))
 			goto error_node;
-
-		if (of_property_read_u32_index(np, "platforms", offset + 2, &(priv[i]->stereo_tx)))
+		priv[i]->mbox_tx = tmp;
+		if (of_property_read_u32_index(np, "platforms", offset + 2, &tmp))
 			goto error_node;
-
-		if (of_property_read_u32_index(np, "platforms", offset + 3, &(priv[i]->mbox_rx)))
+		priv[i]->stereo_tx = tmp;
+		if (of_property_read_u32_index(np, "platforms", offset + 3, &tmp))
 			goto error_node;
-
-		if (of_property_read_u32_index(np, "platforms", offset + 3, &(priv[i]->stereo_rx)))
+		priv[i]->mbox_rx = tmp
+		if (of_property_read_u32_index(np, "platforms", offset + 4, &tmp))
 			goto error_node;
-
+		priv[i]->stereo_rx = tmp;
 		/* TX is enabled only when both DMA and Stereo TX channel
 		* is specified in the DTSi
 		*/
