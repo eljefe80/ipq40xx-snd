@@ -479,7 +479,7 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	struct dai_priv_st *priv = snd_soc_dai_get_drvdata(dai);
 	int ret;
 	int stereo_id = get_stereo_id(priv, substream);
-	unsigned int period_size, sample_size, sample_rate, frames, channels;
+	unsigned int period_size, channels;
 	pr_debug("%s %d\n", __func__, __LINE__);
 
 	pcm_rtpriv = runtime->private_data;
