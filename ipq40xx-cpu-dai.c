@@ -434,7 +434,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 {
 	const struct of_device_id *match;
 	struct device_node *np = NULL;
-	struct dai_priv_st* priv;
+	struct dai_priv_st** priv;
 	int ret, tmp, num_plats, i, offset;
 	int intf;
 
