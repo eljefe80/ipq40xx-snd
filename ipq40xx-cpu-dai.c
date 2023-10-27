@@ -132,12 +132,12 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 	struct dai_priv_st *priv = snd_soc_component_get_drvdata(dai->component);
 	uint32_t intf = intf_to_index(priv, dai->driver->id);
 	int ret = 0;
-	struct device *dev = &(priv[intf]->pdev->dev);
+	struct device *dev = &(priv[intf].pdev->dev);
 	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 	printk("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		/* Check if the direction is enabled */
-		if (priv[intf]->tx_enabled != ENABLE)
+		if (priv[intf].tx_enabled != ENABLE)
 			goto error;
 
 		ipq40xx_glb_tx_data_port_en(ENABLE);
@@ -146,13 +146,13 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 		ret = ipq40xx_audio_clk_get(&audio_tx_bclk, dev,
 						"audio_tx_bclk");
 		printk("Return from ipq40xx_audio_clk_get: %d", ret);
-		if (!ret && !(priv[intf]->is_txmclk_fixed))
+		if (!ret && !(priv[intf].is_txmclk_fixed))
 			ret = ipq40xx_audio_clk_get(&audio_tx_mclk, dev,
 						"audio_tx_mclk");
 
 	} else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
 		/* Check if the direction is enabled */
-		if (priv[intf]->rx_enabled != ENABLE)
+		if (priv[intf].rx_enabled != ENABLE)
 			goto error;
 
 		ipq40xx_glb_rx_data_port_en(ENABLE);
