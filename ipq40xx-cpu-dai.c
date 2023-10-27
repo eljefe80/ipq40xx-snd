@@ -129,7 +129,7 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 				struct snd_soc_dai *dai)
 {
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-	struct dai_priv_st **priv = snd_soc_component_get_drvdata(dai->component);
+	struct dai_priv_st *priv = snd_soc_component_get_drvdata(dai->component);
 	uint32_t intf = intf_to_index(priv, dai->driver->id);
 	int ret = 0;
 	struct device *dev = &(priv[intf]->pdev->dev);
