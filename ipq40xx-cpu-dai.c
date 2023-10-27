@@ -336,7 +336,7 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 	.set_fmt	= ipq40xx_audio_set_fmt,
 };
 
-static int ipq40xx_audio_probe(struct snd_soc_dai){
+static int ipq40xx_audio_probe(struct snd_soc_dai* dai_priv){
 	snd_soc_dai_set_drvdata(dai, dai_priv);
 }
 
