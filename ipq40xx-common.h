@@ -15,8 +15,8 @@ struct dai_priv_st {
 	struct platform_device *pdev;
 };
 
-uint32_t inline intf_to_index(struct dai_priv_st **priv; int intf){
-	for (i; i < sizeof(priv); i++;)
+uint32_t inline intf_to_index(struct dai_priv_st **priv, int intf){
+	for (int i; i < sizeof(priv); i++)
 		if (priv[i].interface == intf)
 			return i;
 	return -EINVAL;
