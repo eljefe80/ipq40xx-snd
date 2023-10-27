@@ -473,7 +473,9 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
 		if (of_property_read_u32_index(np, "platforms", offset, &tmp))
 			goto error_node;
+		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
 		priv[i]->interface = tmp;
+		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
 		if (of_property_read_u32_index(np, "platforms", offset + 1, &tmp))
 			goto error_node;
 		priv[i]->mbox_tx = tmp;
