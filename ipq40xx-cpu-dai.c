@@ -474,44 +474,44 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 		if (of_property_read_u32_index(np, "platforms", offset, &tmp))
 			goto error_node;
 		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, p);
-		p.interface = tmp;
+		priv[i].interface = tmp;
 		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, priv);
 		if (of_property_read_u32_index(np, "platforms", offset + 1, &tmp))
 			goto error_node;
-		priv[i]->mbox_tx = tmp;
+		priv[i].mbox_tx = tmp;
 		if (of_property_read_u32_index(np, "platforms", offset + 2, &tmp))
 			goto error_node;
-		priv[i]->stereo_tx = tmp;
+		priv[i].stereo_tx = tmp;
 		if (of_property_read_u32_index(np, "platforms", offset + 3, &tmp))
 			goto error_node;
-		priv[i]->mbox_rx = tmp;
+		priv[i].mbox_rx = tmp;
 		if (of_property_read_u32_index(np, "platforms", offset + 4, &tmp))
 			goto error_node;
-		priv[i]->stereo_rx = tmp;
+		priv[i].stereo_rx = tmp;
 		/* TX is enabled only when both DMA and Stereo TX channel
 		* is specified in the DTSi
 		*/
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-		if ((priv[i]->mbox_tx >= 0)
-			|| (priv[i]->stereo_tx >= 0)) {
-			priv[i]->tx_enabled = ENABLE;
+		if ((priv[i].mbox_tx >= 0)
+			|| (priv[i].stereo_tx >= 0)) {
+			priv[i].tx_enabled = ENABLE;
 		}
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 		/* RX is enabled only when both DMA and Stereo RX channel
 		* is specified in the DTSi, except in case of SPDIF RX
 		*/
 
-		if ((priv[i]->mbox_rx < 0)) {
-			if (priv[i]->interface == SPDIF) {
-				priv[i]->rx_enabled = ENABLE;
-				priv[i]->stereo_rx = MAX_STEREO_ENTRIES;
-			} else if (priv[i]->stereo_rx >= 1) {
-				priv[i]->rx_enabled = ENABLE;
+		if ((priv[i].mbox_rx < 0)) {
+			if (priv[i].interface == SPDIF) {
+				priv[i].rx_enabled = ENABLE;
+				priv[i].stereo_rx = MAX_STEREO_ENTRIES;
+			} else if (priv[i].stereo_rx >= 1) {
+				priv[i].rx_enabled = ENABLE;
 			}
 		}
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 		/* Either TX or Rx should have been enabled for a DMA/Stereo Channel */
-		if (!(priv[i]->tx_enabled || priv[i]->rx_enabled)) {
+		if (!(priv[i].tx_enabled || priv[i].rx_enabled)) {
 			pr_err("%s: error reading critical device"
 					" node properties\n", np->name);
 			ret = -EFAULT;
@@ -523,7 +523,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 					&priv[i].is_txmclk_fixed))
 		pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
 */
-			priv[i]->pdev = pdev;
+			priv[i].pdev = pdev;
 
 	}
 
