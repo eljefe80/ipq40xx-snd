@@ -462,11 +462,15 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	num_plats = tmp / (sizeof(u32) * 5);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	priv = kmalloc(num_plats * sizeof(struct dai_priv_st), GFP_KERNEL);
+	if (!priv){
+		return -ENOMEM;
+	}
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	platform_set_drvdata(pdev, priv);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	for (i = 0; i < num_plats; i++) {
 		offset = i * 5;
+		printk("Checking offset: %i, location: %i", offset, i);
 		if (of_property_read_u32_index(np, "platforms", offset, &(priv[i]->interface)))
 			goto error_node;
 
