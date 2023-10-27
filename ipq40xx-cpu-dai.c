@@ -155,8 +155,7 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 				struct snd_soc_dai *dai)
 {
 	struct dai_priv_st **priv = snd_soc_component_get_drvdata(dai->component);
-	uint32_t intf = intf_to_index(dai->driver->id);
-	uint32_t intf = dai->driver->id;
+	uint32_t intf = intf_to_index(priv, dai->driver->id);
 	int ret = 0;
 	struct device *dev = &(priv[intf]->pdev->dev);
 	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
@@ -227,7 +226,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 					struct snd_soc_dai *dai)
 {
 	struct dai_priv_st **priv = snd_soc_component_get_drvdata(dai->component);
-	uint32_t intf = intf_to_index(dai->driver->id);
+	uint32_t intf = intf_to_index(priv, dai->driver->id);
 	uint32_t stereo_id = get_stereo_id(priv, substream, intf);
 	uint32_t mbox_id = get_mbox_id(priv, substream, intf);
 	uint32_t bit_width, channels, rate;
@@ -436,7 +435,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	const struct of_device_id *match;
 	struct device_node *np = NULL;
 	struct dai_priv_st* priv;
-	int ret;
+	int ret, tmp, num_plats, i, offset;
 	int intf;
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
@@ -514,8 +513,9 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 		pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
 	}
 			priv[i].pdev = pdev;
-		}
 */
+		}
+
 	of_node_put(pdev->dev.of_node);
 	ipq40xx_audio_adss_probe(pdev);
 
