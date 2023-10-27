@@ -496,7 +496,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 			if (priv[i]->interface == SPDIF) {
 				priv[i]->rx_enabled = ENABLE;
 				priv[i]->stereo_rx = MAX_STEREO_ENTRIES;
-			} else if (priv[i].stereo_rx >= 1) {
+			} else if (priv[i]->stereo_rx >= 1) {
 				priv[i]->rx_enabled = ENABLE;
 			}
 		}
@@ -511,9 +511,10 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	if (of_property_read_u32(np, "ipq,txmclk-fixed",
 					&priv[i].is_txmclk_fixed))
 		pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
+*/
 	}
 			priv[i].pdev = pdev;
-*/
+
 		}
 
 	of_node_put(pdev->dev.of_node);
