@@ -470,10 +470,10 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 		if (of_property_read_u32_index(np, "platforms", offset + 1, &(priv[i]->mbox_tx)))
 			goto error_node;
 
-		if (of_property_read_u32_index(np, "platforms", offset + 2, &(priv[i].stereo_tx)))
+		if (of_property_read_u32_index(np, "platforms", offset + 2, &(priv[i]->stereo_tx)))
 			goto error_node;
 
-		if (of_property_read_u32_index(np, "platforms", offset + 3, &(priv[i].mbox_rx)))
+		if (of_property_read_u32_index(np, "platforms", offset + 3, &(priv[i]->mbox_rx)))
 			goto error_node;
 
 		if (of_property_read_u32_index(np, "platforms", offset + 3, &(priv[i]->stereo_rx)))
