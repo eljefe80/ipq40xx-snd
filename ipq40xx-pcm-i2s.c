@@ -537,7 +537,7 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
     struct snd_soc_pcm_runtime *rtd = substream->private_data;
     struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	struct dai_priv_st **priv = snd_soc_dai_get_drvdata(dai);
-    uint32_t intf = intf_to_index(dai->driver->id);
+    uint32_t intf = intf_to_index(priv, dai->driver->id);
 	printk("%s %d\n", __func__, __LINE__);
 
 	pcm_rtpriv = kmalloc(sizeof(struct ipq40xx_pcm_rt_priv), GFP_KERNEL);
