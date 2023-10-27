@@ -386,6 +386,7 @@ static int ipq40xx_pcm_i2s_close(struct snd_soc_component *component,
 static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 				struct snd_pcm_substream *substream, int cmd)
 {
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	int ret;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
 				substream->runtime->private_data;
@@ -444,6 +445,7 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 				struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *hw_params)
 {
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv =
 				substream->runtime->private_data;
@@ -531,6 +533,7 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 				struct snd_pcm_substream *substream)
 {
+	printk("Keen %s %d\r\n",__func__,__LINE__);
 	int ret;
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
