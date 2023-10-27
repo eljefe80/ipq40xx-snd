@@ -116,16 +116,6 @@ static int ipq40xx_audio_clk_set(struct clk *clk, struct device *dev,
 	return 0;
 }
 
-static void ipq40xx_audio_clk_disable(struct clk **clk, struct device *dev)
-{
-	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
-	if (*clk) {
-		if (__clk_is_enabled(*clk))
-			clk_disable_unprepare(*clk);
-		devm_clk_put(dev, *clk);
-	}
-}
-
 static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 				struct snd_soc_dai *dai)
 {
@@ -266,37 +256,14 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	return 0;
 }
-
+/*
 static void ipq40xx_audio_shutdown(struct snd_pcm_substream *substream,
 					struct snd_soc_dai *dai)
 {
 	printk("Keen %s %d\r\n",__func__,__LINE__);
-#if 0 /* Keen@foxconn bclk always enable */ 
-	uint32_t intf = dai->driver->id;
-	struct device *dev = &(dai_priv[intf].pdev->dev);
-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-		alc1312_pdb_ctrl(0);
-		ipq40xx_glb_tx_data_port_en(DISABLE);
-		ipq40xx_glb_tx_framesync_port_en(DISABLE);
 
-		/* Disable the clocks */
-		ipq40xx_audio_clk_disable(&audio_tx_bclk, dev);
-		ipq40xx_audio_clk_disable(&audio_tx_mclk, dev);
-	} else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
-		ipq40xx_glb_rx_data_port_en(DISABLE);
-		ipq40xx_glb_rx_framesync_port_en(DISABLE);
-
-		/* Disable the clocks */
-		ipq40xx_audio_clk_disable(&audio_rx_bclk, dev);
-		ipq40xx_audio_clk_disable(&audio_rx_mclk, dev);
-	}
-	/* Disable the I2S Stereo block */
-	ipq40xx_stereo_config_enable(DISABLE, get_stereo_id(substream, intf));
-#endif
-      /* Keen@foxconn playback control */
-      //alc1312_pdb_ctrl(0);
 }
-
+*/
 static int ipq40xx_audio_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 {
 	dev_dbg(dai->dev, "%s:%d\n", __func__, __LINE__);
@@ -307,7 +274,7 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 	.startup	= ipq40xx_audio_startup,
 	.prepare	= ipq40xx_audio_prepare,
 	.hw_params	= ipq40xx_audio_hw_params,
-	.shutdown	= ipq40xx_audio_shutdown,
+/*	.shutdown	= ipq40xx_audio_shutdown, */
 	.set_fmt	= ipq40xx_audio_set_fmt,
 };
 
@@ -426,7 +393,7 @@ static int ipq40xx_parse_of(struct platform_device *pdev)
 	
 	platform_set_drvdata(pdev, dai_priv);
 	
-	for (i = 0; i < num_plats; i++) {
+	for (i = 0; i < dai_priv_size; i++) {
 		offset = i * 5;
 	
 		if (of_property_read_u32_index(np, "platforms",
@@ -516,8 +483,7 @@ MODULE_DEVICE_TABLE(of, ipq40xx_cpu_dai_id_table);
 static int ipq40xx_dai_probe(struct platform_device *pdev)
 {
 	const struct of_device_id *match;
-	struct device_node *np = NULL;
-	int ret, i, offset;
+	int ret;
 
 	match = of_match_device(ipq40xx_cpu_dai_id_table, &pdev->dev);
 	if (!match) {
@@ -553,6 +519,7 @@ error:
 
 static int ipq40xx_dai_remove(struct platform_device *pdev)
 {
+	ipq40xx_audio_adss_remove(pdev);
 	snd_soc_unregister_component(&pdev->dev);
 	return 0;
 }

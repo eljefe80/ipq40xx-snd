@@ -693,20 +693,23 @@ static int tas5782m_i2c_probe(struct i2c_client *i2c,
 	tas5782m->pdata = pdata;
 	tas5782m_parse_dts(tas5782m, i2c->dev.of_node);
 	if (of_property_read_string(i2c->dev.of_node,
-		"codec_name", &codec_name)) {
+				"codec_name", &codec_name)) {
 		pr_info("no codec name\n");
 		ret = -1;
 	}
-	pr_debug("aux name = %s\n", codec_name);
+
 	if (codec_name)
 		dev_set_name(&i2c->dev, "%s", codec_name);
 	i2c_set_clientdata(i2c, tas5782m);
 	ret = snd_soc_register_component(&i2c->dev,
-		&soc_codec_dev_tas5782m, &tas5782m_dai, 1);
+			&soc_codec_dev_tas5782m, &tas5782m_dai, 1);
+
 	if (ret != 0)
 		dev_err(&i2c->dev, "Failed to register codec (%d)\n", ret);
+
 	return ret;
 }
+
 static int tas5782m_i2c_remove(struct i2c_client *client)
 {
 	snd_soc_unregister_component(&client->dev);

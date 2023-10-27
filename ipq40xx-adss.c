@@ -303,25 +303,12 @@ int ipq40xx_audio_adss_probe(struct platform_device *pdev)
 	ipq40xx_audio_adss_init();
 	return 0;
 }
-static int ipq40xx_audio_adss_remove(struct platform_device *pdev)
+int ipq40xx_audio_adss_remove(struct platform_device *pdev)
 {
 	ipq40xx_glb_i2s_interface_en(DISABLE);
 	return 0;
 }
 
-/*
-static struct platform_driver ipq40xx_audio_adss_driver = {
-	.probe = ipq40xx_audio_adss_probe,
-	.remove = ipq40xx_audio_adss_remove,
-	.driver = {
-		.name = "ipq40xx-adss",
-		.owner = THIS_MODULE,
-		.of_match_table = ipq40xx_audio_adss_id_table,
-	},
-};
-
-module_platform_driver(ipq40xx_audio_adss_driver);
-*/
 MODULE_ALIAS("platform:ipq40xx-adss");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("IPQ40xx AUDIO ADSS driver");
