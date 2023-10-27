@@ -338,6 +338,7 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 
 static int ipq40xx_audio_probe(struct snd_soc_dai* dai_priv){
 	snd_soc_dai_set_drvdata(dai, dai_priv);
+	return 0;
 }
 
 static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
