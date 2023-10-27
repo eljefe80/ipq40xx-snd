@@ -36,26 +36,20 @@
 #include "ipq40xx-stereo.h"
 #include "ipq40xx-adss.h"
 
-struct dai_priv_st {
-	int stereo_tx;
-	int stereo_rx;
-	int mbox_tx;
-	int mbox_rx;
-	int tx_enabled;
-	int rx_enabled;
-	int is_txmclk_fixed;
-	struct platform_device *pdev;
-};
-struct dai_priv_st dai_priv[MAX_INTF];
 
+/*
+struct dai_priv_st dai_priv[MAX_INTF];
+*/
 struct clk *audio_tx_bclk;
 struct clk *audio_tx_mclk;
 struct clk *audio_rx_bclk;
 struct clk *audio_rx_mclk;
 
+
 /* Get Stereo channel ID based on I2S/TDM/SPDIF intf and direction */
 uint32_t get_stereo_id(struct snd_pcm_substream *substream, int intf)
 {
+
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
 		return dai_priv[intf].stereo_tx;
 	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
@@ -158,14 +152,16 @@ static void ipq40xx_audio_clk_disable(struct clk **clk, struct device *dev)
 static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 				struct snd_soc_dai *dai)
 {
+	struct dai_priv_st **priv = snd_soc_component_get_drvdata(dai->component);
+	uint32_t intf = intf_to_index(dai->driver->id);
 	uint32_t intf = dai->driver->id;
 	int ret = 0;
-	struct device *dev = &(dai_priv[intf].pdev->dev);
+	struct device *dev = &(priv[intf].pdev->dev);
 	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 	printk("%s:%d\n", __func__, __LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		/* Check if the direction is enabled */
-		if (dai_priv[intf].tx_enabled != ENABLE)
+		if (priv[intf].tx_enabled != ENABLE)
 			goto error;
 
 		ipq40xx_glb_tx_data_port_en(ENABLE);
@@ -174,13 +170,13 @@ static int ipq40xx_audio_startup(struct snd_pcm_substream *substream,
 		ret = ipq40xx_audio_clk_get(&audio_tx_bclk, dev,
 						"audio_tx_bclk");
 		printk("Return from ipq40xx_audio_clk_get: %d", ret);
-		if (!ret && !(dai_priv[intf].is_txmclk_fixed))
+		if (!ret && !(priv[intf].is_txmclk_fixed))
 			ret = ipq40xx_audio_clk_get(&audio_tx_mclk, dev,
 						"audio_tx_mclk");
 
 	} else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
 		/* Check if the direction is enabled */
-		if (dai_priv[intf].rx_enabled != ENABLE)
+		if (priv[intf].rx_enabled != ENABLE)
 			goto error;
 
 		ipq40xx_glb_rx_data_port_en(ENABLE);
@@ -228,14 +224,15 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 					struct snd_pcm_hw_params *params,
 					struct snd_soc_dai *dai)
 {
-	uint32_t bit_width, channels, rate;
-	uint32_t intf = dai->driver->id;
+	struct dai_priv_st **priv = snd_soc_component_get_drvdata(dai->component);
+	uint32_t intf = intf_to_index(dai->driver->id);
 	uint32_t stereo_id = get_stereo_id(substream, intf);
 	uint32_t mbox_id = get_mbox_id(substream, intf);
+	uint32_t bit_width, channels, rate;
 	uint32_t bit_act;
 	int ret;
 	uint32_t mclk, bclk;
-	struct device *dev = &(dai_priv[intf].pdev->dev);
+	struct device *dev = &(priv[intf].pdev->dev);
 
 	dev_dbg(dev, "%s:%d\n", __func__, __LINE__);
 	bit_width = params_format(params);
@@ -270,7 +267,7 @@ static int ipq40xx_audio_hw_params(struct snd_pcm_substream *substream,
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-		if (!(dai_priv[intf].is_txmclk_fixed)) {
+		if (!(priv[intf].is_txmclk_fixed)) {
 			ret = ipq40xx_audio_clk_set(audio_tx_mclk, dev, mclk);
 			if (ret)
 				return ret;
@@ -420,11 +417,14 @@ static const struct snd_soc_component_driver ipq40xx_i2s_component = {
 };
 
 static const struct of_device_id ipq40xx_cpu_dai_id_table[] = {
+	{ .compatible = "qca,ipq40xx-cpu" },
+/*
 	{ .compatible = "qca,ipq40xx-i2s", .data = (void *)I2S},
 	{ .compatible = "qca,ipq40xx-tdm", .data = (void *)TDM},
 	{ .compatible = "qca,ipq40xx-spdif", .data = (void *)SPDIF},
 	{ .compatible = "qca,ipq40xx-i2s1", .data = (void *)I2S1},
 	{ .compatible = "qca,ipq40xx-i2s2", .data = (void *)I2S2},
+*/
 	{},
 };
 MODULE_DEVICE_TABLE(of, ipq40xx_cpu_dai_id_table);
@@ -433,10 +433,17 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 {
 	const struct of_device_id *match;
 	struct device_node *np = NULL;
+	struct dai_priv_st* priv;
 	int ret;
 	int intf;
 
 	printk("Keen %s %d\r\n",__func__,__LINE__);
+	match = of_match_device(ipq40xx_cpu_dai_id_table, &pdev->dev);
+	if (!match) {
+		ret = -ENODEV;
+		goto error;
+	}
+
 	ret = snd_soc_register_component(&pdev->dev, &ipq40xx_i2s_component,
 			 ipq40xx_cpu_dais, ARRAY_SIZE(ipq40xx_cpu_dais));
 	if (ret) {
@@ -445,53 +452,67 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-	match = of_match_device(ipq40xx_cpu_dai_id_table, &pdev->dev);
-	if (!match) {
-		ret = -ENODEV;
-		goto error;
-	}
-
-	intf = (uint32_t)match->data;
-
 	np = of_node_get(pdev->dev.of_node);
 
-	/* TX is enabled only when both DMA and Stereo TX channel
-	 * is specified in the DTSi
-	 */
-	if (!(of_property_read_u32(np, "dma-tx-channel",
-					&dai_priv[intf].mbox_tx)
-		|| of_property_read_u32(np, "stereo-tx-port",
-					&dai_priv[intf].stereo_tx))) {
-		dai_priv[intf].tx_enabled = ENABLE;
-	}
-
-	/* RX is enabled only when both DMA and Stereo RX channel
-	 * is specified in the DTSi, except in case of SPDIF RX
-	 */
-	if (!(of_property_read_u32(np, "dma-rx-channel",
-					&dai_priv[intf].mbox_rx))) {
-		if (intf == SPDIF) {
-			dai_priv[intf].rx_enabled = ENABLE;
-			dai_priv[intf].stereo_rx = MAX_STEREO_ENTRIES;
-		} else if (!(of_property_read_u32(np, "stereo-rx-port",
-					&dai_priv[intf].stereo_rx))) {
-			dai_priv[intf].rx_enabled = ENABLE;
-		}
-	}
-
-	/* Either TX or Rx should have been enabled for a DMA/Stereo Channel */
-	if (!(dai_priv[intf].tx_enabled || dai_priv[intf].rx_enabled)) {
-		pr_err("%s: error reading critical device"
-				" node properties\n", np->name);
-		ret = -EFAULT;
+	if (!of_get_property(np, "platforms", &tmp))
 		goto error_node;
-	}
+	/* There should be 5 values for each Platform */
+	num_plats = tmp / (sizeof(u32) * 5);
+	priv = kmalloc(num_plats * sizeof(struct dai_priv_st), GFP_KERNEL);
+	platform_set_drvdata(pdev, priv);
 
+	for (i = 0; i < num_plats; i++;) {
+		offset = i * 5;
+		if (of_property_read_u32_index(np, "platforms", offset, &priv[i].interface))
+			goto error_node;
+
+		if (of_property_read_u32_index(np, "platforms", offset + 1, &priv[i].mbox_tx))
+			goto error_node;
+
+		if (of_property_read_u32_index(np, "platforms", offset + 2, &priv[i].stereo_tx))
+			goto error_node;
+
+		if (of_property_read_u32_index(np, "platforms", offset + 3, &priv[i].mbox_rx))
+			goto error_node;
+
+		if (of_property_read_u32_index(np, "platforms", offset + 3, &priv[i].stereo_rx))
+			goto error_node;
+
+		/* TX is enabled only when both DMA and Stereo TX channel
+		* is specified in the DTSi
+		*/
+
+		if ((priv[i].mbox_tx >= 0)
+			|| (priv[i].stereo_tx >= 0)) {
+			priv[i].tx_enabled = ENABLE;
+		}
+
+		/* RX is enabled only when both DMA and Stereo RX channel
+		* is specified in the DTSi, except in case of SPDIF RX
+		*/
+
+		if ((priv[i].mbox_rx < 0)) {
+			if (priv[i].interface == SPDIF) {
+				priv[i].rx_enabled = ENABLE;
+				priv[i].stereo_rx = MAX_STEREO_ENTRIES;
+			} else if (priv[i].stereo_rx >= 1) {
+				priv[i].rx_enabled = ENABLE;
+			}
+		}
+
+		/* Either TX or Rx should have been enabled for a DMA/Stereo Channel */
+		if (!(priv[i].tx_enabled || priv[i].rx_enabled)) {
+			pr_err("%s: error reading critical device"
+					" node properties\n", np->name);
+			ret = -EFAULT;
+			goto error_node;
+/*
 	if (of_property_read_u32(np, "ipq,txmclk-fixed",
-					&dai_priv[intf].is_txmclk_fixed))
+					&priv[i].is_txmclk_fixed))
 		pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
-
-	dai_priv[intf].pdev = pdev;
+	}
+			priv[i].pdev = pdev;
+		}
 
 	of_node_put(pdev->dev.of_node);
 	ipq40xx_audio_adss_probe(pdev);

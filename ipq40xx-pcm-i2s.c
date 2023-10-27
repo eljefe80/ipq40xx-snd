@@ -84,6 +84,7 @@ static struct snd_pcm_hardware ipq40xx_pcm_hardware_capture = {
 	.fifo_size		=	0,
 };
 
+
 static size_t ip40xx_dma_buffer_size(struct snd_pcm_hardware *pcm_hw)
 {
 	printk("%s %d\n", __func__, __LINE__);
@@ -390,7 +391,8 @@ static int ipq40xx_pcm_i2s_trigger(struct snd_soc_component *component,
 				substream->runtime->private_data;
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
-	uint32_t intf = dai->driver->id;
+	struct dai_priv_st **priv = snd_soc_dai_get_drvdata(dai);
+	uint32_t intf = intf_to_index(priv, dai->driver->id);
 
 //	printk("%s %d\n", __func__, __LINE__);
 	switch (cmd) {
@@ -448,7 +450,9 @@ static int ipq40xx_pcm_i2s_hw_params(struct snd_soc_component *component,
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 	struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
 	uint32_t bit_width, rate;
-	uint32_t intf = dai->driver->id;
+	uint32_t intf = intf_to_index(dai->driver->id);
+	struct dai_priv_st **priv = snd_soc_dai_get_drvdata(dai);
+	uint32_t intf = intf_to_index(priv, dai->driver->id);
 	uint32_t mbox_id = get_mbox_id(substream, intf);
 	uint32_t stereo_id = get_stereo_id(substream, intf);
 	int ret;
@@ -533,7 +537,7 @@ static int ipq40xx_pcm_i2s_open(struct snd_soc_component *component,
 	struct ipq40xx_pcm_rt_priv *pcm_rtpriv;
     struct snd_soc_pcm_runtime *rtd = substream->private_data;
     struct snd_soc_dai *dai = asoc_rtd_to_cpu(rtd, 0);
-    uint32_t intf = dai->driver->id;
+    uint32_t intf = intf_to_index(dai->driver->id);
 	printk("%s %d\n", __func__, __LINE__);
 
 	pcm_rtpriv = kmalloc(sizeof(struct ipq40xx_pcm_rt_priv), GFP_KERNEL);
@@ -656,8 +660,8 @@ static struct snd_soc_component_driver ipq40xx_asoc_pcm_i2s_platform = {
         .mmap           = ipq40xx_pcm_i2s_mmap,
         .pointer        = ipq40xx_pcm_i2s_pointer,
         .copy_user      = ipq40xx_pcm_i2s_copy,
-	.pcm_construct	= ipq40xx_asoc_pcm_i2s_new,
-	.pcm_destruct	= ipq40xx_asoc_pcm_i2s_free,
+		.pcm_construct	= ipq40xx_asoc_pcm_i2s_new,
+		.pcm_destruct	= ipq40xx_asoc_pcm_i2s_free,
 };
 
 static const struct of_device_id ipq40xx_pcm_i2s_id_table[] = {

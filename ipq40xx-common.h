@@ -3,6 +3,25 @@
 
 #define MAX_STEREO_ENTRIES	4
 
+struct dai_priv_st {
+	int stereo_tx;
+	int stereo_rx;
+	int mbox_tx;
+	int mbox_rx;
+	int tx_enabled;
+	int rx_enabled;
+	int is_txmclk_fixed;
+	int interface;
+	struct platform_device *pdev;
+};
+
+uint32_t inline intf_to_index(struct dai_priv_st **priv; int intf){
+	for (i; i < sizeof(priv); i++;)
+		if (priv[i].interface == intf)
+			return i;
+	return -EINVAL;
+}
+
 /* Enumerations */
 
 enum dir {
