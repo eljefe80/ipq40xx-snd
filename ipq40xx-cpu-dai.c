@@ -469,7 +469,7 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 	printk("Size of platforms: %i, num_plats %i", tmp, num_plats);
 	printk("Keen %s %d\r\n",__func__,__LINE__);
 	dai_priv = kmalloc_array(num_plats, sizeof(struct dai_priv_st), GFP_KERNEL);
-	if (!priv){
+	if (!dai_priv){
 		return -ENOMEM;
 	}
 	printk("Keen %s %d\r\n",__func__,__LINE__);
