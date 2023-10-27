@@ -98,7 +98,7 @@ uint32_t get_stereo_id(struct dai_priv_st *priv,
 }
 
 /* Get MBOX channel ID based on I2S/TDM/SPDIF intf and direction */
-uint32_t get_mbox_id(struct dai_priv_st **priv,
+uint32_t get_mbox_id(struct dai_priv_st *priv,
 				struct snd_pcm_substream *substream)
 {
 //	dev_dbg("%s:%d\n", __func__, __LINE__);
