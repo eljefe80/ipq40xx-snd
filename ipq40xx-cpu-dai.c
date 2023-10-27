@@ -312,15 +312,14 @@ static struct snd_soc_dai_ops ipq40xx_audio_ops = {
 };
 
 static int ipq40xx_audio_probe(struct snd_soc_dai* dai){
-	int intf = -1;
 	for(int i=0; i<dai_priv_size; i++)
 		if (dai_priv[i].interface == dai->driver->id)
-			intf = i;
+		{
+			snd_soc_dai_set_drvdata(dai, dai_priv);
+			return 0;
+		}
 
-	if (intf == -1)
-		return -EINVAL;
-	snd_soc_dai_set_drvdata(dai, dai_priv);
-	return 0;
+	return -EINVAL;
 }
 
 static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
@@ -404,90 +403,70 @@ static struct snd_soc_dai_driver ipq40xx_cpu_dais[] = {
 		.name = "qca-i2s2-dai"
 	}
 };
-static const struct snd_soc_component_driver ipq40xx_i2s_component = {
-	.name           = "qca-cpu-dai",
-};
 
-static const struct of_device_id ipq40xx_cpu_dai_id_table[] = {
-	{ .compatible = "qca,ipq40xx-cpu" },
-/*
-	{ .compatible = "qca,ipq40xx-i2s", .data = (void *)I2S},
-	{ .compatible = "qca,ipq40xx-tdm", .data = (void *)TDM},
-	{ .compatible = "qca,ipq40xx-spdif", .data = (void *)SPDIF},
-	{ .compatible = "qca,ipq40xx-i2s1", .data = (void *)I2S1},
-	{ .compatible = "qca,ipq40xx-i2s2", .data = (void *)I2S2},
-*/
-	{},
-};
-MODULE_DEVICE_TABLE(of, ipq40xx_cpu_dai_id_table);
-
-static int ipq40xx_dai_probe(struct platform_device *pdev)
+static int ipq40xx_parse_of(struct platform_device *pdev)
 {
-	const struct of_device_id *match;
 	struct device_node *np = NULL;
-	int ret, tmp, num_plats, i, offset;
+	int ret = 0, i, offset;
 
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	match = of_match_device(ipq40xx_cpu_dai_id_table, &pdev->dev);
-	if (!match) {
-		ret = -ENODEV;
-		goto error;
-	}
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	ret = snd_soc_register_component(&pdev->dev, &ipq40xx_i2s_component,
-			 ipq40xx_cpu_dais, ARRAY_SIZE(ipq40xx_cpu_dais));
-	if (ret) {
-		dev_err(&pdev->dev,
-			"%s: error registering soc dais\n", __func__);
-		return ret;
-	}
-	printk("Keen %s %d\r\n",__func__,__LINE__);
 	np = of_node_get(pdev->dev.of_node);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	if (!of_get_property(np, "platforms", &tmp))
+	if (!of_get_property(np, "platforms", &dai_priv_size))
 		goto error_node;
+
 	/* There should be 5 values for each Platform */
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	num_plats = tmp / (sizeof(u32) * 5);
-	printk("Size of platforms: %i, num_plats %i", tmp, num_plats);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	dai_priv_size = num_plats;
-	dai_priv = kmalloc_array(num_plats, sizeof(struct dai_priv_st), GFP_KERNEL);
+	dai_priv_size = dai_priv_size / (sizeof(u32) * 5);
+
+	dai_priv = kmalloc_array(dai_priv_size, 
+					sizeof(struct dai_priv_st), GFP_KERNEL);
+
 	if (!dai_priv){
-		return -ENOMEM;
+		ret = -ENOMEM;
+		goto error_node;
 	}
-	printk("Keen %s %d\r\n",__func__,__LINE__);
+	
 	platform_set_drvdata(pdev, dai_priv);
-	printk("Keen %s %d\r\n",__func__,__LINE__);
+	
 	for (i = 0; i < num_plats; i++) {
 		offset = i * 5;
-		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, dai_priv);
-		if (of_property_read_u32_index(np, "platforms", offset, &tmp))
+	
+		if (of_property_read_u32_index(np, "platforms",
+						offset, &dai_priv[i].interface)){
+			ret = -EFAULT;
 			goto error_node;
-		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, dai_priv);
-		dai_priv[i].interface = tmp;
-		printk("Checking offset: %i, location: %i, here:0x%08x", offset, i, dai_priv);
-		if (of_property_read_u32_index(np, "platforms", offset + 1, &tmp))
+		}
+
+		if (of_property_read_u32_index(np, "platforms",
+						offset + 1, &dai_priv[i].mbox_tx)){
+			ret = -EFAULT;
 			goto error_node;
-		dai_priv[i].mbox_tx = tmp;
-		if (of_property_read_u32_index(np, "platforms", offset + 2, &tmp))
+		}
+
+		if (of_property_read_u32_index(np, "platforms",
+						offset + 2, &dai_priv[i].stereo_tx)){
+			ret = -EFAULT;
 			goto error_node;
-		dai_priv[i].stereo_tx = tmp;
-		if (of_property_read_u32_index(np, "platforms", offset + 3, &tmp))
+		}
+
+		if (of_property_read_u32_index(np, "platforms",
+						offset + 3, &dai_priv[i].mbox_rx)){
+			ret = -EFAULT;
 			goto error_node;
-		dai_priv[i].mbox_rx = tmp;
-		if (of_property_read_u32_index(np, "platforms", offset + 4, &tmp))
+		}
+
+		if (of_property_read_u32_index(np, "platforms",
+						offset + 4, &dai_priv[i].mbox_rx)){
+			ret = -EFAULT;
 			goto error_node;
-		dai_priv[i].stereo_rx = tmp;
+		}
+
 		/* TX is enabled only when both DMA and Stereo TX channel
 		* is specified in the DTSi
 		*/
-	printk("Keen %s %d\r\n",__func__,__LINE__);
+
 		if ((dai_priv[i].mbox_tx >= 0)
-			|| (dai_priv[i].stereo_tx >= 0)) {
+			|| (dai_priv[i].stereo_tx >= 0))
 			dai_priv[i].tx_enabled = ENABLE;
-		}
-	printk("Keen %s %d\r\n",__func__,__LINE__);
+
 		/* RX is enabled only when both DMA and Stereo RX channel
 		* is specified in the DTSi, except in case of SPDIF RX
 		*/
@@ -500,32 +479,73 @@ static int ipq40xx_dai_probe(struct platform_device *pdev)
 				dai_priv[i].rx_enabled = ENABLE;
 			}
 		}
-	printk("Keen %s %d\r\n",__func__,__LINE__);
+
 		/* Either TX or Rx should have been enabled for a DMA/Stereo Channel */
 		if (!(dai_priv[i].tx_enabled || dai_priv[i].rx_enabled)) {
 			pr_err("%s: error reading critical device"
 					" node properties\n", np->name);
 			ret = -EFAULT;
 			goto error_node;
-
 		}
-/*
-	if (of_property_read_u32(np, "ipq,txmclk-fixed",
+
+		if (of_property_read_u32(np, "ipq,txmclk-fixed",
 					&dai_priv[i].is_txmclk_fixed))
-		pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
-*/
-			dai_priv[i].pdev = pdev;
+			pr_debug("%s: ipq,txmclk-fixed not enabled\n", __func__);
+
+		dai_priv[i].pdev = pdev;
 
 	}
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
-	of_node_put(pdev->dev.of_node);
-	ipq40xx_audio_adss_probe(pdev);
-
-	printk("Keen %s %d\r\n",__func__,__LINE__);
 	return 0;
+
 error_node:
 	of_node_put(pdev->dev.of_node);
+	return ret;
+}
+
+static const struct snd_soc_component_driver ipq40xx_i2s_component = {
+	.name           = "qca-cpu-dai",
+};
+
+static const struct of_device_id ipq40xx_cpu_dai_id_table[] = {
+	{ .compatible = "qca,ipq40xx-cpu" },
+	{},
+};
+
+MODULE_DEVICE_TABLE(of, ipq40xx_cpu_dai_id_table);
+
+static int ipq40xx_dai_probe(struct platform_device *pdev)
+{
+	const struct of_device_id *match;
+	struct device_node *np = NULL;
+	int ret, i, offset;
+
+	match = of_match_device(ipq40xx_cpu_dai_id_table, &pdev->dev);
+	if (!match) {
+		ret = -ENODEV;
+		goto error;
+	}
+
+	ret = snd_soc_register_component(&pdev->dev, &ipq40xx_i2s_component,
+			 ipq40xx_cpu_dais, ARRAY_SIZE(ipq40xx_cpu_dais));
+
+	if (ret) {
+		dev_err(&pdev->dev,
+			"%s: error registering soc dais\n", __func__);
+		return ret;
+	}
+
+	ret = ipq40xx_parse_of(pdev);
+
+	if (ret) {
+		dev_err(&pdev->dev,
+			"%s: error parsing soc dais\n", __func__);
+		return ret;
+	}
+
+	ipq40xx_audio_adss_probe(pdev);
+
+	return 0;
+
 error:
 	snd_soc_unregister_component(&pdev->dev);
 	return ret;
